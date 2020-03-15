@@ -1,0 +1,20 @@
+server:
+  port: 8764
+  servlet:
+    context-path: /web
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+spring:
+  application:
+    name: web
+  #thymeleaf
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: utf-8
+    mode: HTML5
+    cache: false
+
