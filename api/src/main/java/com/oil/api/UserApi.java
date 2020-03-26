@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @RequestMapping("/user")
 public interface UserApi {
+    @ResponseBody
     @RequestMapping("/getUser")
     public String getUser();
 
