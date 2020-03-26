@@ -17,5 +17,10 @@ public interface UserApi {
     @ResponseBody
     @RequestMapping("/getUser")
     public String getUser();
+    /**
+    * Description: 功能描述（登录） <br/>
+    * date: 2020/3/26 15:23<br/>
+    * @author libd <br/>
+    */
 
 }

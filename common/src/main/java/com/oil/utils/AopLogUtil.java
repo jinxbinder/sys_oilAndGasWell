@@ -52,7 +52,7 @@ public class AopLogUtil {
             log.info("请求类方法:" + joinPoint.getSignature());
             log.info("请求类方法参数:" + Arrays.toString(joinPoint.getArgs()));
         } catch (Exception e) {
-            log.error("###AopApiLog.class methodBefore() ### ERROR:", e);
+            log.error("###AopLogUtil.class methodBefore() ### ERROR:", e);
         }
         log.info("===============request end===============");
     }
@@ -64,7 +64,7 @@ public class AopLogUtil {
         try {
             log.info("Response内容:" + jsonObject.toJSONString(o));
         } catch (Exception e) {
-            log.error("###AopApiLog.class methodAfterReturing() ### ERROR:", e);
+            log.error("###AopLogUtil.class methodAfterReturing() ### ERROR:", e);
         }
         log.info("--------------response end----------------");
     }
