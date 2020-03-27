@@ -4,9 +4,9 @@ import com.oil.api.UserApi;
 import com.oil.dao.UserRepository;
 import com.oil.entity.User;
 import com.oil.utils.Result;
+import com.oil.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +27,6 @@ public class UserService implements UserApi{
     UserRepository userRepository;
     @Override
     public String getUser() {
-        System.out.println("到达service");
         User str = userRepository.findUserByUserId(1L);
         System.out.println(str);
         return str.getLoginName();
@@ -37,9 +36,9 @@ public class UserService implements UserApi{
     public Result login(@RequestBody User user) {
         log.info(user.toString());
         User userInfo = userRepository.findUserByLoginNameAndPassword(user.getLoginName(),user.getPassword());
-        if(StringUtils.isEmpty(userInfo))
+        if(StringUtil.isNull(userInfo))
             return Result.error("账号或者密码错误");
 
-        return Result.success(userInfo.getUserId());
+        return Result.success();
     }
 }

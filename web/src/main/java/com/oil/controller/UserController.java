@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jcajce.provider.digest.Blake2b;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,15 +50,13 @@ public class UserController {
     * @author libd <br/>
     */
     @RequestMapping("/login")
-    public String login(User user){
-
+    public String login(User user, Model model){
         Result r = userFeign.login(user);
-        System.out.println(r.get("code"));
-        System.out.println(r.get("msg"));
         if (null!=r.get("data")){
             Object res = r.get("data");
             log.info(res.toString());
         }
+        model.addAllAttributes(r);
         if(Constant.SUCCESS.equals(r.get("code")+"")){
             return "index";
         }
