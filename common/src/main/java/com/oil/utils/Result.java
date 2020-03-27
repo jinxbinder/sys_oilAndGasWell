@@ -26,11 +26,11 @@ public class Result extends HashMap<String, Object>
     public enum Type
     {
         /** 成功 */
-        SUCCESS(0000),
+        SUCCESS(200),
         /** 警告 */
-        WARN(4399),
+        WARN(401),
         /** 错误 */
-        ERROR(2998);
+        ERROR(500);
         private final int value;
 
         Type(int value)

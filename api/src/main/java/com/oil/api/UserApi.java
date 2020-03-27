@@ -1,7 +1,8 @@
 package com.oil.api;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.oil.entity.User;
+import com.oil.utils.Result;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * ClassName: UserApi <br/>
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @version 1.0
  * @since JDK 1.8
  */
+
 @RequestMapping("/user")
 public interface UserApi {
     @ResponseBody
@@ -22,5 +24,6 @@ public interface UserApi {
     * date: 2020/3/26 15:23<br/>
     * @author libd <br/>
     */
-
+    @RequestMapping("/login")
+    public Result login(@RequestBody User user);
 }

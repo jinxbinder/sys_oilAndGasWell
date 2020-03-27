@@ -13,16 +13,16 @@ public interface  Constant {
     /**
      * 通用成功标识
      */
-    String SUCCESS = "0000";
+    String SUCCESS = "200";
 
     /**
      * 通用失败标识
      */
-    String FAIL = "2998";
+    String FAIL = "500";
     /**
      * 通用警告标识
      */
-    String WARN = "4399";
+    String WARN = "401";
 
     /**
      * 登录成功
