@@ -1,6 +1,8 @@
 package com.oil.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import java.sql.Timestamp;
@@ -15,24 +17,21 @@ import java.util.Date;
  * @version 1.0
  * @since JDK 1.8
  */
+@Getter
+@Setter
 public class BaseEntity {
     /** 创建者 */
-    @Column(name = "create_by")
     private String createBy;
 
     /** 创建时间 */
-    @Column(name = "create_time")
     private Timestamp createTime;
 
     /** 更新者 */
-    @Column(name = "update_by")
     private String updateBy;
 
     /** 更新时间 */
-    @Column(name = "update_time")
     private Timestamp updateTime;
 
     /** 备注 */
-    @Column
     private String remark;
 }

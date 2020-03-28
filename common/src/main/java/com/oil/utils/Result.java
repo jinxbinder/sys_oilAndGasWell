@@ -74,7 +74,7 @@ public class Result extends HashMap<String, Object>
     {
         super.put(CODE_TAG, type.value);
         super.put(MSG_TAG, msg);
-        if ("".equals(data))
+        if (!"".equals(data))
         {
             super.put(DATA_TAG, data);
         }

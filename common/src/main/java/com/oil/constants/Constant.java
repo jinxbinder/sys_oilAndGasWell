@@ -43,5 +43,9 @@ public interface  Constant {
      * 登录
      */
     String LOGIN = "login";
+    /**
+     * 主页
+     */
+    String INDEX = "index";
 
 }

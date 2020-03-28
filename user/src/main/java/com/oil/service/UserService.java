@@ -7,9 +7,12 @@ import com.oil.utils.Result;
 import com.oil.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: UserService <br/>
@@ -38,7 +41,12 @@ public class UserService implements UserApi{
         User userInfo = userRepository.findUserByLoginNameAndPassword(user.getLoginName(),user.getPassword());
         if(StringUtil.isNull(userInfo))
             return Result.error("账号或者密码错误");
-
-        return Result.success();
+        String id = userInfo.getUserId()+"";
+        return Result.success("登录成功",id);
+    }
+    @Override
+    public Result userList(){
+        List<User> userList = userRepository.findAll();
+        return Result.success(userList);
     }
 }

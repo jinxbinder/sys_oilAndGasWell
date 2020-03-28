@@ -18,12 +18,19 @@ import org.springframework.web.bind.annotation.*;
 public interface UserApi {
     @ResponseBody
     @RequestMapping("/getUser")
-    public String getUser();
+    String getUser();
     /**
     * Description: 功能描述（登录） <br/>
     * date: 2020/3/26 15:23<br/>
     * @author libd <br/>
     */
     @RequestMapping("/login")
-    public Result login(@RequestBody User user);
+    Result login(@RequestBody User user);
+    /**
+    * Description: 功能描述（用户列表） <br/>
+    * date: 2020/3/28 14:16<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/userList")
+    Result userList();
 }

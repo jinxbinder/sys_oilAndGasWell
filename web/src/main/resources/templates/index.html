@@ -4,16 +4,29 @@
     <th:block th:include="include :: header('首页')" />
 </head>
 <style>
-    div{
+    .div1{
         width: 300px;
         height: 300px;
     }
 </style>
 <body>
-<div>
+<div class="div1">
+    <span th:text="${id}">a</span>
     <span th:text="${msg}">a</span>
     <span th:text="${data}">ad</span>
     <span th:text="${code}">fad</span>
+</div>
+<div>
+    <a href="userList">用户列表</a>
+    <tr th:each="user:${userList}">
+        <td th:text="${user.loginName}"></td>
+        <td th:text="${user.userId}"></td>
+        <td th:text="${user.password}"></td>
+        <td th:text="${user.status}"></td>
+    </tr>
+</div>
+<div>
+    <a href="userAdd">用户添加</a>
 </div>
 
 </body>
