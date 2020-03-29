@@ -37,5 +37,5 @@ public class User extends BaseEntity{
     //用户-角色
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "sys_user_role",joinColumns = {@JoinColumn(name = "uid")},inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<User> roleList;
+    private List<Role> roleList;
 }

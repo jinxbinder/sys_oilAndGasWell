@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * ClassName: UserRepository <br/>
  * Description: <br/>
@@ -19,7 +21,10 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     User findUserByUserId(Long id);
 
-    User findUserByLoginNameAndPassword(String loginName,String password);
+    @Query("select u from User u where u.loginName like CONCAT('%',?1,'%')")
+    List<User> findByLoginNameLike(String loginName);
+
+    User findByLoginName(String loginName);
 
 
 }

@@ -24,6 +24,7 @@ public class Permission extends BaseEntity {
     private Long parentId = 0L;
     @Column(columnDefinition="enum('menu','button')")
     private String resourceType;//资源类型，[menu|button]
+    private String permission; //权限字符串,menu例子：role:*，button例子：role:create,role:update,role:delete,role:view
     private Integer orderNum = 0;
     private String url = "#";
     private String visible = "0";
