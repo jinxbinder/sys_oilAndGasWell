@@ -61,6 +61,8 @@ public class UserController {
             model.addAttribute("id",id);
             return Constant.INDEX;
         }
+        log.info(r.get("msg")+"vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+        model.addAttribute("msg",r.get("msg"));
         return Constant.LOGIN;
     }
     /**

@@ -51,8 +51,11 @@ public class UserService implements UserApi{
 
         String salt = userInfo.getSalt();
         String password = userInfo.getPassword();
+        log.info("密码:"+password);
+        log.info("盐:"+salt);
         String passSalt = MD5Util.MD5(user.getPassword()+salt);
-        if(password!=passSalt)
+        log.info("密盐："+passSalt);
+        if(!password.equals(passSalt))
             return Result.error("密码错误");
 
         String id = userInfo.getUserId()+"";

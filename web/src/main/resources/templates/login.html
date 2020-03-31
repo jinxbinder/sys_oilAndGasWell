@@ -4,12 +4,47 @@
     <th:block th:include="include :: header('登录')" />
 </head>
 <body>
-
-    <form action="login" method="post">
-        <input type="text" placeholder="用户名" name="loginName"><br>
-        <input type="password" placeholder="密码" name="password"><br>
-        <input type="submit" value="登录"><br>
-    </form>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <form method="post" action="/login">
+                    <input type="text" placeholder="用户名" class="loginName" name="loginName"><br>
+                    <input type="password" placeholder="密码" class="password" name="password"><br>
+                    <p th:text="${msg}"></p>
+                    <input type="submit" id="sublogin" value="登录"><br>
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
 </body>
+<script type="text/javascript">
+    /*$(function () {
+        $('#sublogin').click(function () {
+            var loginName = $('.loginName').val();
+            var password = $('.password').val();
+            console.log(loginName+password);
+            $.ajax({
+                url:"login",
+                type:"post",
+                dataType:"json",
+                data:{
+                    "loginName":loginName,
+                    "password":password
+                },
+                success:function (r) {
+                    console.log(1234);
+                    var t = JSON.parse(r);
+                    var msg = t.msg;
+                    console.log(msg);
+                    $('.msg').html(msg);
+                }
 
+            });
+        });
+        alert("123");
+
+    });*/
+</script>
 </html>
