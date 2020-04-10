@@ -45,7 +45,7 @@ public class UserController {
     */
     @RequestMapping("/")
     public String loginPage(){
-        return Constant.LOGIN;
+        return Constant.INDEX;
     }
     /**
     * Description: 功能描述（登录） <br/>
@@ -80,5 +80,23 @@ public class UserController {
         List<User> userList = (List<User>) r.get("data");
         model.addAttribute("userList",userList);
         return Constant.INDEX;
+    }
+    /**
+    * Description: 功能描述（404） <br/>
+    * date: 2020/3/31 13:01<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/404")
+    public String get404(){
+        return "404";
+    }
+    /**
+    * Description: 功能描述（403） <br/>
+    * date: 2020/3/31 13:01<br/>
+    * @author libd <br/>
+    */
+    @RequestMapping("/403")
+    public String get403(){
+        return "403";
     }
 }

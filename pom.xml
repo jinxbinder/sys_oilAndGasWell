@@ -10,6 +10,8 @@
         <module>web</module>
         <module>user</module>
         <module>eureka</module>
+        <module>gateway</module>
+        <module>auth</module>
     </modules>
     <groupId>com.oil</groupId>
     <artifactId>sys_oagw</artifactId>

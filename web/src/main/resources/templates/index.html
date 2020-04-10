@@ -4,30 +4,40 @@
     <th:block th:include="include :: header('首页')" />
 </head>
 <style>
-    .div1{
-        width: 300px;
-        height: 300px;
+    .nav{
+        max-height: 100%;
+        background-color: lightsteelblue;
+    }
+    .header{
+        width: 100%;
+        height: 60px;
+        background-color: darkgrey;
     }
 </style>
 <body>
-<div class="div1">
-    <span th:text="${id}">a</span>
-    <span th:text="${msg}">a</span>
-    <span th:text="${data}">ad</span>
-    <span th:text="${code}">fad</span>
-</div>
-<div>
-    <a href="userList">用户列表</a>
-    <tr th:each="user:${userList}">
-        <td th:text="${user.loginName}"></td>
-        <td th:text="${user.userId}"></td>
-        <td th:text="${user.password}"></td>
-        <td th:text="${user.status}"></td>
-    </tr>
-</div>
-<div>
-    <a href="userAdd">用户添加</a>
-</div>
+    <div class="container">
+        <div class="row header">
+            <div>当前用户:<span th:text="${id}"></span></div>
+        </div>
+        <div class="row">
+            <div class="nav col-sm-3">
+                <ul>
+                    <li><a href="userList">用户列表</a></li>
+                    <li><a href="404">404</a></li>
+                    <li><a href="403">403</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-9">
+                <tr th:each="user:${userList}">
+                    <td th:text="${user.loginName}"></td>
+                    <td th:text="${user.userId}"></td>
+                    <td th:text="${user.password}"></td>
+                    <td th:text="${user.status}"></td>
+                </tr>
+            </div>
+        </div>
+    </div>
+
 
 </body>
 </html>
