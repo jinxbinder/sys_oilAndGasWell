@@ -71,7 +71,7 @@ public class UserService implements UserApi{
         return Result.success(userList);
     }
     @Override
-    public Result userAdd(User user){
+    public Result userAdd(@RequestBody User user){
         user.setCreateTime(DateUtil.getTimestamp());
         String salt = MD5Util.RandomSelt();
         String password = MD5Util.MD5(user.getPassword()+salt);
@@ -86,7 +86,7 @@ public class UserService implements UserApi{
         return Result.success();
     }
     @Override
-    public Result userUpdate(User user){
+    public Result userUpdate(@RequestBody User user){
         if (StringUtil.isNull(user))
             return Result.error("空参");
         user.setUpdateTime(DateUtil.getTimestamp());
@@ -100,12 +100,12 @@ public class UserService implements UserApi{
         return Result.success();
     }
     @Override
-    public Result findByNameLike(String name){
+    public Result findByNameLike(@RequestBody String name){
 
         return Result.success(userRepository.findByLoginNameLike(name));
     }
     @Override
-    public Result findByName(String name){
+    public Result findByName(@RequestBody String name){
         return Result.success(userRepository.findByLoginName(name));
     }
 }

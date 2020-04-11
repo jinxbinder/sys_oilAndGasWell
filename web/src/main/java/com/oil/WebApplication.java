@@ -3,6 +3,8 @@ package com.oil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
@@ -19,7 +21,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
 @EnableEurekaClient
 @EnableFeignClients
+@EnableCircuitBreaker
 public class WebApplication {
+    @LoadBalanced
     public static void main(String[] args) {
         SpringApplication.run(WebApplication.class,args);
     }

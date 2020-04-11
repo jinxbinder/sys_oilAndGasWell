@@ -39,26 +39,26 @@ public interface UserApi {
     * @author libd <br/>  
     */
     @RequestMapping("/userAdd")
-    Result userAdd(User user);
+    Result userAdd(@RequestBody User user);
     /**
     * Description: 功能描述（用户修改） <br/>
     * date: 2020/3/28 16:56<br/>
     * @author libd <br/>  
     */
     @RequestMapping("/userUpdate")
-    Result userUpdate(User user);
+    Result userUpdate(@RequestBody User user);
     /**
     * Description: 功能描述（用户模糊查） <br/>
     * date: 2020/3/28 16:58<br/>
     * @author libd <br/>  
     */
     @RequestMapping("/findByNameLike")
-    Result findByNameLike(String name);
+    Result findByNameLike(@RequestBody String name);
     /**
     * Description: 功能描述（名称查） <br/>
     * date: 2020/3/28 19:23<br/>
     * @author libd <br/>  
     */
     @RequestMapping("/findByName")
-    Result findByName(String name);
+    Result findByName(@RequestBody String name);
 }

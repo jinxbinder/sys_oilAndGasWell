@@ -2,6 +2,9 @@ package com.oil;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * ClassName: AuthCenter <br/>
@@ -12,7 +15,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 1.0
  * @since JDK 1.8
  */
-@SpringBootApplication
+@EnableFeignClients
+@EnableDiscoveryClient
+@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
 public class AuthCenter {
     public static void main(String[] args) {
         SpringApplication.run(AuthCenter.class,args);
