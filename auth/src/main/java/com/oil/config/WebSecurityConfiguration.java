@@ -3,6 +3,7 @@ package com.oil.config;
 import com.oil.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -31,7 +32,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 使用自定义认证与授权
-        auth.userDetailsService(userDetailsService());
+        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -39,4 +40,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // 将 check_token 暴露出去，否则资源服务器访问时报 403 错误
         web.ignoring().antMatchers("/oauth/check_token");
     }
+
+    /**
+     * 重新实例化认证管理器 注入
+     * @return
+     * @throws Exception
+     */
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
 }

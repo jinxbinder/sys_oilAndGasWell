@@ -26,14 +26,22 @@ zuul:
       strip-prefix: true
       sensitiveHeaders:   #cookie
       ignoredHeaders:    #头信息
+    web:     #路由名称
+      path: /web/**
+      serviceId: web #微服务名称
+      strip-prefix: true
+      sensitiveHeaders:   #cookie
+      ignoredHeaders:    #头信息
 security:
   oauth2:
     client:
        ##网关的地址
       access-token-uri: http://localhost:8760/auth/oauth/token
       user-authorization-uri: http://localhost:8760/auth/oauth/authorize
-      client-id: client
+      client-id: gateway
       client-secret: 123456
     resource:
       user-info-uri: http://localhost:8760/auth/user
       prefer-token-info: false
+    authorization:
+      check-token-access: http://localhost:8760/auth/oauth/check_token

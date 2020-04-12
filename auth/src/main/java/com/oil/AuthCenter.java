@@ -17,7 +17,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @EnableFeignClients
 @EnableDiscoveryClient
-@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 public class AuthCenter {
     public static void main(String[] args) {
         SpringApplication.run(AuthCenter.class,args);
