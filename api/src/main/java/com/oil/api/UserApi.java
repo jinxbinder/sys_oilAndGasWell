@@ -24,12 +24,12 @@ public interface UserApi {
     * date: 2020/3/26 15:23<br/>
     * @author libd <br/>
     */
-    @RequestMapping("/login")
+    @RequestMapping("/login_old")
     Result login(@RequestBody User user);
     /**
     * Description: 功能描述（用户列表） <br/>
     * date: 2020/3/28 14:16<br/>
-    * @author libd <br/>  
+    * @author libd <br/>
     */
     @RequestMapping("/userList")
     Result userList();

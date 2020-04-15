@@ -53,11 +53,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             for (Role role : u.getRoleList()) {
                 log.info("获取用户角色：" + role.getRoleName());
                 grantedAuthorities.add( new SimpleGrantedAuthority("ROLE_"+role.getRoleKey()));
-               /* for (Permission permission : role.getPermissions()) {
+                for (Permission permission : role.getPermissions()) {
                     GrantedAuthority pm = new SimpleGrantedAuthority(permission.getUrl());
                     grantedAuthorities.add(pm);
                     log.info("获取用户权限：" + permission.getUrl());
-                }*/
+                }
             }
             return new User(u.getLoginName(), u.getPassword(), grantedAuthorities);
         }else{

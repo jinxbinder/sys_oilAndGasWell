@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <th:block th:include="include :: header('首页')" />
+</head>
+<style>
+    .nav{
+        max-height: 100%;
+        background-color: lightsteelblue;
+    }
+    .header{
+        width: 100%;
+        height: 60px;
+        background-color: darkgrey;
+    }
+</style>
+<body>
+
+<div sec:authorize="hasRole('ROLE_abc')">
+    123
+</div>
+<div sec:authorize="hasRole('ROLE_admin')">
+    admin
+</div>
+<div sec:authorize="hasAnyAuthority('/user/getUser')">
+    admin Authority
+</div>
+<div sec:authorize="hasAnyAuthority('/user/getUser/24234')">
+    admin Authority141234
+</div>
+    <div class="container">
+        <div class="row header">
+            <div class="col-sm-10"></div>
+            <div class="col-sm-1">当前用户:<span sec:authentication="name"></span></div>
+            <div class="col-sm-1" sec:authorize="isAuthenticated()">
+                角色：<h4 sec:authentication="principal.authorities"></h4>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="注销">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <!--树形菜单-->
+            <div class="nav col-sm-3">
+                <ul>
+                    <li>
+                        <a href="userList">用户管理</a>
+                        <ul>
+                            <li><a href="userList"></a></li>
+                        </ul>
+                    </li>
+                    <li sec:authorize="hasRole('ROLE_404')"><a href="404">404</a></li>
+                    <li sec:authorize="hasRole('ROLE_admin')"><a href="403">403</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-9">
+                <tr th:each="user:${userList}">
+                    <td th:text="${user.loginName}"></td>
+                    <td th:text="${user.userId}"></td>
+                    <td th:text="${user.password}"></td>
+                    <td th:text="${user.status}"></td>
+                </tr>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
