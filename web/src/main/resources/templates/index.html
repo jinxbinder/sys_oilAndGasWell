@@ -22,8 +22,17 @@
         <input type="submit" value="注销">
     </form>
 </div>
-<div sec:authorize="hasRole('abc')">
+<div sec:authorize="hasRole('ROLE_abc')">
     123
+</div>
+<div sec:authorize="hasRole('ROLE_admin')">
+    admin
+</div>
+<div sec:authorize="hasAnyAuthority('/user/getUser')">
+    admin Authority
+</div>
+<div sec:authorize="hasAnyAuthority('/user/getUser/24234')">
+    admin Authority141234
 </div>
     <div class="container">
         <div class="row header">
@@ -35,8 +44,8 @@
             <div class="nav col-sm-3">
                 <ul>
                     <li><a href="userList">用户列表</a></li>
-                    <li sec:authorize="hasRole('abc')"><a href="404">404</a></li>
-                    <li><a href="403">403</a></li>
+                    <li sec:authorize="hasRole('ROLE_404')"><a href="404">404</a></li>
+                    <li sec:authorize="hasRole('ROLE_admin')"><a href="403">403</a></li>
                 </ul>
             </div>
             <div class="col-sm-9">
