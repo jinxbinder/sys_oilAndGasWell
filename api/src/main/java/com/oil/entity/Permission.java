@@ -1,5 +1,7 @@
 package com.oil.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,8 +31,22 @@ public class Permission extends BaseEntity {
     private String url = "#";
     private String visible = "0";
     //权限 角色
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="sys_role_permission",joinColumns={@JoinColumn(name="permission_id")},inverseJoinColumns={@JoinColumn(name="role_id")})
     private List<Role> roles;
 
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parentId=" + parentId +
+                ", resourceType='" + resourceType + '\'' +
+                ", permission='" + permission + '\'' +
+                ", orderNum=" + orderNum +
+                ", url='" + url + '\'' +
+                ", visible='" + visible + '\'' +
+                '}';
+    }
 }

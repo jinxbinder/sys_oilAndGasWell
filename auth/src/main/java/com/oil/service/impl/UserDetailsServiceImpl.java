@@ -37,6 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("进入LoadUserByUsername()方法，开始登录用户校验");
         Result user = userService.findByName(username);
         JSONObject jb = new JSONObject(user);
 //        JSONObject jsonObject = JSONObject.toJSON()

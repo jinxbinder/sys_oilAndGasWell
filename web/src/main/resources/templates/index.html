@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <th:block th:include="include :: header('首页')" />
 </head>
@@ -15,15 +15,27 @@
     }
 </style>
 <body>
+<div sec:authorize="isAuthenticated()">
+    名称：<h2 sec:authentication="name"></h2>
+    角色：<h4 sec:authentication="principal.authorities"></h4>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="注销">
+    </form>
+</div>
+<div sec:authorize="hasRole('abc')">
+    123
+</div>
     <div class="container">
         <div class="row header">
             <div>当前用户:<span th:text="${id}"></span></div>
+
+
         </div>
         <div class="row">
             <div class="nav col-sm-3">
                 <ul>
                     <li><a href="userList">用户列表</a></li>
-                    <li><a href="404">404</a></li>
+                    <li sec:authorize="hasRole('abc')"><a href="404">404</a></li>
                     <li><a href="403">403</a></li>
                 </ul>
             </div>

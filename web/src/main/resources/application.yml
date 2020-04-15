@@ -5,7 +5,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://39.102.34.165:8761/eureka/
 spring:
   application:
     name: web
@@ -17,16 +17,18 @@ spring:
     encoding: utf-8
     mode: HTML5
     cache: false
-security:
-  oauth2:
-    client:
-       ##网关的地址
-      access-token-uri: http://localhost:8760/auth/oauth/token
-      user-authorization-uri: http://localhost:8760/auth/oauth/authorize
-      client-id: web
-      client-secret: www
-    resource:
-      user-info-uri: http://localhost:8760/auth/user
-      prefer-token-info: false
-    authorization:
-      check-token-access: http://localhost:8760/auth/oauth/check_token
+#security:
+#  oauth2:
+#    client:
+#       ##网关的地址
+#      access-token-uri: http://localhost:8760/auth/oauth/token
+#      user-authorization-uri: http://localhost:8760/auth/oauth/authorize
+#      client-id: web
+#      client-secret: www
+#    resource:
+#      user-info-uri: http://localhost:8760/auth/user
+#      prefer-token-info: false
+#      jwt:
+#        key-uri: http://localhost:8760/auth/oauth/token_key
+#    authorization:
+#      check-token-access: http://localhost:8760/auth/oauth/check_token

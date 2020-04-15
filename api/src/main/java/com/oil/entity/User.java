@@ -1,6 +1,11 @@
 package com.oil.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlType;
 import java.sql.Timestamp;
@@ -15,6 +20,7 @@ import java.util.List;
  * @version 1.0
  * @since JDK 1.8
  */
+@JsonIgnoreProperties(value = { "userList" })
 @Data
 @Entity
 @Table(name="sys_user")
@@ -38,4 +44,14 @@ public class User extends BaseEntity{
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "sys_user_role",joinColumns = {@JoinColumn(name = "uid")},inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private List<Role> roleList;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "loginName='" + loginName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", password='" + password + '\'' +
+                ", roleList=" + roleList +
+                '}';
+    }
 }

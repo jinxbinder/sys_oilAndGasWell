@@ -15,38 +15,24 @@ import org.springframework.security.oauth2.provider.expression.OAuth2WebSecurity
 @EnableResourceServer
 public class SecurityConfig extends ResourceServerConfigurerAdapter {
 
-    @Autowired
-    private OAuth2WebSecurityExpressionHandler expressionHandler;
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        super.configure(resources);
+    }
 
-    private static final String[] AUTH_WHITELIST = {
-            "/**/v2/api-docs",
-            "/configuration/ui",
-            "/configuration/security",
-            "/doc.html",
-            "/webjars/**"
-    };
-
+    /**
+     * 除过走认证中心的请求，其余全部鉴权通过后才可访问。
+     * @param http
+     * @throws Exception
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/v2/api-docs","/auth/**").permitAll();
-
-        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http
-                .authorizeRequests();
-        for (String au:AUTH_WHITELIST
-             ) {
-            http.authorizeRequests().antMatchers(au).permitAll();
-        }
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests()
+                .antMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated();
 
     }
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.expressionHandler(expressionHandler);
-    }
-    @Bean
-    public OAuth2WebSecurityExpressionHandler oAuth2WebSecurityExpressionHandler(ApplicationContext applicationContext) {
-        OAuth2WebSecurityExpressionHandler expressionHandler = new OAuth2WebSecurityExpressionHandler();
-        expressionHandler.setApplicationContext(applicationContext);
-        return expressionHandler;
-    }
+
+
+
 }

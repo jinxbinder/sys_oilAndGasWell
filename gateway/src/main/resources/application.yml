@@ -43,5 +43,7 @@ security:
     resource:
       user-info-uri: http://localhost:8760/auth/user
       prefer-token-info: false
+      jwt:
+        key-uri: http://localhost:8080/oauth/token_key
     authorization:
       check-token-access: http://localhost:8760/auth/oauth/check_token
