@@ -80,7 +80,7 @@
 	        var title=false;
 	    };
 	    if (url == null || url == '') {
-	        var url="404.html";
+	        var url="404";
 	    };
 	    if (w == null || w == '') {
 	        var w=($(window).width()*0.9);

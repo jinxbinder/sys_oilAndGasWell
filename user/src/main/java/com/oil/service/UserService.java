@@ -3,6 +3,8 @@ package com.oil.service;
 import com.oil.api.UserApi;
 import com.oil.dao.UserRepository;
 import com.oil.entity.User;
+import com.oil.manage.RoleManage;
+import com.oil.manage.UserManage;
 import com.oil.utils.DateUtil;
 import com.oil.utils.MD5Util;
 import com.oil.utils.Result;
@@ -33,19 +35,19 @@ import java.util.Map;
 @RestController
 public class UserService implements UserApi{
     @Autowired
-    UserRepository userRepository;
+    private UserManage userManage;
+    @Autowired
+    private RoleManage roleManage;
     @Override
     public String getUser() {
-        User str = userRepository.findUserByUserId(1L);
-        System.out.println(str);
-        return str.getLoginName();
+        return userManage.getUser();
     }
 
     @Override
     public Result login(@RequestBody User user) {
         log.info(user.toString());
 
-        User userInfo = userRepository.findByLoginName(user.getLoginName());
+        User userInfo = userManage.login(user);
         if(StringUtil.isNull(userInfo))
             return Result.error("账号错误");
 
@@ -63,7 +65,7 @@ public class UserService implements UserApi{
     }
     @Override
     public Result userList(){
-        List<User> userList = userRepository.findAll();
+        List<User> userList = userManage.userList();
         for (User user:userList){
             user.setPassword("");
             user.setSalt("");
@@ -77,7 +79,7 @@ public class UserService implements UserApi{
         String password = MD5Util.MD5(user.getPassword()+salt);
         user.setPassword(password);
         try {
-            userRepository.save(user);
+            userManage.userAdd(user);
         }catch (Exception e){
             log.error("用户新增失败：error#####",e);
             Result.error("用户新增失败");
@@ -91,7 +93,7 @@ public class UserService implements UserApi{
             return Result.error("空参");
         user.setUpdateTime(DateUtil.getTimestamp());
         try {
-            userRepository.save(user);
+            userManage.userUpdate(user);
         }catch (Exception e){
             log.error("用户信息修改失败：error#####",e);
             Result.error("用户信息修改失败");
@@ -102,10 +104,16 @@ public class UserService implements UserApi{
     @Override
     public Result findByNameLike(@RequestBody String name){
 
-        return Result.success(userRepository.findByLoginNameLike(name));
+        return Result.success(userManage.findByNameLike(name));
     }
     @Override
     public Result findByName(@RequestBody String name){
-        return Result.success(userRepository.findByLoginName(name));
+        return Result.success(userManage.findByName(name));
     }
+
+    @Override
+    public Result findRoles() {
+        return Result.success(roleManage.findRoles());
+    }
+
 }

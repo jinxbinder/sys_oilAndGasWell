@@ -61,4 +61,12 @@ public interface UserApi {
     */
     @RequestMapping("/findByName")
     Result findByName(@RequestBody String name);
+    /**
+    * Description: 功能描述（角色列表查询） <br/>
+    * date: 2020/4/16 19:22<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/findRoles")
+    Result findRoles();
+
 }
