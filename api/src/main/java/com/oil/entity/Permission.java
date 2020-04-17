@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -18,18 +20,27 @@ import java.util.List;
  */
 @Data
 @Entity
-public class Permission extends BaseEntity {
+public class Permission implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    /** 权限名 */
     private String name;
-    private Long parentId = 0L;
-    @Column(columnDefinition="enum('menu','button')")
-    private String resourceType;//资源类型，[menu|button]
-    private String permission; //权限字符串,menu例子：role:*，button例子：role:create,role:update,role:delete,role:view
-    private Integer orderNum = 0;
+    /** 权限链接 */
     private String url = "#";
+    /** 可用性 0可用 1禁用 */
     private String visible = "0";
+    /** 创建者 */
+    private String createBy;
+    /** 创建时间 */
+    private Timestamp createTime;
+    /** 更新者 */
+    private String updateBy;
+    /** 更新时间 */
+    private Timestamp updateTime;
+    /** 备注 */
+    private String remark;
     //权限 角色
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
@@ -41,12 +52,13 @@ public class Permission extends BaseEntity {
         return "Permission{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", parentId=" + parentId +
-                ", resourceType='" + resourceType + '\'' +
-                ", permission='" + permission + '\'' +
-                ", orderNum=" + orderNum +
                 ", url='" + url + '\'' +
                 ", visible='" + visible + '\'' +
+                ", createBy='" + createBy + '\'' +
+                ", createTime=" + createTime +
+                ", updateBy='" + updateBy + '\'' +
+                ", updateTime=" + updateTime +
+                ", remark='" + remark + '\'' +
                 '}';
     }
 }

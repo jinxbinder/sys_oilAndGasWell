@@ -4,6 +4,8 @@ import com.oil.entity.User;
 import com.oil.utils.Result;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * ClassName: UserApi <br/>
  * Description: <br/>
@@ -68,5 +70,18 @@ public interface UserApi {
     */
     @RequestMapping("/findRoles")
     Result findRoles();
-
+    /**
+    * Description: 功能描述（登录时间） <br/>
+    * date: 2020/4/17 10:36<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/setLoginTime")
+    void setLoginTime(@RequestBody Long id);
+    /**
+    * Description: 功能描述（删除单个用户） <br/>
+    * date: 2020/4/17 17:03<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/adminDeleteOne")
+    Result adminDeleteOne(@RequestBody Long id);
 }

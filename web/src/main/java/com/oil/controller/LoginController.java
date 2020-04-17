@@ -1,5 +1,6 @@
 package com.oil.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.oil.constants.Constant;
 import com.oil.entity.User;
 import com.oil.feign.UserFeign;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +48,7 @@ public class LoginController {
     */
     @RequestMapping("/")
     public String loginPage(){
+        log.info("主页方法");
         return Constant.INDEX;
     }
     /**
@@ -92,9 +95,20 @@ public class LoginController {
     public String get403(){
         return "403";
     }
+    /**
+    * Description: 功能描述（加载欢迎页） <br/>
+    * date: 2020/4/17 10:53<br/>
+    * @author libd <br/>  
+    */
     @RequestMapping("/welcome")
-    public String welcome(){
+    public String welcome(Principal principal,Model model){
 
+        Result r = userFeign.findByName(principal.getName());
+        JSONObject jb = new JSONObject(r);
+        if (null != jb.get("data") && "200".equals(jb.get("code").toString())) {
+            User u = jb.getObject("data",User.class);
+            model.addAttribute("loginDate",u.getLoginDate());
+        }
         return "welcome";
     }
 }

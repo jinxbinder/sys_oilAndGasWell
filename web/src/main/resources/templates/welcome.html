@@ -13,6 +13,7 @@
                         <div class="layui-card-body ">
                             <blockquote class="layui-elem-quote">欢迎管理员：
                                 <span class="x-red" sec:authentication="name"></span>
+                                登录时间：<span th:text="${loginDate}"></span>
                             </blockquote>
                         </div>
                     </div>

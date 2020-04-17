@@ -5,6 +5,7 @@ import com.oil.entity.User;
 import com.oil.utils.Result;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -32,4 +33,7 @@ public interface UserManage {
 
      User findByName(String name);
 
+     void setLoginTime(Long id,Timestamp time);
+
+     void adminDeleteOne(Long id);
 }

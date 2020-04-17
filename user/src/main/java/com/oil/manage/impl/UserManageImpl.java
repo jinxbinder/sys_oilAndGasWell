@@ -8,6 +8,7 @@ import com.oil.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -61,6 +62,16 @@ public class UserManageImpl implements UserManage {
     @Override
     public User findByName(String name) {
         return userRepository.findByLoginName(name);
+    }
+
+    @Override
+    public void setLoginTime(Long id, Timestamp time) {
+        userRepository.setLoginTime(id,time);
+    }
+
+    @Override
+    public void adminDeleteOne(Long id) {
+        userRepository.deleteById(id);
     }
 
 }

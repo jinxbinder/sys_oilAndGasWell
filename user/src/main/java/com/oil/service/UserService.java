@@ -5,19 +5,19 @@ import com.oil.dao.UserRepository;
 import com.oil.entity.User;
 import com.oil.manage.RoleManage;
 import com.oil.manage.UserManage;
-import com.oil.utils.DateUtil;
-import com.oil.utils.MD5Util;
-import com.oil.utils.Result;
-import com.oil.utils.StringUtil;
+import com.oil.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.RequestContext;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.StyledEditorKit;
 import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,4 +116,20 @@ public class UserService implements UserApi{
         return Result.success(roleManage.findRoles());
     }
 
+    @Override
+    public void setLoginTime(@RequestBody Long id) {
+        log.info("进入setLoginTime方法"+DateUtil.getTimestamp());
+        userManage.setLoginTime(id,DateUtil.getTimestamp());
+    }
+
+    @Override
+    public Result adminDeleteOne(@RequestBody Long id) {
+        try {
+            userManage.adminDeleteOne(id);
+            return Result.success();
+        } catch (Exception e) {
+            log.error("单个管理员删除错误。",e);
+            return Result.error();
+        }
+    }
 }

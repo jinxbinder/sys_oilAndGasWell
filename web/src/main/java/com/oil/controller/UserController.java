@@ -83,4 +83,39 @@ public class UserController {
         }
         return "添加失败";*/
     }
+
+    /**
+     * 管理员修改页面跳转
+     * @return
+     */
+    @RequestMapping("/adminEdit")
+    public String adminEdit(){
+        return "admin-edit";
+    }
+
+    /**
+     * 管理员修改
+     * @param user
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/userUpdate")
+    public Result userEdit(@RequestBody User user){
+        log.info("用户信息"+user.toString());
+        Result r = userFeign.userUpdate(user);
+        return r;
+    }
+
+    /**
+     * 删除单个管理员
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/adminDeleteOne")
+    public Result adminDeleteOne(@RequestBody String id){
+        Result r = userFeign.adminDeleteOne(Long.parseLong(id));
+        return r;
+    }
+
 }

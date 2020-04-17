@@ -59,6 +59,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     log.info("获取用户权限：" + permission.getUrl());
                 }
             }
+
+            userFeign.setLoginTime(u.getUserId());
             return new User(u.getLoginName(), u.getPassword(), grantedAuthorities);
         }else{
             throw new UsernameNotFoundException("用户名不存在");

@@ -131,34 +131,33 @@
                         data: JSON.stringify(userData),
                         success:function (rsp) {
                             var code = rsp.code;
-
                             if("200" == code){
-                                alert("成功");
+                                layer.alert("增加成功", {
+                                        icon: 6
+                                    },
+                                    function() {
+                                        //关闭当前frame
+                                        xadmin.close();
+                                        // 可以对父窗口进行刷新
+                                        xadmin.father_reload();
+                                    });
+                            }else {
+                                layer.alert("增加失败", {
+                                        icon: 6
+                                    },
+                                    function() {
+                                        //关闭当前frame
+                                        xadmin.close();
+                                    });
                             }
-
-
-                            console.log(rsp.toString());
-                            layer.alert("增加成功", {
-                                    icon: 6
-                                },
-                                function() {
-                                    //关闭当前frame
-                                    xadmin.close();
-
-                                    // 可以对父窗口进行刷新
-                                    xadmin.father_reload();
-                                });
-
                         },
                         error:function (err) {
-                            console.log(err.toString());
                             layer.alert("增加失败", {
                                     icon: 6
                                 },
                                 function() {
                                     //关闭当前frame
                                     xadmin.close();
-
                                     // 可以对父窗口进行刷新
 //                                    xadmin.father_reload();
                                 });
@@ -166,8 +165,8 @@
                     });
                     return false;
                 });
-
-            });</script>
+            });
+        </script>
     </body>
 
 </html>
