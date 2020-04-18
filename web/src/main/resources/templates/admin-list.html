@@ -51,7 +51,7 @@
                                   <th>手机</th>
                                   <th>邮箱</th>
                                   <th>角色</th>
-                                  <th>加入时间</th>
+                                  <th>登录时间</th>
                                   <th>状态</th>
                                   <th>操作</th>
                               </thead>
@@ -65,14 +65,14 @@
                                   <td th:text="${user.phoneNumber}"></td>
                                   <td th:text="${user.email}"></td>
                                   <td th:text="${user.status}" ></td>
-                                  <td>2017-01-01 11:11:42</td>
+                                  <td th:text="${user.loginDate}"></td>
                                   <td class="td-status">
                                     <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span></td>
                                   <td class="td-manage" >
                                     <a th:name="${user.userId}" onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
                                       <i class="layui-icon">&#xe601;</i>
                                     </a>
-                                    <a title="编辑" th:name="${user.userId}"  onclick="xadmin.open('编辑','/adminEdit')" href="javascript:;">
+                                    <a title="编辑"  th:name="${user.loginName}"  onclick="adminUpdate1(this,'编辑','/adminEdit')" href="javascript:;">
                                       <i class="layui-icon">&#xe642;</i>
                                     </a>
                                     <a title="删除" th:name="${user.userId}" onclick="member_del(this)" href="javascript:;">
@@ -85,14 +85,45 @@
                         </div>
                         <div class="layui-card-body ">
                             <div class="page">
-                                <div>
-                                  <a class="prev" href="">&lt;&lt;</a>
+                                <ul class="pagination pull-right no-margin">
+
+                                    <!-- 首页 -->
+                                    <li>
+                                        <a th:href="'/adminListByPage?pageNum=0'">首页</a>
+                                    </li>
+
+                                    <!-- 上一页 -->
+                                    <li th:if="${userList.hasPrevious()}">
+                                        <a th:href="'/adminListByPage?pageNum=' + ${userList.getPageNo() - 1}" th:text="上一页"></a>
+                                    </li>
+
+                                    <!-- 中间页 -->
+                                    <li th:each="pageNum:${#numbers.sequence(0, userList.getTotalPage() - 1)}">
+                                        <a th:href="'/adminListByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne userList.getTotalPage()}"></a>
+                                        <a th:href="'/adminListByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq userList.getTotalPage()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+                                    </li>
+
+                                     <!--下一页-->
+                                    <li th:if="${userList.hasNext()}">
+                                        <a th:href="'/adminListByPage?pageNum=' + ${userList.getPageNo() + 1}" th:text="下一页"></a>
+                                    </li>
+
+                                    <!-- 尾页 -->
+                                    <li>
+                                        <a th:href="'/adminListByPage?pageNum=' + ${userList.getTotalPage()}">尾页</a>
+                                    </li>
+
+                                </ul>
+                                <!--<div>
+                                  <a th:if="${userList.hasPrevious()}"
+                                     th:href="'/adminListByPage?pageNum=' + ${userList.previousPageable().getPageNumber()}" class="prev" href="">&lt;&lt;上一页</a>
                                   <a class="num" href="">1</a>
                                   <span class="current">2</span>
                                   <a class="num" href="">3</a>
                                   <a class="num" href="">489</a>
-                                  <a class="next" href="">&gt;&gt;</a>
-                                </div>
+                                    <a class="num" th:href="'/adminListByPage?pageNum=' + ${userList.getTotalPages() - 1}">尾页</a>
+                                  <a class="next" href="">下一页&gt;&gt;</a>
+                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -139,20 +170,23 @@
               
           });
       }
-
+      // 用户修改
+      function adminUpdate1(obj,title,url){
+          var url1 = url +"/?loginName="+ obj.name;
+          console.log(url1);
+          xadmin.open(title,url1);
+      }
       /*用户-删除*/
       function member_del(obj){
           layer.confirm('确认要删除吗？',function(index){
               console.log("id:"+obj.name);
               //发异步删除数据
               $.ajax({
-                  url:'/adminDeleteOne',
-                  type:'post',
+                  url:'/adminDeleteOne?id='+obj.name,
+                  type:'get',
                   dataType:'json',
                   contentType: 'application/json',
-                  data: {
-                      "id":obj.name
-                  },
+
                   success:function (rsp) {
                       var code = rsp.code;
 

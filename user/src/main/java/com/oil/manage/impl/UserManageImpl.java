@@ -1,11 +1,11 @@
 package com.oil.manage.impl;
 
 import com.oil.dao.UserRepository;
-import com.oil.entity.Role;
 import com.oil.entity.User;
 import com.oil.manage.UserManage;
-import com.oil.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -72,6 +72,12 @@ public class UserManageImpl implements UserManage {
     @Override
     public void adminDeleteOne(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<User> userListByPage(Pageable pageable) {
+        return userRepository.findAll(pageable);
+
     }
 
 }

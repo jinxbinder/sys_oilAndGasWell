@@ -36,6 +36,13 @@ public interface UserApi {
     @RequestMapping("/userList")
     Result userList();
     /**
+    * Description: 功能描述（用户列表分页查询） <br/>
+    * date: 2020/4/18 17:02<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/adminListByPage")
+    Result adminListByPage(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize);
+    /**
     * Description: 功能描述（用户添加） <br/>
     * date: 2020/3/28 16:46<br/>
     * @author libd <br/>  
@@ -83,5 +90,5 @@ public interface UserApi {
     * @author libd <br/>  
     */
     @RequestMapping("/adminDeleteOne")
-    Result adminDeleteOne(@RequestBody Long id);
+    Result adminDeleteOne(@RequestParam("id") Long id);
 }

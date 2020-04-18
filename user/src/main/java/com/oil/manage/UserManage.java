@@ -3,6 +3,8 @@ package com.oil.manage;
 import com.oil.entity.Role;
 import com.oil.entity.User;
 import com.oil.utils.Result;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.Timestamp;
@@ -36,4 +38,6 @@ public interface UserManage {
      void setLoginTime(Long id,Timestamp time);
 
      void adminDeleteOne(Long id);
+
+     Page<User> userListByPage(Pageable pageable);
 }

@@ -1,6 +1,7 @@
 package com.oil.dao;
 
 import com.oil.entity.User;
+import com.oil.page.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

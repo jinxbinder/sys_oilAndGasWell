@@ -1,26 +1,21 @@
 package com.oil.service;
 
 import com.oil.api.UserApi;
-import com.oil.dao.UserRepository;
 import com.oil.entity.User;
 import com.oil.manage.RoleManage;
 import com.oil.manage.UserManage;
 import com.oil.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.RequestContext;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.StyledEditorKit;
-import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
-import java.awt.print.Printable;
-import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ClassName: UserService <br/>
@@ -72,12 +67,26 @@ public class UserService implements UserApi{
         }
         return Result.success(userList);
     }
+
+    @Override
+    public Result adminListByPage(@RequestParam("pageNum") int pageNum,@RequestParam("pageSize") int pageSize) {
+//        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        try {
+            Page<User> user = userManage.userListByPage(PageRequest.of(pageNum,pageSize));
+            return Result.success(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+    }
+
     @Override
     public Result userAdd(@RequestBody User user){
         user.setCreateTime(DateUtil.getTimestamp());
-        String salt = MD5Util.RandomSelt();
-        String password = MD5Util.MD5(user.getPassword()+salt);
-        user.setPassword(password);
+//        String salt = MD5Util.RandomSelt();
+//        String password = MD5Util.MD5(user.getPassword()+salt);
+//        String password = bCryptPasswordEncoder.encode(user.getPassword());
+//        user.setPassword(password);
         try {
             userManage.userAdd(user);
         }catch (Exception e){
@@ -123,7 +132,7 @@ public class UserService implements UserApi{
     }
 
     @Override
-    public Result adminDeleteOne(@RequestBody Long id) {
+    public Result adminDeleteOne(@RequestParam("id") Long id) {
         try {
             userManage.adminDeleteOne(id);
             return Result.success();

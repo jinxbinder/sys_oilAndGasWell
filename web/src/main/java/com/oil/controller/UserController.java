@@ -1,5 +1,6 @@
 package com.oil.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.oil.constants.Constant;
 import com.oil.entity.Role;
 import com.oil.entity.User;
@@ -7,13 +8,13 @@ import com.oil.feign.UserFeign;
 import com.oil.utils.Result;
 import com.oil.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.math.raw.Mod;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -32,21 +33,32 @@ import java.util.List;
 public class UserController {
     @Resource
     UserFeign userFeign;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * 管理员列表
      * @param model
      * @return
      */
-    @RequestMapping("/adminList")
-    public String adminList(Model model){
-        Result r = userFeign.userList();
-        if(StringUtil.isNull(r.get("data"))){
+    @RequestMapping("/adminListByPage")
+    public String adminList(Model model,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                            @RequestParam(value = "pageSize", defaultValue = "2") int pageSize){
+        Result r = userFeign.adminListByPage(pageNum, pageSize);
+        if(!Constant.SUCCESS.equals(r.get("code").toString())){
             return "404";
         }
-//        log.info("data 不为空");
-        List<User> userList = (List<User>) r.get("data");
-        model.addAttribute("userList",userList);
+        JSONObject jb = new JSONObject(r);
+        if (null != jb.get("data")) {
+            com.oil.page.Page<User> userList = jb.getObject("data", com.oil.page.Page.class);
+            System.out.println("总页数" + userList.getTotalPage());
+            System.out.println("当前页数" + userList.getPageNo());
+            System.out.println("总数" + userList.getTotal());
+            System.out.println("每页条数" + userList.getPageSize());
+            System.out.println("数据集" + userList.getContent());
+            System.out.println("当前页是：" + pageNum);
+            model.addAttribute("userList", userList);
+        }
         return "admin-list";
     }
 
@@ -76,6 +88,7 @@ public class UserController {
     @PostMapping("/userAdd")
     public Result userAdd(@RequestBody User user){
         log.info("用户信息"+user.toString());
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         Result r = userFeign.userAdd(user);
         return r;
         /*if("200".equals(r.get("code").toString())){
@@ -89,8 +102,18 @@ public class UserController {
      * @return
      */
     @RequestMapping("/adminEdit")
-    public String adminEdit(){
-        return "admin-edit";
+    public String adminEdit(@RequestParam("loginName") String loginName,Model model){
+        log.info("name:"+loginName);
+        Result r = userFeign.findByName(loginName);
+        if(Constant.SUCCESS.equals(r.get("code").toString())){
+            JSONObject jb = new JSONObject(r);
+            if (null != jb.get("data")) {
+                User u = jb.getObject("data", User.class);
+                model.addAttribute("admin",u);
+                return "admin-edit";
+            }
+        }
+        return "admin-list";
     }
 
     /**
@@ -102,6 +125,7 @@ public class UserController {
     @PostMapping("/userUpdate")
     public Result userEdit(@RequestBody User user){
         log.info("用户信息"+user.toString());
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         Result r = userFeign.userUpdate(user);
         return r;
     }
@@ -112,8 +136,9 @@ public class UserController {
      * @return
      */
     @ResponseBody
-    @PostMapping("/adminDeleteOne")
-    public Result adminDeleteOne(@RequestBody String id){
+    @GetMapping("/adminDeleteOne")
+    public Result adminDeleteOne(@RequestParam("id") String id){
+        log.info("id:"+id);
         Result r = userFeign.adminDeleteOne(Long.parseLong(id));
         return r;
     }

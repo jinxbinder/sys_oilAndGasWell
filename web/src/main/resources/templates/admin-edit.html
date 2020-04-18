@@ -9,11 +9,12 @@
     <div class="layui-row">
         <form class="layui-form">
             <div class="layui-form-item">
+                <input style="display: none;" id="L_id" th:value="${admin.userId}">
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>用户名
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="username" name="loginName" required="" lay-verify="loginName"
+                    <input type="text" id="username" name="loginName" th:value="${admin.loginName}" required="" lay-verify="loginName"
                            autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
@@ -25,7 +26,7 @@
                     <span class="x-red">*</span>手机
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="phone" name="phoneNumber" required="" lay-verify="phone"
+                    <input type="text" id="phone" name="phoneNumber" th:value="${admin.phoneNumber}" required="" lay-verify="phone"
                            autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
@@ -37,7 +38,7 @@
                     <span class="x-red">*</span>邮箱
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_email" name="email" required="" lay-verify="email"
+                    <input type="text" id="L_email" name="email" th:value="${admin.email}" required="" lay-verify="email"
                            autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
@@ -115,9 +116,11 @@
                 // console.log(data);
 
                 var userData = {
+                    userId:$('#L_id').val(),
                     loginName:$('#username').val(),
                     password:$('#L_pass').val(),
-                    phoneNumber:$('#phone').val()
+                    phoneNumber:$('#phone').val(),
+                    email:$('#L_email').val()
 //                        sex:$('#phone').val(),
 
 
@@ -133,34 +136,34 @@
                         var code = rsp.code;
 
                         if("200" == code){
-                            alert("成功");
+                            layer.alert("修改成功", {
+                                    icon: 6
+                                },
+                                function() {
+                                    //关闭当前frame
+                                    xadmin.close();
+
+                                    // 可以对父窗口进行刷新
+                                    xadmin.father_reload();
+                                });
+                        }else {
+                            layer.alert("修改失败", {
+                                    icon: 6
+                                },
+                                function() {
+                                    //关闭当前frame
+                                    xadmin.close();
+                                });
                         }
-
-
-                        console.log(rsp.toString());
-                        layer.alert("增加成功", {
-                                icon: 6
-                            },
-                            function() {
-                                //关闭当前frame
-                                xadmin.close();
-
-                                // 可以对父窗口进行刷新
-                                xadmin.father_reload();
-                            });
-
                     },
                     error:function (err) {
                         console.log(err.toString());
-                        layer.alert("增加失败", {
+                        layer.alert("修改失败", {
                                 icon: 6
                             },
                             function() {
                                 //关闭当前frame
                                 xadmin.close();
-
-                                // 可以对父窗口进行刷新
-//                                    xadmin.father_reload();
                             });
                     }
                 });
