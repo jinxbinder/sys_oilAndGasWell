@@ -31,7 +31,7 @@
                                     <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                                    <button class="layui-btn"  onclick="sreach()"><i class="layui-icon">&#xe615;</i></button>
                                 </div>
                             </form>
                         </div>
@@ -44,7 +44,7 @@
                               <thead>
                                 <tr>
                                   <th>
-                                    <input type="checkbox" name=""  lay-skin="primary">
+                                    <input type="checkbox"  lay-filter="selectAll"  id="selectAll"  lay-skin="primary">
                                   </th>
                                   <th>ID</th>
                                   <th>登录名</th>
@@ -58,7 +58,7 @@
                               <tbody th:each="user:${userList}" >
                                 <tr>
                                   <td>
-                                    <input type="checkbox"  name=""  lay-skin="primary">
+                                    <input type="checkbox" name="checkId" th:value="${user.userId}"   lay-skin="primary">
                                   </td>
                                   <td th:text="${user.userId}" ></td>
                                   <td th:text="${user.loginName}" ></td>
@@ -135,7 +135,19 @@
       layui.use(['laydate','form'], function(){
         var laydate = layui.laydate;
         var form = layui.form;
-        
+            //全选控制
+          form.on('checkbox(selectAll)',function (data) {
+              var a = data.elem.checked;
+              if (a == true) {
+                  $("input[name='checkId']").prop("checked", true);
+                  form.render('checkbox');
+              } else {
+                  $("input[name='checkId']").prop("checked", false);
+                  form.render('checkbox');
+              }
+          });
+
+
         //执行一个laydate实例
         laydate.render({
           elem: '#start' //指定元素
@@ -206,17 +218,71 @@
           });
       }
 
+        //模糊查询
+      function sreach() {
+        var datas = {
+            username:$('input[name="username"]').val(),
+            start:$('input[name="start"]').val(),
+            end:$('input[name="end"]').val()
+        }
+          $.ajax({
+              url:'/findByNameLike',
+              type:'post',
+              dataType:'json',
+              contentType: 'application/json',
+              data: datas,
+              success:function (rsp) {
+                  var code = rsp.code;
 
+                  if("200" == code){
+                      $(obj).parents("tr").remove();
+                      layer.msg('已删除!',{icon:1,time:1000});
+                  }else {
+                      layer.msg('删除失败!',{icon:1,time:1000});
+                  }
+              },
+              error:function (err) {
+                  layer.msg('查询失败!',{icon:1,time:1000});
+              }
+          });
 
+          // xadmin.add_tab('管理员列表','adminListByPage');
+      }
+        //批量删除
       function delAll (argument) {
 
-        var data = tableCheck.getData();
-  
-        layer.confirm('确认要删除吗？'+data,function(index){
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
+        // var data = tableCheck.getData();
+          var ids;
+          $('input[name="checkId"]:checked').each(function () {
+              console.log($(this).val());
+              ids = ids +","+ $(this).val();
+          });
+          layer.confirm('确认要删除吗？'+ids,function(index){
+            $.ajax({
+                url:'/adminDeleteSome?ids='+ids,
+                type:'get',
+                dataType:'json',
+                contentType: 'application/json',
+
+                success:function (rsp) {
+                    var code = rsp.code;
+
+                    if("200" == code){
+                        $('input[name="checkId"]:checked').parents('tr').remove();
+                        layer.msg('删除成功', {icon: 1});
+                    }else {
+                        layer.msg('删除失败', {icon: 1});
+                    }
+                },
+                error:function (err) {
+                    layer.msg('删除失败', {icon: 1});
+                }
+            });
+
+            // $(".layui-form-checked").not('.header').parents('tr').remove();
         });
+          //捉到所有被选中的，发异步进行删除
+
       }
     </script>
 </html>

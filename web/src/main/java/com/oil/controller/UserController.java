@@ -43,8 +43,8 @@ public class UserController {
      * @return
      */
     @RequestMapping("/adminListByPage")
-    public String adminList(Model model,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                            @RequestParam(value = "pageSize", defaultValue = "2") int pageSize){
+    public String adminList(Model model,@RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize){
         Result r = userFeign.adminListByPage(pageNum, pageSize);
         JSONObject jb = new JSONObject(r);
         if(!Constant.SUCCESS.equals(jb.get("code").toString())){
@@ -149,6 +149,27 @@ public class UserController {
         log.info("id:"+id);
         Result r = userFeign.adminDeleteOne(Long.parseLong(id));
         return r;
+    }
+
+    /**
+     * 管理员批量删除
+     * @param ids
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/adminDeleteSome")
+    public Result adminDeleteSome(@RequestParam("ids") String ids){
+        log.info("ids{}",ids);
+        Result r = userFeign.adminDeleteSome(ids);
+        return r;
+    }
+    @ResponseBody
+    @RequestMapping("/findByNameLike")
+    public Result findByNameLike(@RequestBody JSONObject datas){
+        log.info(datas.getString("start"));
+        log.info(datas.getString("end"));
+        log.info(datas.getString("username"));
+        return Result.success();
     }
 
 }

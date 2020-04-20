@@ -71,13 +71,19 @@ public class UserManageImpl implements UserManage {
 
     @Override
     public void adminDeleteOne(Long id) {
-        userRepository.deleteById(id);
+
+        userRepository.userDel(id);
     }
 
     @Override
     public Page<User> userListByPage(Pageable pageable) {
-        return userRepository.findAll(pageable);
+        return userRepository.findUseable(pageable);
 
+    }
+
+    @Override
+    public void adminDeleteSome(List<Long> ids) {
+        userRepository.userDelSome(ids);
     }
 
 }

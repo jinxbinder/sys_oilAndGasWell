@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.awt.print.Pageable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -153,6 +154,24 @@ public class UserService implements UserApi{
             return Result.success();
         } catch (Exception e) {
             log.error("单个管理员删除错误。",e);
+            return Result.error();
+        }
+    }
+
+    @Override
+    public Result adminDeleteSome(String id) {
+        try {
+            String[] uid = id.split(",");
+            List<Long> ids = new ArrayList<>();
+            for(int i=0;i<uid.length;i++){
+                if(StringUtil.isNumericzidai(uid[i])){
+                    ids.add(Long.parseLong(uid[i]));
+                }
+            }
+            userManage.adminDeleteSome(ids);
+            return Result.success();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
             return Result.error();
         }
     }

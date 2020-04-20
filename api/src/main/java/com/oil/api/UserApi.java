@@ -92,4 +92,11 @@ public interface UserApi {
     */
     @RequestMapping("/adminDeleteOne")
     Result adminDeleteOne(@RequestParam("id") Long id);
+    /**
+    * Description: 功能描述（批量删除） <br/>
+    * date: 2020/4/20 18:10<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/adminDeleteSome")
+    Result adminDeleteSome(@RequestParam("ids") String ids);
 }
