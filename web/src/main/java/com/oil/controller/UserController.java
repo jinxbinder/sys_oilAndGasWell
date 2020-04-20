@@ -5,6 +5,7 @@ import com.oil.constants.Constant;
 import com.oil.entity.Role;
 import com.oil.entity.User;
 import com.oil.feign.UserFeign;
+import com.oil.page.Pages;
 import com.oil.utils.Result;
 import com.oil.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -45,20 +46,21 @@ public class UserController {
     public String adminList(Model model,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                             @RequestParam(value = "pageSize", defaultValue = "2") int pageSize){
         Result r = userFeign.adminListByPage(pageNum, pageSize);
-        if(!Constant.SUCCESS.equals(r.get("code").toString())){
-            return "404";
-        }
         JSONObject jb = new JSONObject(r);
-        if (null != jb.get("data")) {
-            com.oil.page.Page<User> userList = jb.getObject("data", com.oil.page.Page.class);
-            System.out.println("总页数" + userList.getTotalPage());
-            System.out.println("当前页数" + userList.getPageNo());
-            System.out.println("总数" + userList.getTotal());
-            System.out.println("每页条数" + userList.getPageSize());
-            System.out.println("数据集" + userList.getContent());
-            System.out.println("当前页是：" + pageNum);
-            model.addAttribute("userList", userList);
+        if(!Constant.SUCCESS.equals(jb.get("code").toString())){
+            return "error";
         }
+//        if (null != jb.get("data")) {
+        Pages<User> userList = jb.getObject("data",Pages.class);
+//            com.oil.page.Pages<User> userList = jb.getObject("data", com.oil.page.Pages.class);
+//        System.out.println("总页数" + userList.getTotalPage());
+//        System.out.println("当前页数" + userList.getPageNo());
+//        System.out.println("总数" + userList.getContentSize());
+//        System.out.println("每页条数" + pageSize);
+//        System.out.println("数据集" + userList.getContent());
+//        System.out.println("当前页是：" + pageNum);
+        model.addAttribute("userList", userList);
+
         return "admin-list";
     }
 
@@ -71,7 +73,7 @@ public class UserController {
     public String adminAdd(Model model){
         Result r = userFeign.findRoles();
         if(StringUtil.isNull(r.get("data"))){
-            return "404";
+            return "error";
         }
 //        log.info("data 不为空");
         List<Role> roleList = (List<Role>) r.get("data");
@@ -110,6 +112,12 @@ public class UserController {
             if (null != jb.get("data")) {
                 User u = jb.getObject("data", User.class);
                 model.addAttribute("admin",u);
+                Result r2 = userFeign.findRoles();
+                if(StringUtil.isNull(r2.get("data"))){
+                    return "admin-list";
+                }
+                List<Role> roleList = (List<Role>) r2.get("data");
+                model.addAttribute("roleList",roleList);
                 return "admin-edit";
             }
         }

@@ -53,7 +53,7 @@
                       </div>-->
                       <div class="layui-input-block" >
                           <div th:each="role:${roleList}" style="float: left;">
-                          <input type="checkbox" name="like1[write]" lay-skin="primary" th:title="${role.roleName}" title="宣传人员" >
+                          <input type="checkbox" name="roles" th:value="${role.roleId}" lay-skin="primary" th:title="${role.roleName}"  >
                           </div>
                       </div>
                   </div>
@@ -113,12 +113,17 @@
                 form.on('submit(add)',
                 function(data) {
                     // console.log(data);
+                    var ids = [];
+                    $("input[name='roles']:checked").each(function(i){
+                        ids.push($(this).val());
+                    });
 
                     var userData = {
                         loginName:$('#username').val(),
                         password:$('#L_pass').val(),
                         phoneNumber:$('#phone').val(),
-                        email:$('#L_email').val()
+                        email:$('#L_email').val(),
+                        roleList:ids
 //                        sex:$('#phone').val(),
 
 

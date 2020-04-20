@@ -1,7 +1,8 @@
 package com.oil.dao;
 
 import com.oil.entity.User;
-import com.oil.page.Page;
+import com.oil.page.Pages;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -33,4 +34,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Modifying
     @Query("update User u set u.loginDate = ?2 where u.userId = ?1")
     void setLoginTime(Long id, Timestamp time);
+
+
 }

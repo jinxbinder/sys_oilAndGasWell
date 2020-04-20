@@ -10,17 +10,17 @@ import java.util.List;
  * 引入 自定义page类 解决分页查询反序列化问题
  * @param <T>
  */
-public class Page<T> implements Iterable<T>, Serializable {
+public class Pages<T> implements Iterable<T>, Serializable {
     private static final long serialVersionUID = -3720998571176536865L;
     private List<T> content = new ArrayList<>();
     private long total;
     private int pageNo;
     private int pageSize;
  
-    public Page() {
+    public Pages() {
     }
  
-    public Page(List<T> content, long total, int pageNo, int pageSize) {
+    public Pages(List<T> content, long total, int pageNo, int pageSize) {
         this.content = content;
         this.total = total;
         this.pageNo = pageNo;

@@ -4,6 +4,7 @@ import com.oil.api.UserApi;
 import com.oil.entity.User;
 import com.oil.manage.RoleManage;
 import com.oil.manage.UserManage;
+import com.oil.page.Pages;
 import com.oil.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,11 +74,25 @@ public class UserService implements UserApi{
 //        Sort sort = new Sort(Sort.Direction.DESC, "id");
         try {
             Page<User> user = userManage.userListByPage(PageRequest.of(pageNum,pageSize));
-            return Result.success(user);
+            log.info("分页查询成功："+user.getContent());
+//            while (user.getContent().iterator().hasNext()){
+//                user.getContent().iterator().next().setPassword("");
+//            }
+//            log.info("page:"+user.getContent());
+//            log.info("page:"+user.getNumber());
+//            log.info("page:"+user.getSize());
+//            log.info("page:"+user.getTotalElements());
+            Pages<User> u = new Pages<>();
+            u.setContent(user.getContent());
+            u.setPageNo(user.getNumber());
+            u.setPageSize(user.getSize());
+            u.setTotal(user.getTotalElements());
+            return Result.success(u);
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error();
+
         }
+        return Result.error();
     }
 
     @Override

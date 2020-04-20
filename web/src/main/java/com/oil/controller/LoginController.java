@@ -84,7 +84,7 @@ public class LoginController {
     */
     @RequestMapping("/404")
     public String get404(){
-        return "404";
+        return "error";
     }
     /**
     * Description: 功能描述（403） <br/>

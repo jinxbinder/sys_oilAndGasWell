@@ -2,6 +2,7 @@ package com.oil.api;
 
 import com.oil.entity.User;
 import com.oil.utils.Result;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
