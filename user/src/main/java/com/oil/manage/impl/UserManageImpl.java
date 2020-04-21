@@ -3,8 +3,11 @@ package com.oil.manage.impl;
 import com.oil.dao.UserRepository;
 import com.oil.entity.User;
 import com.oil.manage.UserManage;
+import com.oil.utils.DateUtil;
+import com.oil.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +58,21 @@ public class UserManageImpl implements UserManage {
     }
 
     @Override
-    public List<User> findByNameLike(String name) {
-        return userRepository.findByLoginNameLike(name);
+    public Page<User> findByNameLike(String loginName,String start ,String end) {
+        Timestamp startTime = null;
+        Timestamp endTime = null;
+        if(StringUtil.isNotEmpty(start)){
+             startTime = new Timestamp(DateUtil.stringToDate(start,DateUtil.DATE_TO_STRING_SHORT_PATTERN).getTime());
+        }
+        if(StringUtil.isNotEmpty(end)){
+             endTime = new Timestamp(DateUtil.stringToDate(end,DateUtil.DATE_TO_STRING_SHORT_PATTERN).getTime());
+
+        }
+
+
+        return userRepository.findByLoginNameLike(loginName,startTime,endTime,PageRequest.of(0,5));
+
+
     }
 
     @Override

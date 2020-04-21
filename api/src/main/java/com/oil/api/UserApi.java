@@ -1,5 +1,6 @@
 package com.oil.api;
 
+import com.alibaba.fastjson.JSONObject;
 import com.oil.entity.User;
 import com.oil.utils.Result;
 import org.springframework.data.domain.Page;
@@ -58,13 +59,6 @@ public interface UserApi {
     @RequestMapping("/userUpdate")
     Result userUpdate(@RequestBody User user);
     /**
-    * Description: 功能描述（用户模糊查） <br/>
-    * date: 2020/3/28 16:58<br/>
-    * @author libd <br/>  
-    */
-    @RequestMapping("/findByNameLike")
-    Result findByNameLike(@RequestBody String name);
-    /**
     * Description: 功能描述（名称查） <br/>
     * date: 2020/3/28 19:23<br/>
     * @author libd <br/>  
@@ -99,4 +93,11 @@ public interface UserApi {
     */
     @RequestMapping("/adminDeleteSome")
     Result adminDeleteSome(@RequestParam("ids") String ids);
+    /**
+     * Description: 功能描述（用户模糊查） <br/>
+     * date: 2020/3/28 16:58<br/>
+     * @author libd <br/>
+     */
+    @RequestMapping("/findByNameLike")
+    Result findByNameLike(@RequestBody JSONObject jsonObject);
 }

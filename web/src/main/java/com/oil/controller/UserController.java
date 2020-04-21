@@ -163,13 +163,32 @@ public class UserController {
         Result r = userFeign.adminDeleteSome(ids);
         return r;
     }
-    @ResponseBody
+
+    /**
+     * 管理员模糊查询
+     * @param
+     * @return
+     */
     @RequestMapping("/findByNameLike")
-    public Result findByNameLike(@RequestBody JSONObject datas){
-        log.info(datas.getString("start"));
-        log.info(datas.getString("end"));
-        log.info(datas.getString("username"));
-        return Result.success();
+    public String findByNameLike(@RequestParam("username") String username,
+                                 @RequestParam("start") String start,
+                                 @RequestParam("end") String end, Model model){
+//        log.info(datas.getString("start"));
+//        log.info(datas.getString("end"));
+//        log.info(datas.getString("username"));
+        log.info(username+start+end);
+        JSONObject json = new JSONObject();
+        json.put("username",username);
+        json.put("start",start);
+        json.put("end",end);
+
+        Result r = userFeign.findByNameLike(json);
+        if(Constant.SUCCESS.equals(r.get("code").toString()) && StringUtil.isNotNull(r.get("data"))){
+            JSONObject jb = new JSONObject(r);
+            Pages<User> userList = jb.getObject("data",Pages.class);
+            model.addAttribute("userList",userList);
+        }
+        return "admin-list";
     }
 
 }

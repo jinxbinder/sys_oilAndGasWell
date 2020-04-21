@@ -20,7 +20,7 @@
                 <div class="layui-col-md12">
                     <div class="layui-card">
                         <div class="layui-card-body ">
-                            <form class="layui-form layui-col-space5">
+                            <form class="layui-form layui-col-space5" method="get" th:action="@{/findByNameLike}">
                                 <div class="layui-inline layui-show-xs-block">
                                     <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
                                 </div>
@@ -31,13 +31,14 @@
                                     <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <button class="layui-btn"  onclick="sreach()"><i class="layui-icon">&#xe615;</i></button>
+                                    <input type="submit" class="layui-btn"  >
+                                    <!--<i class="layui-icon">&#xe615;</i>-->
                                 </div>
                             </form>
                         </div>
                         <div class="layui-card-header">
                             <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-                            <button class="layui-btn" onclick="xadmin.open('添加用户','/adminAdd',600,400)"><i class="layui-icon"></i>添加</button>
+                            <button class="layui-btn" onclick="xadmin.open('添加用户','/adminAdd',650,500)"><i class="layui-icon"></i>添加</button>
                         </div>
                         <div class="layui-card-body ">
                             <table class="layui-table layui-form">
@@ -112,18 +113,7 @@
                                     <li>
                                         <a th:href="'/adminListByPage?pageNum=' + ${userList.getTotalPage() -1}">尾页</a>
                                     </li>
-
                                 </ul>
-                                <!--<div>
-                                  <a th:if="${userList.hasPrevious()}"
-                                     th:href="'/adminListByPage?pageNum=' + ${userList.previousPageable().getPageNumber()}" class="prev" href="">&lt;&lt;上一页</a>
-                                  <a class="num" href="">1</a>
-                                  <span class="current">2</span>
-                                  <a class="num" href="">3</a>
-                                  <a class="num" href="">489</a>
-                                    <a class="num" th:href="'/adminListByPage?pageNum=' + ${userList.getTotalPages() - 1}">尾页</a>
-                                  <a class="next" href="">下一页&gt;&gt;</a>
-                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -219,8 +209,11 @@
       }
 
         //模糊查询
-      function sreach() {
-        var datas = {
+      function likeName() {
+          var str = "";
+          str = "username="+$('input[name="username"]').val()+"&start="+$('input[name="start"]').val()+"&end="+$('input[name="end"]').val();
+          xadmin.add_tab('管理员列表','/findByNameLike?'+str,true);
+        /*var datas = {
             username:$('input[name="username"]').val(),
             start:$('input[name="start"]').val(),
             end:$('input[name="end"]').val()
@@ -230,21 +223,15 @@
               type:'post',
               dataType:'json',
               contentType: 'application/json',
-              data: datas,
+              data: JSON.stringify(datas),
               success:function (rsp) {
                   var code = rsp.code;
 
                   if("200" == code){
-                      $(obj).parents("tr").remove();
-                      layer.msg('已删除!',{icon:1,time:1000});
-                  }else {
-                      layer.msg('删除失败!',{icon:1,time:1000});
+                      location.reload();
                   }
-              },
-              error:function (err) {
-                  layer.msg('查询失败!',{icon:1,time:1000});
               }
-          });
+          });*/
 
           // xadmin.add_tab('管理员列表','adminListByPage');
       }
@@ -258,6 +245,7 @@
               ids = ids +","+ $(this).val();
           });
           layer.confirm('确认要删除吗？'+ids,function(index){
+              //捉到所有被选中的，发异步进行删除
             $.ajax({
                 url:'/adminDeleteSome?ids='+ids,
                 type:'get',
@@ -281,7 +269,7 @@
 
             // $(".layui-form-checked").not('.header').parents('tr').remove();
         });
-          //捉到所有被选中的，发异步进行删除
+
 
       }
     </script>

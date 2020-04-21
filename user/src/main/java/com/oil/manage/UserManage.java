@@ -32,7 +32,7 @@ public interface UserManage {
 
      void userUpdate(User user);
 
-     List<User> findByNameLike(String name);
+     Page<User> findByNameLike(String loginName,String start,String end);
 
      User findByName(String name);
 

@@ -1,5 +1,6 @@
 package com.oil.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.oil.api.UserApi;
 import com.oil.entity.User;
 import com.oil.manage.RoleManage;
@@ -127,9 +128,17 @@ public class UserService implements UserApi{
         return Result.success();
     }
     @Override
-    public Result findByNameLike(@RequestBody String name){
-
-        return Result.success(userManage.findByNameLike(name));
+    public Result findByNameLike(@RequestBody JSONObject json){
+        String loginName = json.getString("username");
+        String start = json.getString("start");
+        String end = json.getString("end");
+        Page<User> user = userManage.findByNameLike(loginName,start,end);
+        Pages<User> u = new Pages<>();
+        u.setContent(user.getContent());
+        u.setPageNo(user.getNumber());
+        u.setPageSize(user.getSize());
+        u.setTotal(user.getTotalElements());
+        return Result.success(u);
     }
     @Override
     public Result findByName(@RequestBody String name){
