@@ -28,7 +28,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     User findUserByUserId(Long id);
 
-    @Query(value = "select * from sys_user u where u.login_name like CONCAT('%',if(?1!='',?1,''),'%') and if(?2!='',u.login_date>?2,1=1) and if(?3!='',u.login_date<?3,1=1) and u.del_flag <> 1 ",nativeQuery = true)
+    @Query(value = "select * from sys_user u where u.login_name like CONCAT('%',if(?1!='',?1,''),'%') and if(?2!='',u.login_date>=?2,1=1) and if(?3!='',u.login_date<=?3,1=1) and u.del_flag <> 1 ",nativeQuery = true)
     Page<User> findByLoginNameLike(String loginName,Timestamp start,Timestamp end,Pageable pageable);
 
     User findByLoginName(String loginName);

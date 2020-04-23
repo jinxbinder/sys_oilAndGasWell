@@ -38,7 +38,7 @@
                         </div>
                         <div class="layui-card-header">
                             <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-                            <button class="layui-btn" onclick="xadmin.open('添加用户','/adminAdd',650,500)"><i class="layui-icon"></i>添加</button>
+                            <button class="layui-btn" onclick="xadmin.open('添加用户','/adminAdd',650,400)"><i class="layui-icon"></i>添加</button>
                         </div>
                         <div class="layui-card-body ">
                             <table class="layui-table layui-form">
@@ -175,7 +175,7 @@
       // 用户修改
       function adminUpdate1(obj,title,url){
           var url1 = url +"/?loginName="+ obj.name;
-          console.log(url1);
+          // console.log(url1);
           xadmin.open(title,url1);
       }
       /*用户-删除*/

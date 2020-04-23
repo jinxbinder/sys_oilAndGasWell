@@ -67,8 +67,8 @@ public class User implements Serializable {
     /** 备注 */
     private String remark;
     //用户-角色
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "sys_user_role",joinColumns = {@JoinColumn(name = "uid")},inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER)
+    @JoinTable(name = "sys_user_role", joinColumns = {@JoinColumn(name = "uid")},inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private List<Role> roleList;
 
     @Override

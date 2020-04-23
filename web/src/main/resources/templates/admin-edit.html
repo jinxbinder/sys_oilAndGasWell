@@ -54,7 +54,7 @@
                 </div>-->
                 <div class="layui-input-block" >
                     <div th:each="role:${roleList}" style="float: left;">
-                        <input type="checkbox" name="like1[write]" lay-skin="primary" th:title="${role.roleName}" title="宣传人员" >
+                        <input type="checkbox" name="roles" th:value="${role}" lay-skin="primary" th:title="${role.roleName}"  >
                     </div>
                 </div>
             </div>
@@ -109,18 +109,34 @@
                 }
             }
         });
-
+        function json2(c){
+            var jsonData="";
+            c=c.replace("{","").replace("}","");
+            c=c.split(',');
+            for(var i=0;i<c.length-1;i++){
+                jsonData = jsonData + '"'+ (c[i].split('=')[0]).replace(/[\s]+/g,"").replace(/null/,"")+'":"' + (c[i].split('=')[1]).replace(/[\s]+/g,"").replace(/null/,"") + '",';
+            }
+            jsonData = jsonData.substring(0,jsonData.length-1);
+            jsonData = "{" + jsonData + "}";
+            console.log(jsonData);
+            return JSON.parse(jsonData)
+        }
         //监听提交
         form.on('submit(add)',
             function(data) {
                 // console.log(data);
-
+                var ids = [];
+                $("input[name='roles']:checked").each(function(i){
+                    var obj = json2($(this).val());
+                    ids.push(obj);
+                });
                 var userData = {
                     userId:$('#L_id').val(),
                     loginName:$('#username').val(),
                     password:$('#L_pass').val(),
                     phoneNumber:$('#phone').val(),
-                    email:$('#L_email').val()
+                    email:$('#L_email').val(),
+                    roleList:ids
 //                        sex:$('#phone').val(),
 
 
