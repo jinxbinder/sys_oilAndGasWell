@@ -102,4 +102,9 @@ public class UserManageImpl implements UserManage {
         userRepository.userDelSome(ids);
     }
 
+    @Override
+    public void adminStatus(Long id,String status) {
+        userRepository.adminStatus(id,status);
+    }
+
 }

@@ -191,4 +191,18 @@ public class UserController {
         return "admin-list";
     }
 
+    /**
+     * 管理员状态修改
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/adminStatus")
+    public Result adminStatus(@RequestParam("id") String id,@RequestParam("status") String status){
+
+        Result r = userFeign.adminStatus(Long.parseLong(id),status);
+        return r;
+
+    }
+
 }

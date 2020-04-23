@@ -100,4 +100,11 @@ public interface UserApi {
      */
     @RequestMapping("/findByNameLike")
     Result findByNameLike(@RequestBody JSONObject jsonObject);
+    /**
+    * Description: 功能描述（用户状态修改） <br/>
+    * date: 2020/4/23 18:24<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/adminStatus")
+    Result adminStatus(@RequestParam("id") Long id,@RequestParam("staus") String status);
 }

@@ -47,5 +47,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query("update User u set u.delFlag = 1 where u.userId in (?1) ")
     void userDelSome(List<Long> ids);
 
+    @Modifying
+    @Query("update User u set u.status = ?2 where u.userId = ?1")
+    void adminStatus(Long id,String status);
+
 
 }

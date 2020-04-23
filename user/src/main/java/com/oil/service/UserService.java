@@ -140,6 +140,18 @@ public class UserService implements UserApi{
         u.setTotal(user.getTotalElements());
         return Result.success(u);
     }
+
+    @Override
+    public Result adminStatus(Long id,String status) {
+        try {
+            userManage.adminStatus(id,status);
+            return Result.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+    }
+
     @Override
     public Result findByName(@RequestBody String name){
         return Result.success(userManage.findByName(name));

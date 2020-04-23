@@ -48,7 +48,7 @@ public class User implements Serializable {
     private String password;
     /** 盐值 */
     private String salt;
-    /** 状态标志 1为锁定 0正常 */
+    /** 状态标志 1为停用 0正常 */
     private String status = "0";
     /** 删除标志 1为删除 0正常 */
     private String delFlag = "0";

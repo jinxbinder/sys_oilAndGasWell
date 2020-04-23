@@ -67,11 +67,16 @@
                                   <td th:text="${user.email}"></td>
                                   <td th:text="${user.status}" ></td>
                                   <td th:text="${user.loginDate}"></td>
-                                  <td class="td-status">
-                                    <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span></td>
-                                  <td class="td-manage" >
-                                    <a th:name="${user.userId}" onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-                                      <i class="layui-icon">&#xe601;</i>
+                                    <td class="td-status" >
+                                        <span th:if="${user.status} ne 1" class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
+                                        <span th:if="${user.status} eq 1" class="layui-btn layui-btn-normal layui-btn-disabled layui-btn-mini">已停用</span>
+                                    </td>
+                                    <td class="td-manage" >
+                                    <a th:if="${user.status} ne 1" th:name="${user.userId}" onclick="member_stop(this)" href="javascript:;"  title="启用">
+                                        <i class="layui-icon">&#xe601;</i>
+                                    </a>
+                                    <a th:if="${user.status} eq 1" th:name="${user.userId}" onclick="member_stop(this)" href="javascript:;"  title="停用">
+                                        <i class="layui-icon">&#xe62f;</i>
                                     </a>
                                     <a title="编辑"  th:name="${user.loginName}"  onclick="adminUpdate1(this,'编辑','/adminEdit')" href="javascript:;">
                                       <i class="layui-icon">&#xe642;</i>
@@ -150,24 +155,60 @@
       });
 
        /*用户-停用*/
-      function member_stop(obj,id){
-          layer.confirm('确认要停用吗？',function(index){
-
+      function member_stop(obj){
+          layer.confirm('确认要修改用户状态吗？',function(index){
+              var id = obj.name;
+              console.log(id);
               if($(obj).attr('title')=='启用'){
+                  $.ajax({
+                      url:'/adminStatus?id='+obj.name+"&status=1",
+                      type:'get',
+                      dataType:'json',
+                      contentType: 'application/json',
 
+                      success:function (rsp) {
+                          var code = rsp.code;
+
+                          if("200" == code){
+                              $(obj).attr('title','停用')
+                              $(obj).find('i').html('&#xe62f;');
+                              $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                              layer.msg('已停用!',{icon: 6,time:1000});
+                          }else {
+                              layer.msg('停用失败!',{icon:5,time:1000});
+                          }
+                      },
+                      error:function (err) {
+                          layer.msg('停用失败!',{icon:5,time:1000});
+                      }
+                  });
                 //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
 
               }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
+                  $.ajax({
+                      url:'/adminStatus?id='+obj.name+"&status=0",
+                      type:'get',
+                      dataType:'json',
+                      contentType: 'application/json',
 
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
+                      success:function (rsp) {
+                          var code = rsp.code;
+
+                          if("200" == code){
+                              $(obj).attr('title','启用')
+                              $(obj).find('i').html('&#xe601;');
+
+                              $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                              layer.msg('已启用!',{icon: 6,time:1000});
+                          }else {
+                              layer.msg('启用失败!',{icon:5,time:1000});
+                          }
+                      },
+                      error:function (err) {
+                          layer.msg('启用失败!',{icon:5,time:1000});
+                      }
+                  });
+
               }
               
           });

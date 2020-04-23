@@ -43,4 +43,6 @@ public interface UserManage {
      Page<User> userListByPage(Pageable pageable);
 
      void adminDeleteSome(List<Long> ids);
+
+     void adminStatus(Long id,String status);
 }
