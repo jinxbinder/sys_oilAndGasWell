@@ -2,6 +2,7 @@ package com.oil.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.oil.api.UserApi;
+import com.oil.entity.Role;
 import com.oil.entity.User;
 import com.oil.manage.RoleManage;
 import com.oil.manage.UserManage;
@@ -96,6 +97,28 @@ public class UserService implements UserApi{
         }
         return Result.error();
     }
+    @Override
+    public Result roleListByPage(int pageNum, int pageSize) {
+        try {
+            Page<Role> roles = roleManage.roleListByPage(PageRequest.of(pageNum,pageSize));
+            log.info("分页查询成功："+roles.getContent());
+            Pages<Role> r = new Pages<>();
+            r.setContent(roles.getContent());
+            r.setPageNo(roles.getNumber());
+            r.setPageSize(roles.getSize());
+            r.setTotal(roles.getTotalElements());
+            return Result.success(r);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return Result.error();
+    }
+
+    @Override
+    public Result findRoles() {
+        return Result.success(roleManage.findRoles());
+    }
 
     @Override
     public Result userAdd(@RequestBody User user){
@@ -157,10 +180,6 @@ public class UserService implements UserApi{
         return Result.success(userManage.findByName(name));
     }
 
-    @Override
-    public Result findRoles() {
-        return Result.success(roleManage.findRoles());
-    }
 
     @Override
     public void setLoginTime(@RequestBody Long id) {

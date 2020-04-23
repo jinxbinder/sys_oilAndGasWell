@@ -4,6 +4,8 @@ import com.oil.dao.RoleRepository;
 import com.oil.entity.Role;
 import com.oil.manage.RoleManage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,5 +26,10 @@ public class RoleManageImpl implements RoleManage{
     @Override
     public List<Role> findRoles() {
         return roleRepository.findAll();
+    }
+
+    @Override
+    public Page<Role> roleListByPage(Pageable pageable) {
+        return roleRepository.findRoleable(pageable);
     }
 }

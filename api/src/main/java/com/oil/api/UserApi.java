@@ -66,13 +66,6 @@ public interface UserApi {
     @RequestMapping("/findByName")
     Result findByName(@RequestBody String name);
     /**
-    * Description: 功能描述（角色列表查询） <br/>
-    * date: 2020/4/16 19:22<br/>
-    * @author libd <br/>  
-    */
-    @RequestMapping("/findRoles")
-    Result findRoles();
-    /**
     * Description: 功能描述（登录时间） <br/>
     * date: 2020/4/17 10:36<br/>
     * @author libd <br/>  
@@ -87,7 +80,7 @@ public interface UserApi {
     @RequestMapping("/adminDeleteOne")
     Result adminDeleteOne(@RequestParam("id") Long id);
     /**
-    * Description: 功能描述（批量删除） <br/>
+    * Description: 功能描述（用户批量删除） <br/>
     * date: 2020/4/20 18:10<br/>
     * @author libd <br/>  
     */
@@ -106,5 +99,19 @@ public interface UserApi {
     * @author libd <br/>  
     */
     @RequestMapping("/adminStatus")
-    Result adminStatus(@RequestParam("id") Long id,@RequestParam("staus") String status);
+    Result adminStatus(@RequestParam("id") Long id,@RequestParam("status") String status);
+    /**
+     * Description: 功能描述（角色列表分页查询） <br/>
+     * date: 2020/4/23 17:02<br/>
+     * @author libd <br/>
+     */
+    @RequestMapping("/roleListByPage")
+    Result roleListByPage(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize);
+    /**
+     * Description: 功能描述（角色列表查询） <br/>
+     * date: 2020/4/16 19:22<br/>
+     * @author libd <br/>
+     */
+    @RequestMapping("/findRoles")
+    Result findRoles();
 }

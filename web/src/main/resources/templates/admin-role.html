@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <th:block th:include="include :: header('角色列表')"/>
+</head>
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+
+            <a>
+              <cite>导航元素</cite>
+            </a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5" method="get" th:action="@{/findByNameLike}">
+                        <!--<div class="layui-inline layui-show-xs-block">
+                            <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
+                        </div>-->
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="username"  placeholder="请输入角色名" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="submit" class="layui-btn"  >
+                            <!--<i class="layui-icon">&#xe615;</i>-->
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-header">
+                    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+                    <button class="layui-btn" onclick="xadmin.open('添加用户','/adminAdd',650,400)"><i class="layui-icon"></i>添加</button>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox"  lay-filter="selectAll"  id="selectAll"  lay-skin="primary">
+                            </th>
+                            <th>ID</th>
+                            <th>角色名</th>
+                            <th>角色值</th>
+                            <th>备注</th>
+
+                            <th>状态</th>
+                            <th>操作</th>
+                        </thead>
+                        <tbody th:each="role:${roleList}" >
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="checkId" th:value="${role.roleId}"   lay-skin="primary">
+                            </td>
+                            <td th:text="${role.roleId}" ></td>
+                            <td th:text="${role.roleName}" ></td>
+                            <td th:text="${role.roleKey}" ></td>
+                            <td >111</td>
+                            <td class="td-status" >
+                                <span th:if="${role.status} ne 1" class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
+                                <span th:if="${role.status} eq 1" class="layui-btn layui-btn-normal layui-btn-disabled layui-btn-mini">已停用</span>
+                            </td>
+                            <td class="td-manage" >
+                                <a th:if="${role.status} ne 1" th:name="${role.roleId}" onclick="member_stop(this)" href="javascript:;"  title="启用">
+                                    <i class="layui-icon">&#xe601;</i>
+                                </a>
+                                <a th:if="${role.status} eq 1" th:name="${role.roleId}" onclick="member_stop(this)" href="javascript:;"  title="停用">
+                                    <i class="layui-icon">&#xe62f;</i>
+                                </a>
+                                <a title="编辑"  th:name="${role.roleName}"  onclick="adminUpdate1(this,'编辑','/adminEdit')" href="javascript:;">
+                                    <i class="layui-icon">&#xe642;</i>
+                                </a>
+                                <a title="删除" th:name="${role.roleId}" onclick="member_del(this)" href="javascript:;">
+                                    <i class="layui-icon">&#xe640;</i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-card-body ">
+                    <div class="page">
+                        <ul class="pagination pull-right no-margin">
+
+                            <!-- 首页 -->
+                            <li>
+                                <a th:href="'/roleListByPage?pageNum=0'">首页</a>
+                            </li>
+
+                            <!-- 上一页 -->
+                            <li th:if="${roleList.hasPrevious()}">
+                                <a th:href="'/roleListByPage?pageNum=' + ${roleList.getPageNo() - 1}" th:text="上一页"></a>
+                            </li>
+
+                            <!-- 中间页 -->
+                            <li th:each="pageNum:${#numbers.sequence(0, roleList.getTotalPage() - 1)}">
+                                <a th:href="'/roleListByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne roleList.getTotalPage()}"></a>
+                                <a th:href="'/roleListByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq roleList.getTotalPage()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+                            </li>
+
+                            <!--下一页-->
+                            <li th:if="${roleList.hasNext()}">
+                                <a th:href="'/roleListByPage?pageNum=' + ${roleList.getPageNo() + 1}" th:text="下一页"></a>
+                            </li>
+
+                            <!-- 尾页 -->
+                            <li>
+                                <a th:href="'/roleListByPage?pageNum=' + ${roleList.getTotalPage() -1}">尾页</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    layui.use(['laydate','form'], function(){
+        var laydate = layui.laydate;
+        var form = layui.form;
+        //全选控制
+        form.on('checkbox(selectAll)',function (data) {
+            var a = data.elem.checked;
+            if (a == true) {
+                $("input[name='checkId']").prop("checked", true);
+                form.render('checkbox');
+            } else {
+                $("input[name='checkId']").prop("checked", false);
+                form.render('checkbox');
+            }
+        });
+
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#end' //指定元素
+        });
+    });
+
+    /*用户-停用*/
+    function member_stop(obj){
+        layer.confirm('确认要修改用户状态吗？',function(index){
+            var id = obj.name;
+            console.log(id);
+            if($(obj).attr('title')=='启用'){
+                $.ajax({
+                    url:'/roleStatus?id='+obj.name+"&status=1",
+                    type:'get',
+                    dataType:'json',
+                    contentType: 'application/json',
+
+                    success:function (rsp) {
+                        var code = rsp.code;
+
+                        if("200" == code){
+                            $(obj).attr('title','停用')
+                            $(obj).find('i').html('&#xe62f;');
+                            $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                            layer.msg('已停用!',{icon: 6,time:1000});
+                        }else {
+                            layer.msg('停用失败!',{icon:5,time:1000});
+                        }
+                    },
+                    error:function (err) {
+                        layer.msg('停用失败!',{icon:5,time:1000});
+                    }
+                });
+                //发异步把用户状态进行更改
+
+            }else{
+                $.ajax({
+                    url:'/roleStatus?id='+obj.name+"&status=0",
+                    type:'get',
+                    dataType:'json',
+                    contentType: 'application/json',
+
+                    success:function (rsp) {
+                        var code = rsp.code;
+
+                        if("200" == code){
+                            $(obj).attr('title','启用')
+                            $(obj).find('i').html('&#xe601;');
+
+                            $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                            layer.msg('已启用!',{icon: 6,time:1000});
+                        }else {
+                            layer.msg('启用失败!',{icon:5,time:1000});
+                        }
+                    },
+                    error:function (err) {
+                        layer.msg('启用失败!',{icon:5,time:1000});
+                    }
+                });
+
+            }
+
+        });
+    }
+    // 用户修改
+    function roleUpdate1(obj,title,url){
+        var url1 = url +"/?loginName="+ obj.name;
+        // console.log(url1);
+        xadmin.open(title,url1);
+    }
+    /*用户-删除*/
+    function member_del(obj){
+        layer.confirm('确认要删除吗？',function(index){
+            console.log("id:"+obj.name);
+            //发异步删除数据
+            $.ajax({
+                url:'/adminDeleteOne?id='+obj.name,
+                type:'get',
+                dataType:'json',
+                contentType: 'application/json',
+
+                success:function (rsp) {
+                    var code = rsp.code;
+
+                    if("200" == code){
+                        $(obj).parents("tr").remove();
+                        layer.msg('已删除!',{icon:1,time:1000});
+                    }else {
+                        layer.msg('删除失败!',{icon:1,time:1000});
+                    }
+                },
+                error:function (err) {
+                    layer.msg('删除失败!',{icon:1,time:1000});
+                }
+            });
+
+
+        });
+    }
+
+    //模糊查询
+    function likeName() {
+        var str = "";
+        str = "username="+$('input[name="username"]').val()+"&start="+$('input[name="start"]').val()+"&end="+$('input[name="end"]').val();
+        xadmin.add_tab('管理员列表','/findByNameLike?'+str,true);
+        /*var datas = {
+            username:$('input[name="username"]').val(),
+            start:$('input[name="start"]').val(),
+            end:$('input[name="end"]').val()
+        }
+          $.ajax({
+              url:'/findByNameLike',
+              type:'post',
+              dataType:'json',
+              contentType: 'application/json',
+              data: JSON.stringify(datas),
+              success:function (rsp) {
+                  var code = rsp.code;
+
+                  if("200" == code){
+                      location.reload();
+                  }
+              }
+          });*/
+
+        // xadmin.add_tab('管理员列表','adminListByPage');
+    }
+    //批量删除
+    function delAll (argument) {
+
+        // var data = tableCheck.getData();
+        var ids;
+        $('input[name="checkId"]:checked').each(function () {
+            console.log($(this).val());
+            ids = ids +","+ $(this).val();
+        });
+        layer.confirm('确认要删除吗？'+ids,function(index){
+            //捉到所有被选中的，发异步进行删除
+            $.ajax({
+                url:'/adminDeleteSome?ids='+ids,
+                type:'get',
+                dataType:'json',
+                contentType: 'application/json',
+
+                success:function (rsp) {
+                    var code = rsp.code;
+
+                    if("200" == code){
+                        $('input[name="checkId"]:checked').parents('tr').remove();
+                        layer.msg('删除成功', {icon: 1});
+                    }else {
+                        layer.msg('删除失败', {icon: 1});
+                    }
+                },
+                error:function (err) {
+                    layer.msg('删除失败', {icon: 1});
+                }
+            });
+
+            // $(".layui-form-checked").not('.header').parents('tr').remove();
+        });
+
+
+    }
+</script>
+</html>
