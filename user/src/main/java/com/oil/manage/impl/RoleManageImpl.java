@@ -32,4 +32,25 @@ public class RoleManageImpl implements RoleManage{
     public Page<Role> roleListByPage(Pageable pageable) {
         return roleRepository.findRoleable(pageable);
     }
+
+    @Override
+    public void roleAdd(Role role) {
+        roleRepository.save(role);
+    }
+
+    @Override
+    public Role findByRoleName(String roleName) {
+        return roleRepository.findByRoleName(roleName);
+    }
+
+    @Override
+    public void roleUpdate(Role role) {
+        roleRepository.save(role);
+    }
+
+    @Override
+    public void roleDeleteOne(Long id) {
+
+        roleRepository.roleDel(id);
+    }
 }

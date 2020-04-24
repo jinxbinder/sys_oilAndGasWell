@@ -22,4 +22,12 @@ public interface RoleManage {
     List<Role> findRoles();
 
     Page<Role> roleListByPage(Pageable pageable);
+
+    void roleAdd(Role role);
+
+    Role findByRoleName(String roleName);
+
+    void roleUpdate(Role role);
+
+    void roleDeleteOne(Long id);
 }

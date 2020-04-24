@@ -121,6 +121,18 @@ public class UserService implements UserApi{
     }
 
     @Override
+    public Result roleAdd(@RequestBody Role role) {
+        role.setCreateTime(DateUtil.getTimestamp());
+        try {
+            roleManage.roleAdd(role);
+        }catch (Exception e){
+            log.error("角色新增失败：error#####",e);
+            Result.error("角色新增失败");
+        }
+        return Result.success();
+    }
+
+    @Override
     public Result userAdd(@RequestBody User user){
         user.setCreateTime(DateUtil.getTimestamp());
 //        String salt = MD5Util.RandomSelt();
@@ -133,8 +145,8 @@ public class UserService implements UserApi{
             log.error("用户新增失败：error#####",e);
             Result.error("用户新增失败");
         }
-
         return Result.success();
+
     }
     @Override
     public Result userUpdate(@RequestBody User user){
@@ -180,6 +192,11 @@ public class UserService implements UserApi{
         return Result.success(userManage.findByName(name));
     }
 
+    @Override
+    public Result findByRoleName(@RequestBody String roleName){
+        return Result.success(roleManage.findByRoleName(roleName));
+    }
+
 
     @Override
     public void setLoginTime(@RequestBody Long id) {
@@ -197,7 +214,16 @@ public class UserService implements UserApi{
             return Result.error();
         }
     }
-
+    @Override
+    public Result roleDeleteOne(@RequestParam("id") Long id) {
+        try {
+            roleManage.roleDeleteOne(id);
+            return Result.success();
+        } catch (Exception e) {
+            log.error("单个角色删除错误。",e);
+            return Result.error();
+        }
+    }
     @Override
     public Result adminDeleteSome(String id) {
         try {
@@ -214,5 +240,19 @@ public class UserService implements UserApi{
             e.printStackTrace();
             return Result.error();
         }
+    }
+    @Override
+    public Result roleUpdate(@RequestBody Role role){
+        if (StringUtil.isNull(role))
+            return Result.error("空参");
+        role.setUpdateTime(DateUtil.getTimestamp());
+        try {
+            roleManage.roleUpdate(role);
+        }catch (Exception e){
+            log.error("角色信息修改失败：error#####",e);
+            Result.error("角色信息修改失败");
+        }
+        return Result.success();
+
     }
 }

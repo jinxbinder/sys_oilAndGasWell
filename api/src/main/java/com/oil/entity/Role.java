@@ -18,7 +18,6 @@ import java.util.List;
  * @version 1.0
  * @since JDK 1.8
  */
-@JsonIgnoreProperties(value = { "roleList","roles" })
 @Data
 @Entity
 public class Role implements Serializable {
@@ -52,7 +51,7 @@ public class Role implements Serializable {
     private List<User> userList;// 一个角色对应多个用户
 
     //角色 -- 权限关系：多对多关系;
-    @ManyToMany(fetch= FetchType.EAGER)
+    @ManyToMany(fetch= FetchType.EAGER,cascade = CascadeType.REFRESH)
     @JoinTable(name="sys_role_permission",joinColumns={@JoinColumn(name="role_id")},inverseJoinColumns={@JoinColumn(name="permission_id")})
     private List<Permission> permissions;
 

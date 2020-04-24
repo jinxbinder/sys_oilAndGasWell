@@ -46,7 +46,7 @@ java对象： {roleId=1, roleName=管理员, roleKey=admin}
 json对象： {"roleId":1, "roleName":"管理员", "roleKey":"admin"}
 json字符串： {"roleId":"1", "roleName":"管理员", "roleKey":"admin"}
 ```
-   解决方案：自定义js方法将java对象转为json对象.网上找到一个更简洁的方法，但是不会改，于是我想java对象拼接成json字符串的格式后又转为json对象.
+   解决方案：自定义js方法将java对象转为json对象.网上找到一个更简洁的方法，但是不会改，于是我将java对象拼接成json字符串的格式后又转为json对象.
 ```javascript 1.8
     function json2(c){
         var jsonData="";
@@ -128,5 +128,7 @@ class Role{
 }
 ```
 ### 2.4
-   *：spring cloud openFeign不支持接口多继承.
-   
+   问题描述：spring data jpa 多对多（user,role）查询栈溢出.
+   原因分析：user对象有roleList字段，role对象有userList字段。二者进行俄罗斯套娃.
+   解决方案：将roleList,userList其中一个字段忽略序列化，代码参考2.3.(注意注解与所用的json工具匹配)
+

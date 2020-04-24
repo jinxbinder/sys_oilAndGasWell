@@ -1,6 +1,7 @@
 package com.oil.api;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oil.entity.Role;
 import com.oil.entity.User;
 import com.oil.utils.Result;
 import org.springframework.data.domain.Page;
@@ -114,4 +115,32 @@ public interface UserApi {
      */
     @RequestMapping("/findRoles")
     Result findRoles();
+    /**
+    * Description: 功能描述（角色添加） <br/>
+    * date: 2020/4/24 16:34<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/roleAdd")
+    Result roleAdd(@RequestBody Role role);
+    /**
+     * Description: 功能描述（角色名称查） <br/>
+     * date: 2020/4/24 19:23<br/>
+     * @author libd <br/>
+     */
+    @RequestMapping("/findByRoleName")
+    Result findByRoleName(@RequestBody String roleName);
+    /**
+     * Description: 功能描述（角色修改） <br/>
+     * date: 2020/3/28 16:56<br/>
+     * @author libd <br/>
+     */
+    @RequestMapping("/roleUpdate")
+    Result roleUpdate(@RequestBody Role role);
+    /**
+     * Description: 功能描述（删除单个角色） <br/>
+     * date: 2020/4/17 17:03<br/>
+     * @author libd <br/>
+     */
+    @RequestMapping("/roleDeleteOne")
+    Result roleDeleteOne(@RequestParam("id") Long id);
 }

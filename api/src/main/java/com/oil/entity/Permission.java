@@ -43,8 +43,9 @@ public class Permission implements Serializable {
     private String remark;
     //权限 角色
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name="sys_role_permission",joinColumns={@JoinColumn(name="permission_id")},inverseJoinColumns={@JoinColumn(name="role_id")})
+    @ManyToMany(mappedBy = "permissions",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name="sys_role_permission",joinColumns={@JoinColumn(name="permission_id")},inverseJoinColumns={@JoinColumn(name="role_id")})
     private List<Role> roles;
 
     @Override

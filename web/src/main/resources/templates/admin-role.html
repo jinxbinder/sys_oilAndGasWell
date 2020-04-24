@@ -38,7 +38,7 @@
                 </div>
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-                    <button class="layui-btn" onclick="xadmin.open('添加用户','/adminAdd',650,400)"><i class="layui-icon"></i>添加</button>
+                    <button class="layui-btn" onclick="xadmin.open('添加角色','/roleAddPage',650,400)"><i class="layui-icon"></i>添加</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-table layui-form">
@@ -75,7 +75,7 @@
                                 <a th:if="${role.status} eq 1" th:name="${role.roleId}" onclick="member_stop(this)" href="javascript:;"  title="停用">
                                     <i class="layui-icon">&#xe62f;</i>
                                 </a>
-                                <a title="编辑"  th:name="${role.roleName}"  onclick="adminUpdate1(this,'编辑','/adminEdit')" href="javascript:;">
+                                <a title="编辑"  th:name="${role.roleName}"  onclick="roleUpdate1(this,'编辑','/roleEditPage')" href="javascript:;">
                                     <i class="layui-icon">&#xe642;</i>
                                 </a>
                                 <a title="删除" th:name="${role.roleId}" onclick="member_del(this)" href="javascript:;">
@@ -101,7 +101,7 @@
                             </li>
 
                             <!-- 中间页 -->
-                            <li th:each="pageNum:${#numbers.sequence(0, roleList.getTotalPage() - 1)}">
+                            <li th:if="${roleList.getTotalPage() gt 0}" th:each="pageNum:${#numbers.sequence(0, roleList.getTotalPage() - 1)}">
                                 <a th:href="'/roleListByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne roleList.getTotalPage()}"></a>
                                 <a th:href="'/roleListByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq roleList.getTotalPage()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
                             </li>
@@ -113,7 +113,7 @@
 
                             <!-- 尾页 -->
                             <li>
-                                <a th:href="'/roleListByPage?pageNum=' + ${roleList.getTotalPage() -1}">尾页</a>
+                                <a th:if="${roleList.getTotalPage() gt 0}" th:href="'/roleListByPage?pageNum=' + ${roleList.getTotalPage() -1}">尾页</a>
                             </li>
                         </ul>
                     </div>
@@ -212,7 +212,7 @@
     }
     // 用户修改
     function roleUpdate1(obj,title,url){
-        var url1 = url +"/?loginName="+ obj.name;
+        var url1 = url +"/"+ obj.name;
         // console.log(url1);
         xadmin.open(title,url1);
     }
@@ -222,7 +222,7 @@
             console.log("id:"+obj.name);
             //发异步删除数据
             $.ajax({
-                url:'/adminDeleteOne?id='+obj.name,
+                url:'/roleDeleteOne/'+obj.name,
                 type:'get',
                 dataType:'json',
                 contentType: 'application/json',
@@ -234,11 +234,11 @@
                         $(obj).parents("tr").remove();
                         layer.msg('已删除!',{icon:1,time:1000});
                     }else {
-                        layer.msg('删除失败!',{icon:1,time:1000});
+                        layer.msg('删除失败!',{icon:2,time:1000});
                     }
                 },
                 error:function (err) {
-                    layer.msg('删除失败!',{icon:1,time:1000});
+                    layer.msg('删除失败!',{icon:2,time:1000});
                 }
             });
 
