@@ -24,10 +24,10 @@ select * from sys_user u where u.login_name like CONCAT('%',if(?1!='',?1,''),'%'
 ## 2.纪念此项目踩的坑
    以下代码只展示关键部分，详情及注释请看源码
 ### 2.1 
-   问题描述：对于spring data jpa分页查询page<T>在openFeign远程调用无法反序列化.
-   原因分析：由于模块间传输格式为json，在接受到json数据后将其转为page<T>对象，需要有无参构造才可以反序列化，
-            而page<T>的实现类pageImpl没有无参构造.
-   解决方案：使用自定义page类，将jpa查询到的page<T>转为pages<T>后传输,才疏学浅，只想到了用这种办法解决.
+  * 问题描述：对于spring data jpa分页查询page<T>在openFeign远程调用无法反序列化.  
+  * 原因分析：由于模块间传输格式为json，在接受到json数据后将其转为page<T>对象，需要有无参构造才可以反序列化，
+            而page<T>的实现类pageImpl没有无参构造.          
+  * 解决方案：使用自定义page类，将jpa查询到的page<T>转为pages<T>后传输,才疏学浅，只想到了用这种办法解决.
 ```java
     /**
     * Page<User> user = userManage.userListByPage(PageRequest.of(pageNum,pageSize));
@@ -39,14 +39,14 @@ select * from sys_user u where u.login_name like CONCAT('%',if(?1!='',?1,''),'%'
     return Result.success(u);*/
 ```
 ### 2.2
-   问题描述：将th标签里的java对象用ajax传给后端，json格式错误
-   原因分析：ajax传参时data参数需为json字符串或json对象格式，java对象不可直接用于传参.
+  * 问题描述：将th标签里的java对象用ajax传给后端，json格式错误
+  * 原因分析：ajax传参时data参数需为json字符串或json对象格式，java对象不可直接用于传参.
 ```text
 java对象： {roleId=1, roleName=管理员, roleKey=admin}
 json对象： {"roleId":1, "roleName":"管理员", "roleKey":"admin"}
 json字符串： {"roleId":"1", "roleName":"管理员", "roleKey":"admin"}
 ```
-   解决方案：自定义js方法将java对象转为json对象.网上找到一个更简洁的方法，但是不会改，于是我将java对象拼接成json字符串的格式后又转为json对象.
+  * 解决方案：自定义js方法将java对象转为json对象.网上找到一个更简洁的方法，但是不会改，于是我将java对象拼接成json字符串的格式后又转为json对象.
 ```javascript 1.8
     function json2(c){
         var jsonData="";
@@ -112,9 +112,9 @@ json字符串： {"roleId":"1", "roleName":"管理员", "roleKey":"admin"}
     });
 ```
 ### 2.3
-   问题描述：spring data jpa 多对多级联操作关联关系维护失效（user,role,user_role),中间表数据不变
-   原因分析：多对多应给表级联操作权限和指定关联关系维护方和被维护方
-   解决方案：指定user为维护方，赋予二者级联操作权限，给被维护方加mappedBy属性.
+  * 问题描述：spring data jpa 多对多级联操作关联关系维护失效（user,role,user_role),中间表数据不变
+  * 原因分析：多对多应给表级联操作权限和指定关联关系维护方和被维护方
+  * 解决方案：指定user为维护方，赋予二者级联操作权限，给被维护方加mappedBy属性.
 ```java
 class User{
     @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER)
@@ -128,7 +128,20 @@ class Role{
 }
 ```
 ### 2.4
-   问题描述：spring data jpa 多对多（user,role）查询栈溢出.
-   原因分析：user对象有roleList字段，role对象有userList字段。二者进行俄罗斯套娃.
-   解决方案：将roleList,userList其中一个字段忽略序列化，代码参考2.3.(注意注解与所用的json工具匹配)
-
+  * 问题描述：spring data jpa 多对多（user,role）查询栈溢出.
+  * 原因分析：user对象有roleList字段，role对象有userList字段。二者进行俄罗斯套娃.
+  * 解决方案：将roleList,userList其中一个字段忽略序列化，代码参考2.3.(注意注解与所用的json工具匹配)
+### 2.5
+  * 问题描述：将Timestamp格式的时间存入mysql数据库会有13小时的时差.
+  * 原因分析：jdbc时区与mysql数据库时区不相同导致.
+  * 解决方案：将jdbc时区改为serverTimezone=Hongkong.
+### 2.6
+  * 问题描述：将Timestamp格式的时间数据展示到前台数据格式变为2020-04-24T10:27:03.000+0000
+  * 原因分析：数据进行json序列化时未指定格式.
+  * 解决方案：在实体类对应成员属性上加json格式化注解.（注意json工具的匹配）
+```java
+class User{
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    private Timestamp createTime;
+}
+```

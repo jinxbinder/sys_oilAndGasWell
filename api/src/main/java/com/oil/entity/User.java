@@ -1,5 +1,6 @@
 package com.oil.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javassist.SerialVersionUID;
@@ -55,14 +56,17 @@ public class User implements Serializable {
     /** 本次登录ip */
     private String loginIp;
     /** 登录时间 */
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Timestamp loginDate;
     /** 创建者 */
     private String createBy;
     /** 创建时间 */
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Timestamp createTime;
     /** 更新者 */
     private String updateBy;
     /** 更新时间 */
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Timestamp updateTime;
     /** 备注 */
     private String remark;

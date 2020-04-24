@@ -11,7 +11,7 @@ spring:
   #数据源
   datasource:
       name: test
-      url: jdbc:mysql://localhost:3306/abs?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3306/abs?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Hongkong
       username: root
       password: root
       type: com.alibaba.druid.pool.DruidDataSource

@@ -6,6 +6,7 @@ import com.oil.entity.Role;
 import com.oil.entity.User;
 import com.oil.feign.UserFeign;
 import com.oil.page.Pages;
+import com.oil.utils.DateUtil;
 import com.oil.utils.Result;
 import com.oil.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -88,9 +90,11 @@ public class UserController {
      */
     @ResponseBody
     @PostMapping("/userAdd")
-    public Result userAdd(@RequestBody User user){
-        log.info("用户信息"+user.toString());
+    public Result userAdd(@RequestBody User user, Principal principal){
+//        log.info("用户信息"+user.toString());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setCreateBy(principal.getName());
+        user.setCreateTime(DateUtil.getTimestamp());
         Result r = userFeign.userAdd(user);
         return r;
         /*if("200".equals(r.get("code").toString())){
@@ -131,9 +135,11 @@ public class UserController {
      */
     @ResponseBody
     @PostMapping("/userUpdate")
-    public Result userEdit(@RequestBody User user){
+    public Result userEdit(@RequestBody User user,Principal principal){
         log.info("用户信息"+user.toString());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setUpdateTime(DateUtil.getTimestamp());
+        user.setUpdateBy(principal.getName());
         Result r = userFeign.userUpdate(user);
         return r;
     }

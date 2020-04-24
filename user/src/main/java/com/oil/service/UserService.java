@@ -122,7 +122,6 @@ public class UserService implements UserApi{
 
     @Override
     public Result roleAdd(@RequestBody Role role) {
-        role.setCreateTime(DateUtil.getTimestamp());
         try {
             roleManage.roleAdd(role);
         }catch (Exception e){
@@ -134,7 +133,7 @@ public class UserService implements UserApi{
 
     @Override
     public Result userAdd(@RequestBody User user){
-        user.setCreateTime(DateUtil.getTimestamp());
+
 //        String salt = MD5Util.RandomSelt();
 //        String password = MD5Util.MD5(user.getPassword()+salt);
 //        String password = bCryptPasswordEncoder.encode(user.getPassword());
@@ -152,7 +151,6 @@ public class UserService implements UserApi{
     public Result userUpdate(@RequestBody User user){
         if (StringUtil.isNull(user))
             return Result.error("空参");
-        user.setUpdateTime(DateUtil.getTimestamp());
         try {
             userManage.userUpdate(user);
         }catch (Exception e){
@@ -245,7 +243,6 @@ public class UserService implements UserApi{
     public Result roleUpdate(@RequestBody Role role){
         if (StringUtil.isNull(role))
             return Result.error("空参");
-        role.setUpdateTime(DateUtil.getTimestamp());
         try {
             roleManage.roleUpdate(role);
         }catch (Exception e){

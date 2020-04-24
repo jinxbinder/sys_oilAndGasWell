@@ -6,6 +6,7 @@ import com.oil.entity.Role;
 import com.oil.entity.User;
 import com.oil.feign.UserFeign;
 import com.oil.page.Pages;
+import com.oil.utils.DateUtil;
 import com.oil.utils.Result;
 import com.oil.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -72,7 +74,9 @@ public class RoleController {
      */
     @ResponseBody
     @PostMapping("/roleAdd")
-    public Result roleAdd(@RequestBody Role role){
+    public Result roleAdd(@RequestBody Role role, Principal principal){
+        role.setCreateTime(DateUtil.getTimestamp());
+        role.setCreateBy(principal.getName());
         log.info("用户信息"+role.toString());
         Result r = userFeign.roleAdd(role);
         return r;
@@ -108,7 +112,9 @@ public class RoleController {
      */
     @ResponseBody
     @PostMapping("/roleUpdate")
-    public Result roleEdit(@RequestBody Role role){
+    public Result roleEdit(@RequestBody Role role,Principal principal){
+        role.setUpdateTime(DateUtil.getTimestamp());
+        role.setUpdateBy(principal.getName());
         log.info("用户信息"+role.toString());
         Result r = userFeign.roleUpdate(role);
         return r;
