@@ -252,4 +252,14 @@ public class UserService implements UserApi{
         return Result.success();
 
     }
+    @Override
+    public Result roleStatus(Long id,String status) {
+        try {
+            roleManage.roleStatus(id,status);
+            return Result.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+    }
 }

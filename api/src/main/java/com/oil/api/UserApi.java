@@ -143,4 +143,11 @@ public interface UserApi {
      */
     @RequestMapping("/roleDeleteOne")
     Result roleDeleteOne(@RequestParam("id") Long id);
+    /**
+     * Description: 功能描述（角色状态修改） <br/>
+     * date: 2020/4/25 18:24<br/>
+     * @author libd <br/>
+     */
+    @RequestMapping("/roleStatus")
+    Result roleStatus(@RequestParam("id") Long id,@RequestParam("status") String status);
 }

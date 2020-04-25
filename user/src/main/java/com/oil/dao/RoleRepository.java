@@ -32,4 +32,8 @@ public interface RoleRepository extends JpaRepository<Role,Long> {
     @Modifying
     @Query("update Role r set r.delFlag = 1 where r.roleId = ?1")
     void roleDel(Long id);
+
+    @Modifying
+    @Query("update Role r set r.status = ?2 where r.roleId = ?1")
+    void roleStatus(Long id,String status);
 }

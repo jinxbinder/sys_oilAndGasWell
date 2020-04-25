@@ -17,6 +17,11 @@ spring:
     encoding: utf-8
     mode: HTML5
     cache: false
+  zipkin:
+    base-url: http://39.102.34.165:9411
+  sleuth:
+    sampler:
+      probability: 0.5
 #security:
 #  oauth2:
 #    client:

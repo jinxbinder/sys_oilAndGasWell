@@ -30,4 +30,6 @@ public interface RoleManage {
     void roleUpdate(Role role);
 
     void roleDeleteOne(Long id);
+
+    void roleStatus(Long id,String status);
 }

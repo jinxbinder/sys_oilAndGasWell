@@ -131,4 +131,17 @@ public class RoleController {
         Result r = userFeign.roleDeleteOne(Long.parseLong(id));
         return r;
     }
+    /**
+     * 角色状态修改
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/roleStatus")
+    public Result adminStatus(@RequestParam("id") String id,@RequestParam("status") String status){
+
+        Result r = userFeign.roleStatus(Long.parseLong(id),status);
+        return r;
+
+    }
 }

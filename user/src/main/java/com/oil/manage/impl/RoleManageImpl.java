@@ -53,4 +53,9 @@ public class RoleManageImpl implements RoleManage{
 
         roleRepository.roleDel(id);
     }
+
+    @Override
+    public void roleStatus(Long id,String status) {
+        roleRepository.roleStatus(id,status);
+    }
 }

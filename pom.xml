@@ -12,6 +12,7 @@
         <module>eureka</module>
         <module>gateway</module>
         <module>auth</module>
+        <module>sk</module>
     </modules>
     <groupId>com.oil</groupId>
     <artifactId>sys_oagw</artifactId>
