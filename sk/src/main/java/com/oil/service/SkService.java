@@ -1,6 +1,7 @@
 package com.oil.service;
 
 import com.oil.api.SkApi;
+import com.oil.entity.Role;
 import com.oil.entity.User;
 import com.oil.entity.WellInfo;
 import com.oil.manage.WellInfoManage;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -41,5 +43,15 @@ public class SkService implements SkApi {
 
         }
         return Result.error();
+    }
+    @Override
+    public Result wellAdd(@RequestBody WellInfo wellInfo) {
+        try {
+            wellInfoManage.wellAdd(wellInfo);
+        }catch (Exception e){
+            log.error("井信息新增失败：error#####",e);
+            Result.error("井信息新增失败");
+        }
+        return Result.success();
     }
 }

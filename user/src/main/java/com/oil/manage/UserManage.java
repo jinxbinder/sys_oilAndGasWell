@@ -45,4 +45,6 @@ public interface UserManage {
      void adminDeleteSome(List<Long> ids);
 
      void adminStatus(Long id,String status);
+
+     void newpass(String loginName,String password);
 }

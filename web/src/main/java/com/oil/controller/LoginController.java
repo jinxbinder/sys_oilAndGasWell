@@ -111,4 +111,13 @@ public class LoginController {
         }
         return "welcome";
     }
+    /**
+    * Description: 功能描述（密码修改页跳转） <br/>
+    * date: 2020/4/29 11:12<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/rpass")
+    public String rpass(){
+        return "rpassword";
+    }
 }

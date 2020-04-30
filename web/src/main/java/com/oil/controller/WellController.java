@@ -6,14 +6,15 @@ import com.oil.entity.Role;
 import com.oil.entity.WellInfo;
 import com.oil.feign.SkFeign;
 import com.oil.page.Pages;
+import com.oil.utils.DateUtil;
 import com.oil.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.security.Principal;
 
 /**
  * ClassName: WellController <br/>
@@ -47,5 +48,30 @@ public class WellController {
         model.addAttribute("wellList", wellList);
 
         return "well-info-list";
+    }
+
+    /**
+     * 井信息添加页跳转
+     * @return
+     */
+    @RequestMapping("/wellAddPage")
+    public String wellAddPage(){
+
+        return "well-add";
+    }
+
+    /**
+     * 井信息添加添加  ajax 返回字符串
+     * @param
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/wellAdd")
+    public Result wellAdd(@RequestBody WellInfo wellInfo, Principal principal){
+        wellInfo.setCreateTime(DateUtil.getTimestamp());
+        wellInfo.setCreateBy(principal.getName());
+        log.info("用户信息"+wellInfo.toString());
+        Result r = skFeign.wellAdd(wellInfo);
+        return r;
     }
 }

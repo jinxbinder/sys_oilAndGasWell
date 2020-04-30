@@ -107,4 +107,9 @@ public class UserManageImpl implements UserManage {
         userRepository.adminStatus(id,status);
     }
 
+    @Override
+    public void newpass(String loginName, String password) {
+        userRepository.newpass(loginName,password);
+    }
+
 }

@@ -51,5 +51,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query("update User u set u.status = ?2 where u.userId = ?1")
     void adminStatus(Long id,String status);
 
+    @Modifying
+    @Query("update User u set u.password = ?2 where u.loginName = ?1")
+    void newpass(String loginName,String password);
+
 
 }

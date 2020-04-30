@@ -150,4 +150,11 @@ public interface UserApi {
      */
     @RequestMapping("/roleStatus")
     Result roleStatus(@RequestParam("id") Long id,@RequestParam("status") String status);
+    /**
+    * Description: 功能描述（密码修改） <br/>
+    * date: 2020/4/29 11:38<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/newpass")
+    Result newpass(@RequestBody User user);
 }

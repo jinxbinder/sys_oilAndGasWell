@@ -26,4 +26,9 @@ public class WellInfoManageImpl implements WellInfoManage {
     public Page<WellInfo> wellListByPage(Pageable pageable) {
         return wellInfoRepository.findWellable(pageable);
     }
+
+    @Override
+    public void wellAdd(WellInfo wellInfo) {
+        wellInfoRepository.save(wellInfo);
+    }
 }

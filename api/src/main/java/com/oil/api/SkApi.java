@@ -1,6 +1,9 @@
 package com.oil.api;
 
+import com.oil.entity.User;
+import com.oil.entity.WellInfo;
 import com.oil.utils.Result;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,5 +25,11 @@ public interface SkApi {
      */
     @RequestMapping("/wellInfoByPage")
     Result wellInfoByPage(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize);
-
+    /**
+     * Description: 功能描述（井信息添加） <br/>
+     * date: 2020/4/26 16:46<br/>
+     * @author libd <br/>
+     */
+    @RequestMapping("/wellAdd")
+    Result wellAdd(@RequestBody WellInfo wellInfo);
 }

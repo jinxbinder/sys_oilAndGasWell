@@ -17,4 +17,6 @@ import org.springframework.data.domain.Pageable;
 public interface WellInfoManage {
 
     Page<WellInfo> wellListByPage(Pageable pageable);
+
+    void wellAdd(WellInfo wellInfo);
 }

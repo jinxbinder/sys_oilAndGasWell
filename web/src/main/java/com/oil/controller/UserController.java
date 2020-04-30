@@ -211,4 +211,21 @@ public class UserController {
 
     }
 
+    /**
+     * 管理员密码修改
+     * @param user
+     * @param principal
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/newpass")
+    public Result newpass(@RequestBody User user,Principal principal){
+        if(StringUtil.isNotEmpty(user.getPassword())){
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setLoginName(principal.getName());
+            return userFeign.newpass(user);
+        }
+        return Result.error("密码为空");
+    }
+
 }

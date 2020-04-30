@@ -262,4 +262,15 @@ public class UserService implements UserApi{
             return Result.error();
         }
     }
+
+    @Override
+    public Result newpass(User user) {
+        try {
+            userManage.newpass(user.getLoginName(),user.getPassword());
+            return Result.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+    }
 }
