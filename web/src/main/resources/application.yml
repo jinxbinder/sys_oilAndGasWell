@@ -3,6 +3,8 @@ server:
   servlet:
     context-path:
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://39.102.34.165:8761/eureka/

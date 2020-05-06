@@ -3,6 +3,9 @@ server:
 eureka:
   instance:
     hostname: localhost
+    instance-id: ${eureka.instance.ip-address}:${spring.application.name}:${server.port}
+    prefer-ip-address: true
+    health-check-url: http://${eureka.instance.hostname}:${server.port}/health
   client:
     registerWithEureka: false
     fetchRegistry: false

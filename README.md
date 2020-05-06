@@ -145,3 +145,16 @@ class User{
     private Timestamp createTime;
 }
 ```
+### 2.7
+  * 问题描述：docker容器间调用超时和ip地址无法解析.
+  * 原因分析：eureka配置不全，容器存在虚拟ip
+  * 解决方案：1）对于注入eureka的服务ip解析错误问题，ip呈现为docker容器id，在eureka-client服务中加入如下配置，启用ip注册.
+```yaml
+eureka:
+  instance:
+    prefer-ip-address: true
+```
+  * 解决方案：2）对于服务调用超时，ip为虚拟ip可修改容器启动命令，指定ip为宿主机ip.
+```text
+docker run --name user -v /root/docker/docker-user/test:/tmp -p 8762:8762 -d -e "EUREKA_INSTANCE_IP-ADDRESS=39.102.34.165" -e "SERVER_PORT=8762"
+```
