@@ -8,6 +8,12 @@ spring version
  - Oauth2认证授权
  - OpenFeign负载均衡
  - Spring Cloud Config 统一配置中心
+ - Web 前端页面
+ - User 用户服务
+ - Sk 油井作业服务
+ - Filec 文件服务
+ - Common 通用模块
+ - Api 接口模块
 ### 1.1 user
    涵盖用户的CRUD操作
    数据访问采用spring data jpa

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:include="include :: header('射孔枪添加')"/>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+
+            <div class="layui-form-item">
+                <label for="gunName" class="layui-form-label">
+                    <span class="x-red">*</span>射孔枪名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="gunName" name="gunName" required="" lay-verify="gunName"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="gunType" class="layui-form-label">
+                    <span class="x-red">*</span>枪长集合，空格分隔（m）
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="gunType" name="gunType" required="" lay-verify="gunType"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="joint" class="layui-form-label">
+                    <span class="x-red">*</span>接头长度（m）
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="joint" name="joint" required="" lay-verify="joint"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+
+
+                <button  class="layui-btn" lay-filter="add" lay-submit="">
+                    增加
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>layui.use(['form', 'layer'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form,
+            layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            wellName: function(value) {
+                if (value.length < 3) {
+                    return '角色名至少得3个字符啊';
+                }
+            }
+
+        });
+
+        //监听提交
+        form.on('submit(add)',
+            function(data) {
+                // console.log(data);
+
+                var roleData = {
+                    gunName:$('#gunName').val(),
+                    gunType:$('#gunType').val(),
+                    joint:$('#joint').val(),
+                    // roleList:ids
+
+                };
+                // console.log(userData.toString());
+                $.ajax({
+                    url:'/gunAdd',
+                    type:'post',
+                    dataType:'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(roleData),
+                    success:function (rsp) {
+                        var code = rsp.code;
+                        if("200" == code){
+                            layer.alert("增加成功", {
+                                    icon: 6
+                                },
+                                function() {
+                                    //关闭当前frame
+                                    xadmin.close();
+                                    // 可以对父窗口进行刷新
+                                    xadmin.father_reload();
+                                });
+                        }else {
+                            layer.alert("增加失败", {
+                                    icon: 6
+                                },
+                                function() {
+                                    //关闭当前frame
+                                    xadmin.close();
+                                });
+                        }
+                    },
+                    error:function (err) {
+                        layer.alert("增加失败", {
+                                icon: 6
+                            },
+                            function() {
+                                //关闭当前frame
+                                xadmin.close();
+                                // 可以对父窗口进行刷新
+//                                    xadmin.father_reload();
+                            });
+                    }
+                });
+                return false;
+            });
+    });
+</script>
+</body>
+
+</html>

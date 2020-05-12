@@ -26,4 +26,9 @@ public class RoadWorkManageImpl implements RoadWorkManage {
     public List<RoadWork> workListPage(Long wid) {
         return roadWorkRepository.findRoadWorksByWId(wid);
     }
+
+    @Override
+    public void workAdd(RoadWork roadWork) {
+        roadWorkRepository.save(roadWork);
+    }
 }

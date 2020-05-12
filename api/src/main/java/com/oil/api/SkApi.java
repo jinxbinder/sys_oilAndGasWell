@@ -1,5 +1,7 @@
 package com.oil.api;
 
+import com.oil.entity.Gun;
+import com.oil.entity.RoadWork;
 import com.oil.entity.User;
 import com.oil.entity.WellInfo;
 import com.oil.utils.Result;
@@ -46,5 +48,25 @@ public interface SkApi {
     */
     @RequestMapping("/workListPage")
     Result workListPage(@RequestParam("wid") Long wid);
-
+    /**
+    * Description: 功能描述（施工信息添加） <br/>
+    * date: 2020/5/12 11:18<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/workAdd")
+    Result workAdd(@RequestBody RoadWork roadWork);
+    /**
+    * Description: 功能描述（射孔枪信息分页查询） <br/>
+    * date: 2020/5/12 11:30<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/gunByPage")
+    Result gunByPage(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize);
+    /**
+    * Description: 功能描述（射孔枪添加） <br/>
+    * date: 2020/5/12 14:23<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/gunAdd")
+    Result gunAdd(@RequestBody Gun gun);
 }

@@ -14,5 +14,8 @@ import java.util.List;
  * @since JDK 1.8
  */
 public interface RoadWorkManage {
+
     List<RoadWork> workListPage(Long wid);
+
+    void workAdd(RoadWork roadWork);
 }

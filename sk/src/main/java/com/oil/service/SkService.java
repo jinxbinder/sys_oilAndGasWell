@@ -1,10 +1,9 @@
 package com.oil.service;
 
 import com.oil.api.SkApi;
-import com.oil.entity.RoadWork;
-import com.oil.entity.Role;
-import com.oil.entity.User;
-import com.oil.entity.WellInfo;
+import com.oil.dao.GunRepository;
+import com.oil.entity.*;
+import com.oil.manage.GunManage;
 import com.oil.manage.RoadWorkManage;
 import com.oil.manage.WellInfoManage;
 import com.oil.page.Pages;
@@ -35,6 +34,8 @@ public class SkService implements SkApi {
     private WellInfoManage wellInfoManage;
     @Autowired
     private RoadWorkManage roadWorkManage;
+    @Autowired
+    private GunManage gunManage;
     @Override
     public Result wellInfoByPage(int pageNum, int pageSize) {
         try {
@@ -76,6 +77,39 @@ public class SkService implements SkApi {
         }catch (Exception e){
             return Result.error();
 
+        }
+    }
+
+    @Override
+    public Result workAdd(@RequestBody RoadWork roadWork) {
+        try {
+            roadWorkManage.workAdd(roadWork);
+            return Result.success();
+        }catch (Exception e){
+            log.error("新增失败：error#####",e);
+            return Result.error("新增失败");
+        }
+    }
+
+    @Override
+    public Result gunByPage(int pageNum, int pageSize) {
+        Page<Gun> guns = gunManage.gunByPage(PageRequest.of(pageNum,pageSize));
+        Pages<Gun> g = new Pages<>();
+        g.setContent(guns.getContent());
+        g.setPageNo(guns.getNumber());
+        g.setPageSize(guns.getSize());
+        g.setTotal(guns.getTotalElements());
+        return Result.success(g);
+    }
+
+    @Override
+    public Result gunAdd(Gun gun) {
+        try {
+            gunManage.gunAdd(gun);
+            return Result.success();
+        }catch (Exception e){
+            log.error("新增失败：error#####",e);
+            return Result.error("新增失败");
         }
     }
 }

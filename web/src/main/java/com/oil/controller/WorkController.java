@@ -76,6 +76,6 @@ public class WorkController {
     @RequestMapping("/workAdd")
     public Result workAdd(@RequestBody RoadWork roadWork){
         log.info(roadWork.toString());
-        return Result.error();
+        return skFeign.workAdd(roadWork);
     }
 }
