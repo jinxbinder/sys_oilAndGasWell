@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-    <th:block th:include="include :: header('井信息列表')"/>
+    <th:block th:include="include :: header('施工列表')"/>
 </head>
 <body>
 <div class="x-nav">
@@ -35,10 +35,11 @@
                             <!--<i class="layui-icon">&#xe615;</i>-->
                         </div>
                     </form>
+
                 </div>
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-                    <button class="layui-btn" onclick="xadmin.open('添加角色','/wellAddPage',650,400)"><i class="layui-icon"></i>添加</button>
+                    <button class="layui-btn" th:name="${wellId}" onclick="workAddPage(this,'施工列表','/workAddPage/')"><i class="layui-icon"></i>添加</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-table layui-form">
@@ -48,35 +49,31 @@
                                 <input type="checkbox"  lay-filter="selectAll"  id="selectAll"  lay-skin="primary">
                             </th>
                             <th>ID</th>
-                            <th>井ID</th>
-                            <th>完钻井深(m)</th>
-                            <th>油层套管规格(mm)</th>
-                            <th>施工状态</th>
+                            <th>层位</th>
+                            <th>层号</th>
+                            <th>射孔井段(m)</th>
                             <th>操作</th>
                         </thead>
-                        <tbody th:each="well:${wellList}" >
+                        <tbody th:each="work:${works}" >
                         <tr>
                             <td>
-                                <input type="checkbox" name="checkId" th:value="${well.wid}"   lay-skin="primary">
+                                <input type="checkbox" name="checkId" th:value="${work.id}"   lay-skin="primary">
                             </td>
-                            <td th:text="${well.wid}" ></td>
-                            <td th:text="${well.wellId}" ></td>
-                            <td th:text="${well.wellDeepCmplt}" ></td>
-                            <td th:text="${well.oilCasingType}"></td>
-                            <td class="td-status" >
-                                <span th:if="${well.status} ne 1" class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
-                                <span th:if="${well.status} eq 1" class="layui-btn layui-btn-normal layui-btn-disabled layui-btn-mini">已停用</span>
-                            </td>
+                            <td th:text="${work.id}" ></td>
+                            <td th:text="${work.layerPlace}" ></td>
+                            <td th:text="${work.layerId}" ></td>
+                            <td th:text="${work.perforationWellSection}"></td>
+
                             <td class="td-manage" >
                                 <div class="layui-btn-group">
 
-                                    <a  th:name="${well.wid}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="workListPage(this,'施工列表','/workListPage/')" href="javascript:;" title="">
-                                        <i class="layui-icon">&#xe601;</i>施工详情
+                                    <a  th:name="${work.id}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="workAddPage(this,'施工列表','/workAddPage/')" href="javascript:;" title="">
+                                        <i class="layui-icon">&#xe601;</i>录入
                                     </a>
-                                    <a title="编辑"  th:name="${well.wellId}" class="layui-btn layui-btn-primary layui-btn-sm"  onclick="wellUpdate1(this,'编辑','/wellEditPage')" href="javascript:;">
+                                    <a title="编辑"  th:name="${work.id}" class="layui-btn layui-btn-primary layui-btn-sm"  onclick="wellUpdate1(this,'编辑','/wellEditPage')" href="javascript:;">
                                         <i class="layui-icon">&#xe642;</i>
                                     </a>
-                                    <a title="删除" th:name="${well.wid}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="member_del(this)" href="javascript:;">
+                                    <a title="删除" th:name="${work.id}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="member_del(this)" href="javascript:;">
                                         <i class="layui-icon">&#xe640;</i>
                                     </a>
                                 </div>
@@ -86,36 +83,7 @@
                     </table>
                 </div>
                 <div class="layui-card-body ">
-                    <div class="page">
-                        <ul class="pagination pull-right no-margin">
 
-                            <!-- 首页 -->
-                            <li>
-                                <a th:href="'/wellInfoByPage?pageNum=0'">首页</a>
-                            </li>
-
-                            <!-- 上一页 -->
-                            <li th:if="${wellList.hasPrevious()}">
-                                <a th:href="'/wellInfoByPage?pageNum=' + ${wellList.getPageNo() - 1}" th:text="上一页"></a>
-                            </li>
-
-                            <!-- 中间页 -->
-                            <li th:if="${wellList.getTotalPage() gt 0}" th:each="pageNum:${#numbers.sequence(0, wellList.getTotalPage() - 1)}">
-                                <a th:href="'/wellInfoByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne wellList.getTotalPage()}"></a>
-                                <a th:href="'/wellInfoByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq wellList.getTotalPage()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
-                            </li>
-
-                            <!--下一页-->
-                            <li th:if="${wellList.hasNext()}">
-                                <a th:href="'/wellInfoByPage?pageNum=' + ${wellList.getPageNo() + 1}" th:text="下一页"></a>
-                            </li>
-
-                            <!-- 尾页 -->
-                            <li>
-                                <a th:if="${wellList.getTotalPage() gt 0}" th:href="'/wellInfoByPage?pageNum=' + ${wellList.getTotalPage() -1}">尾页</a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -150,10 +118,10 @@
         });
     });
     // 施工列表
-    function workListPage(obj,title,url){
+    function workAddPage(obj,title,url){
         var url1 = url + obj.name;
-        // console.log(url1);
-        xadmin.open(title,url1);
+
+        xadmin.open(title,url1,650,400)
     }
     /*用户-停用*/
     function member_stop(obj){

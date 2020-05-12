@@ -13,6 +13,7 @@
         <module>gateway</module>
         <module>auth</module>
         <module>sk</module>
+        <module>filec</module>
     </modules>
     <groupId>com.oil</groupId>
     <artifactId>sys_oagw</artifactId>

@@ -2,18 +2,20 @@
 <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:include="include :: header('井信息添加')"/>
+    <th:block th:include="include :: header('施工信息添加')"/>
 </head>
 <body>
 <div class="layui-fluid">
     <div class="layui-row">
         <form class="layui-form">
+            <span id="wellWid" th:text="${well.wid}"></span>
+            <h3 th:text="'井号:'+${well.wellId}"></h3>
             <div class="layui-form-item">
-                <label for="wellId" class="layui-form-label">
-                    <span class="x-red">*</span>井号
+                <label for="layerPlace" class="layui-form-label">
+                    <span class="x-red">*</span>层位
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="wellId" name="wellId" required="" lay-verify="wellId"
+                    <input type="text" id="layerPlace" name="layerPlace" required="" lay-verify="layerPlace"
                            autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
@@ -21,11 +23,11 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="wellDeepCmplt" class="layui-form-label">
-                    <span class="x-red">*</span>完钻井深(m)
+                <label for="layerId" class="layui-form-label">
+                    <span class="x-red">*</span>层号
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="wellDeepCmplt" name="wellDeepCmplt" required="" lay-verify="wellDeepCmplt"
+                    <input type="text" id="layerId" name="layerId" required="" lay-verify="layerId"
                            autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
@@ -33,11 +35,11 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="diameterInner" class="layui-form-label">
-                    <span class="x-red">*</span>内径(mm)
+                <label for="perforationWellSection" class="layui-form-label">
+                    <span class="x-red">*</span>射孔井段（m）
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="diameterInner" name="diameterInner" required="" lay-verify="diameterInner"
+                    <input type="text" id="perforationWellSection" name="perforationWellSection" required="" lay-verify="perforationWellSection"
                            autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
@@ -63,7 +65,7 @@
 
         //自定义验证规则
         form.verify({
-            wellId: function(value) {
+            wellName: function(value) {
                 if (value.length < 3) {
                     return '角色名至少得3个字符啊';
                 }
@@ -75,22 +77,18 @@
         form.on('submit(add)',
             function(data) {
                 // console.log(data);
-                var ids = [];
-                $("input[name='roles']:checked").each(function(i){
-                    var obj = json2($(this).val());
-                    ids.push(obj);
-                });
 
                 var roleData = {
-                    wellId:$('#wellId').val(),
-                    wellDeepCmplt:$('#wellDeepCmplt').val(),
-                    diameterInner:$('#diameterInner').val()
+                    layerPlace:$('#layerPlace').val(),
+                    layerId:$('#layerId').val(),
+                    perforationWellSection:$('#perforationWellSection').val(),
+                    wid:$('#wellWid').text()
                     // roleList:ids
 
                 };
                 // console.log(userData.toString());
                 $.ajax({
-                    url:'/wellAdd',
+                    url:'/workAdd',
                     type:'post',
                     dataType:'json',
                     contentType: 'application/json',

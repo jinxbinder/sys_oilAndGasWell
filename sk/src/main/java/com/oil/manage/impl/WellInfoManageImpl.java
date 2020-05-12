@@ -31,4 +31,9 @@ public class WellInfoManageImpl implements WellInfoManage {
     public void wellAdd(WellInfo wellInfo) {
         wellInfoRepository.save(wellInfo);
     }
+
+    @Override
+    public WellInfo findById(Long wid) {
+        return wellInfoRepository.findWellInfoByWid(wid);
+    }
 }

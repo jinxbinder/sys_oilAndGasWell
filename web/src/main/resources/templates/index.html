@@ -180,10 +180,10 @@
                         </ul>
                     </li>
 
-                    <li>
+                    <li sec:authorize="hasRole('ROLE_admin')">
                         <a href="javascript:;">
-                            <i class="iconfont left-nav-li" lay-tips="其它页面">&#xe6b4;</i>
-                            <cite>其它页面</cite>
+                            <i class="iconfont left-nav-li" lay-tips="系统管理页面">&#xe6b4;</i>
+                            <cite>系统管理</cite>
                             <i class="iconfont nav_right">&#xe697;</i></a>
                         <ul class="sub-menu">
                             <li>
@@ -197,9 +197,19 @@
                                     <cite>错误页面</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('示例页面','demo.html')">
+                                <a href="http://39.102.34.165:9411/zipkin/" target="_blank">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>示例页面</cite></a>
+                                    <cite>服务链路追踪平台</cite></a>
+                            </li>
+                            <li>
+                                <a href="http://39.102.34.165:8761/" target="_blank">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>服务注册中心</cite></a>
+                            </li>
+                            <li>
+                                <a href="http://39.106.116.185:8080/" target="_blank">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>CI/CD平台</cite></a>
                             </li>
                             <li>
                                 <a onclick="xadmin.add_tab('更新日志','log.html')">

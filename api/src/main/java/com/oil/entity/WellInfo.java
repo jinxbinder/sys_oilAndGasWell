@@ -56,7 +56,8 @@ public class WellInfo implements Serializable {
     /** 删除标志 1为删除 0正常 */
     private String delFlag = "0";
     /** 关联关系 一口井对应多个施工 */
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "wi_id ")
     private List<RoadWork> roadWorks;
     /** 创建者 */
     private String createBy;

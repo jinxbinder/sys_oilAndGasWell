@@ -19,4 +19,6 @@ public interface WellInfoManage {
     Page<WellInfo> wellListByPage(Pageable pageable);
 
     void wellAdd(WellInfo wellInfo);
+
+    WellInfo findById(Long wid);
 }

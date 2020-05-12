@@ -74,4 +74,5 @@ public class WellController {
         Result r = skFeign.wellAdd(wellInfo);
         return r;
     }
+
 }

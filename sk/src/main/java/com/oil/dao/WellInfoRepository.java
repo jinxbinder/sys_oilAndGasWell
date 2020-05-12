@@ -25,4 +25,6 @@ public interface WellInfoRepository extends JpaRepository<WellInfo,Long> {
 
     @Query("select w from WellInfo w where w.delFlag <> 1")
     Page<WellInfo> findWellable(Pageable pageable);
+
+    WellInfo findWellInfoByWid(Long wid);
 }

@@ -32,4 +32,19 @@ public interface SkApi {
      */
     @RequestMapping("/wellAdd")
     Result wellAdd(@RequestBody WellInfo wellInfo);
+    /**
+    * Description: 功能描述（井信息id查询） <br/>
+    * date: 2020/5/6 20:19<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/findWellInfo")
+    Result findWellInfo(@RequestParam("wid") Long wid);
+    /**
+    * Description: 功能描述（井id查询对应施工信息） <br/>
+    * date: 2020/5/11 20:19<br/>
+    * @author libd <br/>
+    */
+    @RequestMapping("/workListPage")
+    Result workListPage(@RequestParam("wid") Long wid);
+
 }

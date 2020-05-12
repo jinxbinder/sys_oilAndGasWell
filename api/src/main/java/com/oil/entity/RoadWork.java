@@ -33,13 +33,13 @@ public class RoadWork implements Serializable {
     /** 布孔方式 */
     private String holeWay;
     /** 射孔方式 */
-    private String perforationWay;
+    private String perforationWay="电缆射孔";
     /** 射孔井段(m) */
     private String perforationWellSection;
     /** 厚度(m) */
     private Double perforationThick;
     /** 孔密 (孔/m) */
-    private Double holeDensity;
+    private Double holeDensity=16.0;
     /** 孔数 */
     private Integer holeCount;
     /** 射孔弹型号 */
@@ -53,9 +53,8 @@ public class RoadWork implements Serializable {
     /** 删除标志 1为删除 0正常 */
     private String delFlag = "0";
     /** 多个施工对应一口井*/
-    @JsonIgnore
-    @ManyToOne
-    private WellInfo wellInfo;
+    @Column(name = "wi_id")
+    private Long wid;
     /** 创建者 */
     private String createBy;
     /** 创建时间 */
