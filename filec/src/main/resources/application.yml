@@ -9,7 +9,7 @@ eureka:
       defaultZone: http://39.102.34.165:8761/eureka/
 spring:
   application:
-    name: filec
+    name: file
   #数据源
   datasource:
       name: test

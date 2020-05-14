@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:include="include :: header('射孔枪列表')"/>
+    <th:block th:include="include :: header('文件列表')"/>
 </head>
 <body>
+<a href="/downloadFile">文件下载</a>
+
 <div class="x-nav">
           <span class="layui-breadcrumb">
             <a href="">首页</a>
@@ -12,7 +14,8 @@
               <cite>导航元素</cite>
             </a>
           </span>
-    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
         <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
 </div>
 <div class="layui-fluid">
@@ -22,57 +25,63 @@
                 <div class="layui-card-body ">
                     <form class="layui-form layui-col-space5" method="get" th:action="@{/findByNameLike}">
                         <div class="layui-inline layui-show-xs-block">
-                            <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
+                            <input class="layui-input" autocomplete="off" placeholder="开始日" name="start" id="start">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
+                            <input class="layui-input" autocomplete="off" placeholder="截止日" name="end" id="end">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" name="username"  placeholder="请输入井名称" autocomplete="off" class="layui-input">
+                            <input type="text" name="username" placeholder="请输入井名称" autocomplete="off"
+                                   class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="submit" class="layui-btn"  >
+                            <input type="submit" class="layui-btn">
                             <!--<i class="layui-icon">&#xe615;</i>-->
                         </div>
                     </form>
                 </div>
                 <div class="layui-card-header">
-                    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-                    <button class="layui-btn" onclick="xadmin.open('添加射孔枪','/gunAddPage',650,400)"><i class="layui-icon"></i>添加</button>
+                    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除
+                    </button>
+                    <button class="layui-btn" onclick="xadmin.open('文件上传','/uploadPage',650,400)"><i
+                            class="layui-icon"></i>文件上传
+                    </button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-table layui-form">
                         <thead>
                         <tr>
                             <th>
-                                <input type="checkbox"  lay-filter="selectAll"  id="selectAll"  lay-skin="primary">
+                                <input type="checkbox" lay-filter="selectAll" id="selectAll" lay-skin="primary">
                             </th>
                             <th>ID</th>
-                            <th>枪名</th>
-                            <th>枪长集合(m)</th>
-                            <th>接头长度(m)</th>
+                            <th>文件名</th>
+                            <th>文件类型</th>
+                            <th>作者</th>
                             <th>操作</th>
                         </thead>
-                        <tbody th:each="gun:${gunList}" >
+                        <tbody th:each="file:${fileList}">
                         <tr>
                             <td>
-                                <input type="checkbox" name="checkId" th:value="${gun.id}"   lay-skin="primary">
+                                <input type="checkbox" name="checkId" th:value="${file.id}" lay-skin="primary">
                             </td>
-                            <td th:text="${gun.id}" ></td>
-                            <td th:text="${gun.gunName}" ></td>
-                            <td th:text="${gun.gunType}" ></td>
-                            <td th:text="${gun.joint}"></td>
+                            <td th:text="${file.id}"></td>
+                            <td th:text="${file.fileName}"></td>
+                            <td th:text="${file.fileType}"></td>
+                            <td th:text="${file.author}"></td>
 
-                            <td class="td-manage" >
+                            <td class="td-manage">
                                 <div class="layui-btn-group">
 
-                                    <!--<a  th:name="${gun.id}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="workListPage(this,'施工列表','/workListPage/')" href="javascript:;" title="">
-                                        <i class="layui-icon">&#xe601;</i>施工详情
-                                    </a>-->
-                                    <a title="编辑"  th:name="${gun.id}" class="layui-btn layui-btn-primary layui-btn-sm"  onclick="gunUpdate1(this,'编辑','/gunEditPage')" href="javascript:;">
+                                    <a  th:name="${file.id}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="workListPage(this,'文件下载','/downloadFile/')" href="javascript:;" title="">
+                                        <i class="layui-icon">&#xe601;</i>文件下载
+                                    </a>
+                                    <a title="编辑" th:name="${file.id}" class="layui-btn layui-btn-primary layui-btn-sm"
+                                       onclick="fileUpdate1(this,'编辑','/fileEditPage')" href="javascript:;">
                                         <i class="layui-icon">&#xe642;</i>
                                     </a>
-                                    <a title="删除" th:name="${gun.id}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="member_del(this)" href="javascript:;">
+                                    <a title="删除" th:name="${file.id}" class="layui-btn layui-btn-primary layui-btn-sm"
+                                       onclick="member_del(this)" href="javascript:;">
                                         <i class="layui-icon">&#xe640;</i>
                                     </a>
                                 </div>
@@ -87,28 +96,33 @@
 
                             <!-- 首页 -->
                             <li>
-                                <a th:href="'/gunByPage?pageNum=0'">首页</a>
+                                <a th:href="'/fileListPage?pageNum=0'">首页</a>
                             </li>
 
                             <!-- 上一页 -->
-                            <li th:if="${gunList.hasPrevious()}">
-                                <a th:href="'/gunByPage?pageNum=' + ${gunList.getPageNo() - 1}" th:text="上一页"></a>
+                            <li th:if="${fileList.hasPrevious()}">
+                                <a th:href="'/fileListPage?pageNum=' + ${fileList.getPageNo() - 1}" th:text="上一页"></a>
                             </li>
 
                             <!-- 中间页 -->
-                            <li th:if="${gunList.getTotalPage() gt 0}" th:each="pageNum:${#numbers.sequence(0, gunList.getTotalPage() - 1)}">
-                                <a th:href="'/gunByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne gunList.getTotalPage()}"></a>
-                                <a th:href="'/gunByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq gunList.getTotalPage()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+                            <li th:if="${fileList.getTotalPage() gt 0}"
+                                th:each="pageNum:${#numbers.sequence(0, fileList.getTotalPage() - 1)}">
+                                <a th:href="'/fileListPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
+                                   th:if="${pageNum ne fileList.getTotalPage()}"></a>
+                                <a th:href="'/fileListPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
+                                   th:if="${pageNum eq fileList.getTotalPage()}"
+                                   th:style="'font-weight:bold;background: #6faed9;'"></a>
                             </li>
 
                             <!--下一页-->
-                            <li th:if="${gunList.hasNext()}">
-                                <a th:href="'/gunByPage?pageNum=' + ${gunList.getPageNo() + 1}" th:text="下一页"></a>
+                            <li th:if="${fileList.hasNext()}">
+                                <a th:href="'/fileListPage?pageNum=' + ${fileList.getPageNo() + 1}" th:text="下一页"></a>
                             </li>
 
                             <!-- 尾页 -->
                             <li>
-                                <a th:if="${gunList.getTotalPage() gt 0}" th:href="'/gunByPage?pageNum=' + ${gunList.getTotalPage() -1}">尾页</a>
+                                <a th:if="${fileList.getTotalPage() gt 0}"
+                                   th:href="'/fileListPage?pageNum=' + ${fileList.getTotalPage() -1}">尾页</a>
                             </li>
                         </ul>
                     </div>
@@ -119,11 +133,11 @@
 </div>
 </body>
 <script>
-    layui.use(['laydate','form'], function(){
+    layui.use(['laydate', 'form'], function () {
         var laydate = layui.laydate;
         var form = layui.form;
         //全选控制
-        form.on('checkbox(selectAll)',function (data) {
+        form.on('checkbox(selectAll)', function (data) {
             var a = data.elem.checked;
             if (a == true) {
                 $("input[name='checkId']").prop("checked", true);
@@ -147,34 +161,35 @@
     });
 
     // 用户修改
-    function gunUpdate1(obj,title,url){
-        var url1 = url +"/"+ obj.name;
+    function fileUpdate1(obj, title, url) {
+        var url1 = url + "/" + obj.name;
         // console.log(url1);
-        xadmin.open(title,url1);
+        xadmin.open(title, url1);
     }
+
     /*用户-删除*/
-    function member_del(obj){
-        layer.confirm('确认要删除吗？',function(index){
-            console.log("id:"+obj.name);
+    function member_del(obj) {
+        layer.confirm('确认要删除吗？', function (index) {
+            console.log("id:" + obj.name);
             //发异步删除数据
             $.ajax({
-                url:'/gunDeleteOne/'+obj.name,
-                type:'get',
-                dataType:'json',
+                url: '/fileDeleteOne/' + obj.name,
+                type: 'get',
+                dataType: 'json',
                 contentType: 'application/json',
 
-                success:function (rsp) {
+                success: function (rsp) {
                     var code = rsp.code;
 
-                    if("200" == code){
+                    if ("200" == code) {
                         $(obj).parents("tr").remove();
-                        layer.msg('已删除!',{icon:1,time:1000});
-                    }else {
-                        layer.msg('删除失败!',{icon:2,time:1000});
+                        layer.msg('已删除!', {icon: 1, time: 1000});
+                    } else {
+                        layer.msg('删除失败!', {icon: 2, time: 1000});
                     }
                 },
-                error:function (err) {
-                    layer.msg('删除失败!',{icon:2,time:1000});
+                error: function (err) {
+                    layer.msg('删除失败!', {icon: 2, time: 1000});
                 }
             });
 
@@ -185,8 +200,8 @@
     //模糊查询
     function likeName() {
         var str = "";
-        str = "username="+$('input[name="username"]').val()+"&start="+$('input[name="start"]').val()+"&end="+$('input[name="end"]').val();
-        xadmin.add_tab('管理员列表','/findByNameLike?'+str,true);
+        str = "username=" + $('input[name="username"]').val() + "&start=" + $('input[name="start"]').val() + "&end=" + $('input[name="end"]').val();
+        xadmin.add_tab('管理员列表', '/findByNameLike?' + str, true);
         /*var datas = {
             username:$('input[name="username"]').val(),
             start:$('input[name="start"]').val(),
@@ -209,34 +224,35 @@
 
         // xadmin.add_tab('管理员列表','adminListByPage');
     }
+
     //批量删除
-    function delAll (argument) {
+    function delAll(argument) {
 
         // var data = tableCheck.getData();
         var ids;
         $('input[name="checkId"]:checked').each(function () {
             console.log($(this).val());
-            ids = ids +","+ $(this).val();
+            ids = ids + "," + $(this).val();
         });
-        layer.confirm('确认要删除吗？'+ids,function(index){
+        layer.confirm('确认要删除吗？' + ids, function (index) {
             //捉到所有被选中的，发异步进行删除
             $.ajax({
-                url:'/adminDeleteSome?ids='+ids,
-                type:'get',
-                dataType:'json',
+                url: '/adminDeleteSome?ids=' + ids,
+                type: 'get',
+                dataType: 'json',
                 contentType: 'application/json',
 
-                success:function (rsp) {
+                success: function (rsp) {
                     var code = rsp.code;
 
-                    if("200" == code){
+                    if ("200" == code) {
                         $('input[name="checkId"]:checked').parents('tr').remove();
                         layer.msg('删除成功', {icon: 1});
-                    }else {
+                    } else {
                         layer.msg('删除失败', {icon: 1});
                     }
                 },
-                error:function (err) {
+                error: function (err) {
                     layer.msg('删除失败', {icon: 1});
                 }
             });

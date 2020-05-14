@@ -1,20 +1,18 @@
 <!DOCTYPE html>
-<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:include="include :: header('射孔枪添加')"/>
+    <th:block th:include="include :: header('文件上传')"/>
 </head>
 <body>
 <div class="layui-fluid">
     <div class="layui-row">
         <form class="layui-form">
-
             <div class="layui-form-item">
-                <label for="gunName" class="layui-form-label">
-                    <span class="x-red">*</span>射孔枪名
+                <label for="file" class="layui-form-label">
+                    <span class="x-red">*</span>选择上传文件
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="gunName" name="gunName" required="" lay-verify="gunName"
+                    <input type="file" id="file" name="file" required="" lay-verify="file"
                            autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
@@ -22,23 +20,11 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="gunType" class="layui-form-label">
-                    <span class="x-red">*</span>枪长集合，空格分隔（m）
+                <label for="author" class="layui-form-label">
+                    <span class="x-red">*</span>作者
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="gunType" name="gunType" required="" lay-verify="gunType"
-                           autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="joint" class="layui-form-label">
-                    <span class="x-red">*</span>接头长度（m）
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="joint" name="joint" required="" lay-verify="joint"
+                    <input type="text" id="author" name="author" required="" lay-verify="author"
                            autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
@@ -47,10 +33,9 @@
             </div>
 
             <div class="layui-form-item">
-
 
                 <button  class="layui-btn" lay-filter="add" lay-submit="">
-                    增加
+                    上传
                 </button>
             </div>
         </form>
@@ -64,31 +49,40 @@
 
         //自定义验证规则
         form.verify({
-            wellName: function(value) {
+            roleName: function(value) {
                 if (value.length < 3) {
                     return '角色名至少得3个字符啊';
                 }
             }
 
         });
-
         //监听提交
         form.on('submit(add)',
             function(data) {
-                var roleData = {
-                    gunName:$('#gunName').val(),
-                    gunType:$('#gunType').val(),
-                    joint:$('#joint').val()
-                };
+
+                //构建formData
+                var formData = new FormData();
+                //文件部分
+                var file = document.getElementById("file").files[0];
+                formData.append("file", file);
+                //json部分
+                var imageInfo = JSON.stringify({
+                    author:$('#author').val()
+                });
+                //这里包装 可以直接转换成对象
+                formData.append('imageInfo', new Blob([imageInfo], {type: "application/json"}));
+
                 $.ajax({
-                    url:'/gunAdd',
-                    type:'post',
-                    dataType:'json',
-                    contentType: 'application/json',
-                    data: JSON.stringify(roleData),
+                    url: "/uploadFile",
+                    type: "post",
+                    //忽略contentType
+                    contentType: false,
+                    //取消序列换 formData本来就是序列化好的
+                    processData: false,
+                    dataType: "json",
+                    data: formData,
                     success:function (rsp) {
                         var code = rsp.code;
-                        console.log(code);
                         if("200" == code){
                             layer.alert("增加成功", {
                                     icon: 6
@@ -101,7 +95,7 @@
                                 });
                         }else {
                             layer.alert("增加失败", {
-                                    icon: 5
+                                    icon: 6
                                 },
                                 function() {
                                     //关闭当前frame
@@ -111,7 +105,7 @@
                     },
                     error:function (err) {
                         layer.alert("增加失败", {
-                                icon: 5
+                                icon: 6
                             },
                             function() {
                                 //关闭当前frame
@@ -126,5 +120,39 @@
     });
 </script>
 </body>
+<script>
+    $(function () {
+        $("#button").click(function () {
+            //构建formData
+            var formData = new FormData();
+            //文件部分
+            var file = document.getElementById("file").files[0];
+            formData.append("file", file);
+            //json部分
+            var imageInfo = JSON.stringify({
+                "width": "240",
+                "height": "320"
+            });
+            //这里包装 可以直接转换成对象
+            formData.append('imageInfo', new Blob([imageInfo], {type: "application/json"}));
 
+            $.ajax({
+                url: "/test/upload",
+                type: "post",
+                //忽略contentType
+                contentType: false,
+                //取消序列换 formData本来就是序列化好的
+                processData: false,
+                dataType: "json",
+                data: formData,
+                success: function (response) {
+                    alert(response);
+                },
+                error: function () {
+
+                }
+            });
+        });
+    })
+</script>
 </html>

@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -62,8 +63,9 @@ public class WorkController {
     public String workListPage(@PathVariable("wid") Long wid, Model model){
         model.addAttribute("wellId",wid);
         Result r = skFeign.workListPage(wid);
-        if(Constant.SUCCESS.equals(r.get("code").toString())){
-            List<RoadWork> works = (List<RoadWork>) r.get("works");
+        log.info(r.toString());
+        if(Constant.SUCCESS.equals(r.get("code").toString()) && StringUtil.isNotNull(r.get("data"))){
+            List<RoadWork> works = (List<RoadWork>) r.get("data");
             model.addAttribute("works",works);
         }
         return "work-list";
@@ -73,6 +75,7 @@ public class WorkController {
      * @param roadWork
      * @return
      */
+    @ResponseBody
     @RequestMapping("/workAdd")
     public Result workAdd(@RequestBody RoadWork roadWork){
         log.info(roadWork.toString());

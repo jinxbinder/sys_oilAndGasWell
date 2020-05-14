@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.oil.feign.SkFeign;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.annotation.Resource;
 
 /**
@@ -60,6 +62,7 @@ public class GunController {
      * 射孔枪添加
      * @return
      */
+    @ResponseBody
     @RequestMapping("/gunAdd")
     public Result gunAdd(@RequestBody Gun gun){
         return skFeign.gunAdd(gun);
