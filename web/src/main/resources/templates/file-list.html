@@ -4,8 +4,6 @@
     <th:block th:include="include :: header('文件列表')"/>
 </head>
 <body>
-<a href="/downloadFile">文件下载</a>
-
 <div class="x-nav">
           <span class="layui-breadcrumb">
             <a href="">首页</a>
@@ -31,7 +29,11 @@
                             <input class="layui-input" autocomplete="off" placeholder="截止日" name="end" id="end">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" name="username" placeholder="请输入井名称" autocomplete="off"
+                            <input type="text" name="fileName" placeholder="请输入文件名" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="author" placeholder="请输入作者名" autocomplete="off"
                                    class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
@@ -43,8 +45,8 @@
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除
                     </button>
-                    <button class="layui-btn" onclick="xadmin.open('文件上传','/uploadPage',650,400)"><i
-                            class="layui-icon"></i>文件上传
+                    <button class="layui-btn" onclick="xadmin.open('文件上传','/uploadPage',450,300)"><i
+                            class="layui-icon">&#xe681;</i>文件上传
                     </button>
                 </div>
                 <div class="layui-card-body ">
@@ -73,15 +75,15 @@
                             <td class="td-manage">
                                 <div class="layui-btn-group">
 
-                                    <a  th:name="${file.id}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="workListPage(this,'文件下载','/downloadFile/')" href="javascript:;" title="">
-                                        <i class="layui-icon">&#xe601;</i>文件下载
+                                    <a class="layui-btn layui-btn-primary layui-btn-sm"  th:href="@{/downloadFile/{id} (id=${file.id})}" title="">
+                                        <i class="layui-icon">&#xe601;</i>下载
                                     </a>
-                                    <a title="编辑" th:name="${file.id}" class="layui-btn layui-btn-primary layui-btn-sm"
+                                    <!--<a title="编辑" th:name="${file.id}" class="layui-btn layui-btn-primary layui-btn-sm"
                                        onclick="fileUpdate1(this,'编辑','/fileEditPage')" href="javascript:;">
                                         <i class="layui-icon">&#xe642;</i>
-                                    </a>
+                                    </a>-->
                                     <a title="删除" th:name="${file.id}" class="layui-btn layui-btn-primary layui-btn-sm"
-                                       onclick="member_del(this)" href="javascript:;">
+                                       onclick="file_del(this)" href="javascript:;">
                                         <i class="layui-icon">&#xe640;</i>
                                     </a>
                                 </div>
@@ -160,17 +162,16 @@
         });
     });
 
-    // 用户修改
-    function fileUpdate1(obj, title, url) {
-        var url1 = url + "/" + obj.name;
-        // console.log(url1);
-        xadmin.open(title, url1);
-    }
+    // 文件下载
+    // function downloadFile(obj, title, url) {
+    //     var url1 = url + obj.name;
+    //     // console.log(url1);
+    //     xadmin.open(title, url1);
+    // }
 
-    /*用户-删除*/
-    function member_del(obj) {
+    /*文件-删除*/
+    function file_del(obj) {
         layer.confirm('确认要删除吗？', function (index) {
-            console.log("id:" + obj.name);
             //发异步删除数据
             $.ajax({
                 url: '/fileDeleteOne/' + obj.name,

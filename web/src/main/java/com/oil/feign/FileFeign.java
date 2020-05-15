@@ -1,6 +1,7 @@
 package com.oil.feign;
 
 import com.oil.api.FileApi;
+import com.oil.config.MultipartSupportConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 
 /**
@@ -12,6 +13,6 @@ import org.springframework.cloud.openfeign.FeignClient;
  * @version 1.0
  * @since JDK 1.8
  */
-@FeignClient("file")
+@FeignClient(value = "file",configuration = MultipartSupportConfig.class)
 public interface FileFeign extends FileApi {
 }

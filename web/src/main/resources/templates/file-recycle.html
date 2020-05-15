@@ -4,6 +4,259 @@
      <th:block th:include="include :: header('文件回收站')"/>
 </head>
 <body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
 
+            <a>
+              <cite>导航元素</cite>
+            </a>
+          </span>
+     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+        onclick="location.reload()" title="刷新">
+          <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+<div class="layui-fluid">
+     <div class="layui-row layui-col-space15">
+          <div class="layui-col-md12">
+               <div class="layui-card">
+                    <div class="layui-card-body ">
+                         <form class="layui-form layui-col-space5" method="get" th:action="@{/findByNameLike}">
+                              <div class="layui-inline layui-show-xs-block">
+                                   <input class="layui-input" autocomplete="off" placeholder="开始日" name="start" id="start">
+                              </div>
+                              <div class="layui-inline layui-show-xs-block">
+                                   <input class="layui-input" autocomplete="off" placeholder="截止日" name="end" id="end">
+                              </div>
+                              <div class="layui-inline layui-show-xs-block">
+                                   <input type="text" name="username" placeholder="请输入井名称" autocomplete="off"
+                                          class="layui-input">
+                              </div>
+                              <div class="layui-inline layui-show-xs-block">
+                                   <input type="submit" class="layui-btn">
+                                   <!--<i class="layui-icon">&#xe615;</i>-->
+                              </div>
+                         </form>
+                    </div>
+                    <div class="layui-card-header">
+                         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量还原
+                         </button>
+
+                    </div>
+                    <div class="layui-card-body ">
+                         <table class="layui-table layui-form">
+                              <thead>
+                              <tr>
+                                   <th>
+                                        <input type="checkbox" lay-filter="selectAll" id="selectAll" lay-skin="primary">
+                                   </th>
+                                   <th>ID</th>
+                                   <th>文件名</th>
+                                   <th>文件类型</th>
+                                   <th>作者</th>
+                                   <th>操作</th>
+                              </thead>
+                              <tbody th:each="file:${fileList}">
+                              <tr>
+                                   <td>
+                                        <input type="checkbox" name="checkId" th:value="${file.id}" lay-skin="primary">
+                                   </td>
+                                   <td th:text="${file.id}"></td>
+                                   <td th:text="${file.fileName}"></td>
+                                   <td th:text="${file.fileType}"></td>
+                                   <td th:text="${file.author}"></td>
+
+                                   <td class="td-manage">
+                                        <div class="layui-btn-group">
+
+                                             <a class="layui-btn layui-btn-primary layui-btn-sm"  th:name="${file.id}" onclick="file_reuse(this)" href="javascript:;" title="还原">
+                                                  <i class="layui-icon">&#xe68d;</i>还原
+                                             </a>
+                                             <!--<a title="编辑" th:name="${file.id}" class="layui-btn layui-btn-primary layui-btn-sm"
+                                                onclick="fileUpdate1(this,'编辑','/fileEditPage')" href="javascript:;">
+                                                 <i class="layui-icon">&#xe642;</i>
+                                             </a>-->
+                                             <!--<a title="还原" th:name="${file.id}" class="layui-btn layui-btn-primary layui-btn-sm"-->
+                                                <!--onclick="member_del(this)" href="javascript:;">-->
+                                                  <!--<i class="layui-icon">&#xe640;</i>还原-->
+                                             <!--</a>-->
+                                        </div>
+                                   </td>
+                              </tr>
+                              </tbody>
+                         </table>
+                    </div>
+                    <div class="layui-card-body ">
+                         <div class="page">
+                              <ul class="pagination pull-right no-margin">
+
+                                   <!-- 首页 -->
+                                   <li>
+                                        <a th:href="'/fileListPage?pageNum=0'">首页</a>
+                                   </li>
+
+                                   <!-- 上一页 -->
+                                   <li th:if="${fileList.hasPrevious()}">
+                                        <a th:href="'/fileListPage?pageNum=' + ${fileList.getPageNo() - 1}" th:text="上一页"></a>
+                                   </li>
+
+                                   <!-- 中间页 -->
+                                   <li th:if="${fileList.getTotalPage() gt 0}"
+                                       th:each="pageNum:${#numbers.sequence(0, fileList.getTotalPage() - 1)}">
+                                        <a th:href="'/fileListPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
+                                           th:if="${pageNum ne fileList.getTotalPage()}"></a>
+                                        <a th:href="'/fileListPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
+                                           th:if="${pageNum eq fileList.getTotalPage()}"
+                                           th:style="'font-weight:bold;background: #6faed9;'"></a>
+                                   </li>
+
+                                   <!--下一页-->
+                                   <li th:if="${fileList.hasNext()}">
+                                        <a th:href="'/fileListPage?pageNum=' + ${fileList.getPageNo() + 1}" th:text="下一页"></a>
+                                   </li>
+
+                                   <!-- 尾页 -->
+                                   <li>
+                                        <a th:if="${fileList.getTotalPage() gt 0}"
+                                           th:href="'/fileListPage?pageNum=' + ${fileList.getTotalPage() -1}">尾页</a>
+                                   </li>
+                              </ul>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
 </body>
+<script>
+    layui.use(['laydate', 'form'], function () {
+        var laydate = layui.laydate;
+        var form = layui.form;
+        //全选控制
+        form.on('checkbox(selectAll)', function (data) {
+            var a = data.elem.checked;
+            if (a == true) {
+                $("input[name='checkId']").prop("checked", true);
+                form.render('checkbox');
+            } else {
+                $("input[name='checkId']").prop("checked", false);
+                form.render('checkbox');
+            }
+        });
+
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#end' //指定元素
+        });
+    });
+
+    // 文件下载
+    // function downloadFile(obj, title, url) {
+    //     var url1 = url + obj.name;
+    //     // console.log(url1);
+    //     xadmin.open(title, url1);
+    // }
+
+    /*文件-还原*/
+    function file_reuse(obj) {
+        layer.confirm('确认要还原吗？', function (index) {
+            console.log("id:" + obj.name);
+            //发异步删除数据
+            $.ajax({
+                url: '/file_reuse/' + obj.name,
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json',
+
+                success: function (rsp) {
+                    var code = rsp.code;
+
+                    if ("200" == code) {
+                        $(obj).parents("tr").remove();
+                        layer.msg('已还原!', {icon: 1, time: 1000});
+                    } else {
+                        layer.msg('还原失败!', {icon: 2, time: 1000});
+                    }
+                },
+                error: function (err) {
+                    layer.msg('还原失败!', {icon: 2, time: 1000});
+                }
+            });
+
+
+        });
+    }
+
+    //模糊查询
+    function likeName() {
+        var str = "";
+        str = "username=" + $('input[name="username"]').val() + "&start=" + $('input[name="start"]').val() + "&end=" + $('input[name="end"]').val();
+        xadmin.add_tab('管理员列表', '/findByNameLike?' + str, true);
+        /*var datas = {
+            username:$('input[name="username"]').val(),
+            start:$('input[name="start"]').val(),
+            end:$('input[name="end"]').val()
+        }
+          $.ajax({
+              url:'/findByNameLike',
+              type:'post',
+              dataType:'json',
+              contentType: 'application/json',
+              data: JSON.stringify(datas),
+              success:function (rsp) {
+                  var code = rsp.code;
+
+                  if("200" == code){
+                      location.reload();
+                  }
+              }
+          });*/
+
+        // xadmin.add_tab('管理员列表','adminListByPage');
+    }
+
+    //批量删除
+    function delAll(argument) {
+
+        // var data = tableCheck.getData();
+        var ids;
+        $('input[name="checkId"]:checked').each(function () {
+            console.log($(this).val());
+            ids = ids + "," + $(this).val();
+        });
+        layer.confirm('确认要删除吗？' + ids, function (index) {
+            //捉到所有被选中的，发异步进行删除
+            $.ajax({
+                url: '/adminDeleteSome?ids=' + ids,
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json',
+
+                success: function (rsp) {
+                    var code = rsp.code;
+
+                    if ("200" == code) {
+                        $('input[name="checkId"]:checked').parents('tr').remove();
+                        layer.msg('删除成功', {icon: 1});
+                    } else {
+                        layer.msg('删除失败', {icon: 1});
+                    }
+                },
+                error: function (err) {
+                    layer.msg('删除失败', {icon: 1});
+                }
+            });
+
+            // $(".layui-form-checked").not('.header').parents('tr').remove();
+        });
+
+
+    }
+</script>
 </html>

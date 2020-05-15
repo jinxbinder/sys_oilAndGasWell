@@ -8,12 +8,12 @@
     <div class="layui-row">
         <form class="layui-form">
             <div class="layui-form-item">
-                <label for="file" class="layui-form-label">
-                    <span class="x-red">*</span>选择上传文件
-                </label>
+                <!--<label for="file" class="layui-form-label">-->
+                    <!--<span class="x-red">*</span>选择上传文件-->
+                <!--</label>-->
                 <div class="layui-input-inline">
                     <input type="file" id="file" name="file" required="" lay-verify="file"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-upload-file">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red">*</span>
@@ -49,9 +49,9 @@
 
         //自定义验证规则
         form.verify({
-            roleName: function(value) {
-                if (value.length < 3) {
-                    return '角色名至少得3个字符啊';
+            author: function(value) {
+                if (value.length < 2) {
+                    return '角色名至少得2个字符啊';
                 }
             }
 
@@ -95,7 +95,7 @@
                                 });
                         }else {
                             layer.alert("增加失败", {
-                                    icon: 6
+                                    icon: 5
                                 },
                                 function() {
                                     //关闭当前frame
@@ -105,7 +105,7 @@
                     },
                     error:function (err) {
                         layer.alert("增加失败", {
-                                icon: 6
+                                icon: 5
                             },
                             function() {
                                 //关闭当前frame
@@ -120,39 +120,4 @@
     });
 </script>
 </body>
-<script>
-    $(function () {
-        $("#button").click(function () {
-            //构建formData
-            var formData = new FormData();
-            //文件部分
-            var file = document.getElementById("file").files[0];
-            formData.append("file", file);
-            //json部分
-            var imageInfo = JSON.stringify({
-                "width": "240",
-                "height": "320"
-            });
-            //这里包装 可以直接转换成对象
-            formData.append('imageInfo', new Blob([imageInfo], {type: "application/json"}));
-
-            $.ajax({
-                url: "/test/upload",
-                type: "post",
-                //忽略contentType
-                contentType: false,
-                //取消序列换 formData本来就是序列化好的
-                processData: false,
-                dataType: "json",
-                data: formData,
-                success: function (response) {
-                    alert(response);
-                },
-                error: function () {
-
-                }
-            });
-        });
-    })
-</script>
 </html>

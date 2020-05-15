@@ -9,6 +9,7 @@ import com.oil.utils.PathUtil;
 import com.oil.utils.Result;
 import com.oil.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,83 +37,30 @@ import java.util.UUID;
 public class FileController {
     @Resource
     private FileFeign fileFeign;
-    @RequestMapping("/uploadFile")
-    public Result uploadFile(){
-        return Result.success();
-    }
+
+    /**
+     * 文件下载
+     * @param id
+     * @throws IOException
+     */
     @ResponseBody
-    @RequestMapping("/downloadFile")
-    public void downloadFile() throws IOException {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request= servletRequestAttributes.getRequest();
-        HttpServletResponse response = servletRequestAttributes.getResponse();
-        String fileName = "fff.jpg";
-        if(StringUtil.isNotEmpty(fileName)){
-            String filePath = "F:/testFile/"+fileName;
-            File file = new File(filePath);
-            if(file.exists()){
-                response.setContentType("application/force-download");
-                response.addHeader("Content-Disposition","attachment;fileName="+fileName);
-                byte[] buffer = new byte[1024];
-                FileInputStream fis = null;
-                BufferedInputStream bis = null;
-                try {
-                    fis = new FileInputStream(file);
-                    bis = new BufferedInputStream(fis);
-                    OutputStream os = response.getOutputStream();
-                    int i = bis.read(buffer);
-                    while (i!=-1){
-                        os.write(buffer,0,i);
-                        i = bis.read(buffer);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }finally {
-                    bis.close();
-                    fis.close();
-                }
-            }
-        }
+    @RequestMapping("/downloadFile/{id}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable("id") String id) throws IOException {
+        return fileFeign.downloadFile(Long.parseLong(id));
     }
+
+    /**
+     * 文件上传
+     * @param file
+     * @param imageInfo
+     * @return
+     */
     @ResponseBody
     @PostMapping("/uploadFile")
     public Result upload(@RequestPart("file") MultipartFile file, @RequestPart("imageInfo") JSONObject imageInfo) {
-        System.out.println(imageInfo);
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request= servletRequestAttributes.getRequest();
-        HttpServletResponse response = servletRequestAttributes.getResponse();
-        String path = PathUtil.getPath(request);
-        log.info(path);
-        if(StringUtil.isNotEmpty(path)){
-            String name = file.getOriginalFilename();
-            String suffixName = name.substring(name.lastIndexOf("."));
-            log.info(name);
-            String uuid = UUID.randomUUID().toString();
-
-            String filePath = "F:/testFile/"+name;
-
-            File f = new File(filePath);
-            if(!f.getParentFile().exists()){
-                f.getParentFile().mkdirs();
-            }
-            String author = imageInfo.getString("author");
-            try {
-                file.transferTo(f);
-                com.oil.entity.File file1 = new com.oil.entity.File();
-                file1.setAuthor(author);
-                file1.setFileUUID(uuid);
-                file1.setFileName(name);
-                file1.setFileType(suffixName);
-                log.info(file1.toString());
-                return Result.success();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return Result.error("上传失败");
-            }
-        }
-        return Result.error("路径为空");
+        String author = imageInfo.getString("author");
+//        log.info(author+"作者————————————————————————————");
+        return fileFeign.uploadFile(file,author);
     }
     /**
      * 文件上传页跳转
@@ -148,6 +96,36 @@ public class FileController {
     @RequestMapping("/fileRecyclePage")
     public String fileRecyclePage(Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
                                   @RequestParam(value = "pageSize", defaultValue = "5") int pageSize){
+        Result r = fileFeign.fileRecyclePage(pageNum,pageSize);
+        JSONObject jb = new JSONObject(r);
+        if(!Constant.SUCCESS.equals(jb.get("code").toString())){
+            return "error";
+        }
+        Pages<com.oil.entity.File> fileList = jb.getObject("data",Pages.class);
+
+        model.addAttribute("fileList", fileList);
         return "file-recycle";
+    }
+
+    /**
+     * 单个文件逻辑删除
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/fileDeleteOne/{id}")
+    public Result fileDeleteOne(@PathVariable("id") Long id){
+        return fileFeign.fileDeleteOne(id);
+    }
+
+    /**
+     * 单个文件还原
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/file_reuse/{id}")
+    public Result file_reuse(@PathVariable("id") Long id){
+        return fileFeign.fileReuse(id);
     }
 }
