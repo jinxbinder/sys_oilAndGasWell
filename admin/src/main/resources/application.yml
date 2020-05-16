@@ -1,0 +1,42 @@
+server:
+  port: 8369
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    health-check-url-path: /actuator/health
+  client:
+    serviceUrl:
+      defaultZone: http://39.102.34.165:8761/eureka/
+spring:
+  application:
+    name: admin
+  profiles:
+    active: secure
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+---
+spring:
+  profiles: insecure
+
+---
+spring:
+  profiles: secure
+  security:
+    user:
+      name: "admin"
+      password: "123"
+eureka:
+  instance:
+    metadata-map:
+      user.name: "admin"
+      user.password: "123"
+
+

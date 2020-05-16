@@ -162,5 +162,5 @@ eureka:
 ```
   * 解决方案：2）对于服务调用超时，ip为虚拟ip可修改容器启动命令，指定ip为宿主机ip.
 ```text
-docker run --name user -v /root/docker/docker-user/test:/tmp -p 8762:8762 -d -e "EUREKA_INSTANCE_IP-ADDRESS=39.102.34.165" -e "SERVER_PORT=8762"
+docker run --name user -v /root/docker/docker-user/test:/tmp -p 8762:8762 -d -e "EUREKA_INSTANCE_IP-ADDRESS=39.102.34.165" -e "SERVER_PORT=8762 镜像id"
 ```

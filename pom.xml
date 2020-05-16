@@ -14,6 +14,7 @@
         <module>auth</module>
         <module>sk</module>
         <module>filec</module>
+        <module>admin</module>
     </modules>
     <groupId>com.oil</groupId>
     <artifactId>sys_oagw</artifactId>

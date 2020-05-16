@@ -35,3 +35,12 @@ spring:
           min-idle: 1
           max-active: 1000
       password: 123456
+  boot:
+      admin:
+        client:
+          url: "http://39.102.34.165:8369"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
