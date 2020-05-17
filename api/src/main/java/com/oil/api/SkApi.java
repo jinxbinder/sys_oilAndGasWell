@@ -5,9 +5,12 @@ import com.oil.entity.RoadWork;
 import com.oil.entity.User;
 import com.oil.entity.WellInfo;
 import com.oil.utils.Result;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.xml.ws.Response;
 
 /**
  * ClassName: SkApi <br/>
@@ -69,4 +72,20 @@ public interface SkApi {
     */
     @RequestMapping("/gunAdd")
     Result gunAdd(@RequestBody Gun gun);
+    /**
+    * Description: 功能描述（射孔枪查所有） <br/>
+    * date: 2020/5/16 19:31<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/gunFindAll")
+    Result gunFindAll();
+    /**
+    * Description: 功能描述（套管排序） <br/>
+    * date: 2020/5/16 18:49<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/gunSortPage")
+    Result gunSortPage(@RequestBody Gun gun);
+
+
 }

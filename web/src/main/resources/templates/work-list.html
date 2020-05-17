@@ -40,6 +40,7 @@
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
                     <button class="layui-btn" th:name="${wellId}" onclick="workAddPage(this,'施工列表','/workAddPage/')"><i class="layui-icon"></i>添加</button>
+                    <button class="layui-btn" th:name="${wellId}" onclick="gunSortPage(this,'套管排序','/gunSortPage/')"><i class="layui-icon"></i>套管排序</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-table layui-form">
@@ -48,7 +49,6 @@
                             <th>
                                 <input type="checkbox"  lay-filter="selectAll"  id="selectAll"  lay-skin="primary">
                             </th>
-                            <th>ID</th>
                             <th>层位</th>
                             <th>层号</th>
                             <th>射孔井段(m)</th>
@@ -59,7 +59,7 @@
                             <td>
                                 <input type="checkbox" name="checkId" th:value="${work.id}"   lay-skin="primary">
                             </td>
-                            <td th:text="${work.id}" ></td>
+
                             <td th:text="${work.layerPlace}" ></td>
                             <td th:text="${work.layerId}" ></td>
                             <td th:text="${work.perforationWellSection}"></td>
@@ -123,65 +123,13 @@
 
         xadmin.open(title,url1,650,400)
     }
-    /*用户-停用*/
-    function member_stop(obj){
-        layer.confirm('确认要修改角色状态吗？',function(index){
-            var id = obj.name;
-            console.log(id);
-            if($(obj).attr('title')=='启用'){
-                $.ajax({
-                    url:'/workAddPage?id='+obj.name+"&status=1",
-                    type:'get',
-                    dataType:'json',
-                    contentType: 'application/json',
+    // 套管页
+    function gunSortPage(obj,title,url){
+        var url1 = url + obj.name;
 
-                    success:function (rsp) {
-                        var code = rsp.code;
-
-                        if("200" == code){
-                            $(obj).attr('title','停用')
-                            $(obj).find('i').html('&#xe62f;');
-                            $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                            layer.msg('已停用!',{icon: 6,time:1000});
-                        }else {
-                            layer.msg('停用失败!',{icon:5,time:1000});
-                        }
-                    },
-                    error:function (err) {
-                        layer.msg('停用失败!',{icon:5,time:1000});
-                    }
-                });
-                //发异步把用户状态进行更改
-
-            }else{
-                $.ajax({
-                    url:'/wellStatus?id='+obj.name+"&status=0",
-                    type:'get',
-                    dataType:'json',
-                    contentType: 'application/json',
-
-                    success:function (rsp) {
-                        var code = rsp.code;
-
-                        if("200" == code){
-                            $(obj).attr('title','启用')
-                            $(obj).find('i').html('&#xe601;');
-
-                            $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                            layer.msg('已启用!',{icon: 6,time:1000});
-                        }else {
-                            layer.msg('启用失败!',{icon:5,time:1000});
-                        }
-                    },
-                    error:function (err) {
-                        layer.msg('启用失败!',{icon:5,time:1000});
-                    }
-                });
-
-            }
-
-        });
+        xadmin.add_tab(title,url1);
     }
+
     // 用户修改
     function wellUpdate1(obj,title,url){
         var url1 = url +"/"+ obj.name;

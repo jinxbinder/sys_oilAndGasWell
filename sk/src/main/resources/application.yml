@@ -51,3 +51,13 @@ management:
     web:
       exposure:
         include: "*"
+#redis配置
+  redis:
+      host: 127.0.0.1
+      port: 6379
+      jedis:
+        pool:
+          max-idle: 100
+          min-idle: 1
+          max-active: 1000
+      password: 123456

@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Optional;
+
 
 /**
  * ClassName: GunManageImpl <br/>
@@ -31,4 +34,17 @@ public class GunManageImpl implements GunManage {
     public void gunAdd(Gun gun) {
         gunRepository.save(gun);
     }
+
+    @Override
+    public List<Gun> findAll() {
+        return gunRepository.findAll();
+    }
+
+    @Override
+    public Gun findById(Long id) {
+
+        return gunRepository.findGunById(id);
+    }
+
+
 }

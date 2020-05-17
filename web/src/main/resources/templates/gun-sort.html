@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('套管排序')"/>
+</head>
+<style>
+    #select{
+        width: 200px;
+    }
+</style>
+<body>
+<h2 id="well" th:text="${wellId}"></h2>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择射孔枪型号</label>
+        <div class="layui-input-block">
+            <select id="select" name="gg"  lay-verify="required" onchange="tchange(this)">
+                <option value="请选择">-请选择-</option>
+                <option th:each="gun:${guns}" th:value="${gun.id}" th:title="${gun.gunType}" th:name="${gun.joint}" th:text="${gun.gunName}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="gunList" class="layui-form-label">
+            <span class=""></span>枪长集合（m）：
+        </label>
+        <div class="layui-input-inline">
+            <input type="text" id="gunList" name="gunType"
+                   autocomplete="off" class="layui-input" readonly="readonly">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="join" class="layui-form-label">
+            <span class=""></span>接头长度（m）：
+        </label>
+        <div class="layui-input-inline">
+            <input type="text" id="join" name="joint"
+                   autocomplete="off" class="layui-input" readonly="readonly">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="sort">排序</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'layer'],
+        function() {
+            $ = layui.jquery;
+            var form = layui.form,
+                layer = layui.layer;
+
+            //自定义验证规则
+            form.verify({
+                wellName: function(value) {
+                    if (value.length < 3) {
+                        return '角色名至少得3个字符啊';
+                    }
+                }
+
+            });
+
+
+
+            //监听提交
+            form.on('submit(sort)',
+                function(data) {
+                    var roleData = {
+                        id:$('#select').val(),
+                        gunType:$('#well').text(),
+                        joint:$('#join').val()
+                    };
+                    $.ajax({
+                        url:'/gunSort',
+                        type:'post',
+                        dataType:'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(roleData),
+                        success:function (rsp) {
+                            var code = rsp.code;
+                            console.log(code);
+                            if("200" == code){
+                                layer.alert("增加成功", {
+                                        icon: 6
+                                    },
+                                    function() {
+                                        //关闭当前frame
+                                        xadmin.close();
+                                        // 可以对父窗口进行刷新
+                                        xadmin.father_reload();
+                                    });
+                            }else {
+                                layer.alert("增加失败", {
+                                        icon: 5
+                                    },
+                                    function() {
+                                        //关闭当前frame
+                                        xadmin.close();
+                                    });
+                            }
+                        },
+                        error:function (err) {
+                            layer.alert("增加失败", {
+                                    icon: 5
+                                },
+                                function() {
+                                    //关闭当前frame
+                                    xadmin.close();
+                                    // 可以对父窗口进行刷新
+//                                    xadmin.father_reload();
+                                });
+                        }
+                    });
+                    return false;
+                });
+        });
+    function tchange(obj){
+        join.value=obj.name;
+        gunList.value=obj.title;
+    }
+</script>
+</body>
+</html>

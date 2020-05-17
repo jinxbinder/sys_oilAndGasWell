@@ -2,10 +2,7 @@ package com.oil.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.oil.constants.Constant;
-import com.oil.entity.RoadWork;
-import com.oil.entity.Role;
-import com.oil.entity.User;
-import com.oil.entity.WellInfo;
+import com.oil.entity.*;
 import com.oil.feign.SkFeign;
 import com.oil.utils.Result;
 import com.oil.utils.StringUtil;
@@ -81,4 +78,6 @@ public class WorkController {
         log.info(roadWork.toString());
         return skFeign.workAdd(roadWork);
     }
+
+
 }

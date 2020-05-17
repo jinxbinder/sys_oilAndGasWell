@@ -1,12 +1,15 @@
 package com.oil.service;
 
 import com.oil.api.SkApi;
+import com.oil.config.ExcelUtil;
 import com.oil.dao.GunRepository;
 import com.oil.entity.*;
 import com.oil.manage.GunManage;
 import com.oil.manage.RoadWorkManage;
 import com.oil.manage.WellInfoManage;
 import com.oil.page.Pages;
+import com.oil.sort.DataFormatting;
+import com.oil.sort.Oil;
 import com.oil.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -112,4 +122,29 @@ public class SkService implements SkApi {
             return Result.error("新增失败");
         }
     }
+
+    @Override
+    public Result gunFindAll() {
+        List<Gun> guns = gunManage.findAll();
+        return Result.success(guns);
+    }
+
+    @Override
+    public Result gunSortPage(Gun gun1) {
+        Long id = Long.parseLong(gun1.getGunType());
+        List<RoadWork> roadWorks = roadWorkManage.workListPage(id);
+        Gun gunt = gunManage.findById(gun1.getId());
+        DataFormatting dataFormatting = new DataFormatting();
+        //射孔枪规格
+        Double gun[] = null;
+        gun = dataFormatting.gun(gunt);
+        Double well[] = null;
+        well = dataFormatting.layers(roadWorks);
+        //接口长度
+        double joint = gunt.getJoint();
+        Oil.sort1(gun,joint,well);
+        return Result.success();
+    }
+
+
 }

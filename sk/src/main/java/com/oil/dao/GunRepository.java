@@ -1,9 +1,6 @@
 package com.oil.dao;
 
 import com.oil.entity.Gun;
-import com.oil.entity.RoadWork;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,5 +19,5 @@ import javax.transaction.Transactional;
 @Repository
 public interface GunRepository extends JpaRepository<Gun,Long> {
 
-
+    Gun findGunById(Long id);
 }

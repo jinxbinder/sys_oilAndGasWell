@@ -6,17 +6,16 @@ import com.oil.entity.Gun;
 import com.oil.entity.User;
 import com.oil.page.Pages;
 import com.oil.utils.Result;
+import com.oil.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import com.oil.feign.SkFeign;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * ClassName: GunController <br/>
@@ -67,4 +66,33 @@ public class GunController {
     public Result gunAdd(@RequestBody Gun gun){
         return skFeign.gunAdd(gun);
     }
+
+    /**
+     * 套管排序页跳转
+     * @param id
+     * @return
+     */
+    @RequestMapping("/gunSortPage/{id}")
+    public String gunSortPage(@PathVariable("id") Long id, Model model){
+        Result r1 = skFeign.gunFindAll();
+        model.addAttribute("wellId",id);
+        if(Constant.SUCCESS.equals(r1.get("code").toString()) && StringUtil.isNotNull(r1.get("data"))){
+            List<Gun> guns = (List<Gun>) r1.get("data");
+            model.addAttribute("guns",guns);
+        }
+//        skFeign.gunSortPage(id);
+        return "gun-sort";
+    }
+
+    /**
+     * 套管排序
+     * @param gun
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/gunSort")
+    public Result gunSort(@RequestBody Gun gun){
+        return skFeign.gunSortPage(gun);
+    }
+
 }

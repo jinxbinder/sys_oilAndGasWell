@@ -1,9 +1,11 @@
 package com.oil.manage;
 
 import com.oil.entity.Gun;
-import com.oil.entity.WellInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
 
 /**
  * ClassName: GunManage <br/>
@@ -19,4 +21,8 @@ public interface GunManage {
     Page<Gun> gunByPage(Pageable pageable);
 
     void gunAdd(Gun gun);
+
+    List<Gun> findAll();
+
+    Gun findById(Long id);
 }

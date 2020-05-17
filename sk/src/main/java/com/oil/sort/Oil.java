@@ -5,9 +5,8 @@ import java.util.Map;
 
 public class Oil {
 
-	static double jk = 0.3;         
+	static double jk = 0;
 	/*public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		//射孔枪规格
 		double gun[] = {1.0,2.0,3.0,4.0,5.0};  
 		//接口长度
@@ -17,7 +16,8 @@ public class Oil {
 		
 		
 	}*/
-	public static void sort1(double gun[],double jk,double well[]){
+	public static void sort1(Double gun[],double join,Double well[]){
+		jk = join;
 		System.out.println("射孔枪串接排序开始");
 		System.out.println("射孔枪的规格为(m)：");
 		//遍历枪型
@@ -106,7 +106,7 @@ public class Oil {
 
 		
 	}
-	public static void gun_print(double gun[]){
+	public static void gun_print(Double gun[]){
 		for(double ss:gun){
 			System.out.print(ss+"  ");
 		}
@@ -115,9 +115,9 @@ public class Oil {
 	public static void gun_up(){
 		
 	}
-	public static Map<String,Double> choose_gun(double gun[],double k2,double current,double next){
+	public static Map<String,Double> choose_gun(Double gun[],double k2,double current,double next){
 		//选枪  k2 = current 为当前层厚
-		System.out.println("选枪开始");
+		System.out.println("选枪开始,接口长度："+jk);
 		Map<String,Double> map = new HashMap<>();
 		double key = 0;
 		double dd = 0;
