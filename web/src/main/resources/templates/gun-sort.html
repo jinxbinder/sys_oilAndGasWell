@@ -7,6 +7,13 @@
     #select{
         width: 200px;
     }
+    .sort{
+        width: 400px;
+        height: 400px;
+        border: 1px solid seagreen;
+        background-color: #9F9F9F;
+        margin: 0 auto;
+    }
 </style>
 <body>
 <h2 id="well" th:text="${wellId}"></h2>
@@ -14,7 +21,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">选择射孔枪型号</label>
         <div class="layui-input-block">
-            <select id="select" name="gg"  lay-verify="required" onchange="tchange(this)">
+            <select id="select" name="gg"  lay-verify="required" >
                 <option value="请选择">-请选择-</option>
                 <option th:each="gun:${guns}" th:value="${gun.id}" th:title="${gun.gunType}" th:name="${gun.joint}" th:text="${gun.gunName}"></option>
             </select>
@@ -26,7 +33,7 @@
         </label>
         <div class="layui-input-inline">
             <input type="text" id="gunList" name="gunType"
-                   autocomplete="off" class="layui-input" readonly="readonly">
+                   autocomplete="off" class="layui-input" >
         </div>
     </div>
     <div class="layui-form-item">
@@ -35,7 +42,7 @@
         </label>
         <div class="layui-input-inline">
             <input type="text" id="join" name="joint"
-                   autocomplete="off" class="layui-input" readonly="readonly">
+                   autocomplete="off" class="layui-input" >
         </div>
     </div>
     <div class="layui-form-item">
@@ -45,7 +52,17 @@
         </div>
     </div>
 </form>
-<script>
+<div class="sort"></div>
+<script type="text/javascript">
+    $(function () {
+        $("#select").change(function(obj){
+
+            alert(obj.name+"..."+obj.title);
+            $('#join').val(obj.name);
+            $('#gunList').val(obj.title);
+        });
+    });
+
     layui.use(['form', 'layer'],
         function() {
             $ = layui.jquery;
@@ -82,15 +99,26 @@
                             var code = rsp.code;
                             console.log(code);
                             if("200" == code){
-                                layer.alert("增加成功", {
-                                        icon: 6
-                                    },
-                                    function() {
-                                        //关闭当前frame
-                                        xadmin.close();
-                                        // 可以对父窗口进行刷新
-                                        xadmin.father_reload();
-                                    });
+                                var list = rsp.data;
+                                console.log(list.toString());
+                                /*for(var i=0;i<list.length;i++){
+                                    console.log("当前厚度："+list[i]);
+                                    var str = '<div class="c'+list[i]+'">'+list[i]+'</div>';
+                                    $('.sort').append(str);
+                                    var cla = ".c"+list[i];
+                                    var height = null;
+                                    if(list[i]<30){
+                                        height = "30px";
+                                    }else if(list[i]>50){
+                                        height = "50px";
+                                    }else {
+                                        height = list[i] + "px";
+                                    }
+                                    $(cla).css("height",height);
+                                    if(i%2==0){
+                                        $(cla).css("background-color","#009688");
+                                    }*/
+
                             }else {
                                 layer.alert("增加失败", {
                                         icon: 5
@@ -116,10 +144,7 @@
                     return false;
                 });
         });
-    function tchange(obj){
-        join.value=obj.name;
-        gunList.value=obj.title;
-    }
+
 </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-    <th:block th:include="include :: header('施工列表')"/>
+    <th:block th:include="include :: header('排炮列表')"/>
 </head>
 <body>
 <div class="x-nav">
@@ -35,12 +35,10 @@
                             <!--<i class="layui-icon">&#xe615;</i>-->
                         </div>
                     </form>
-
                 </div>
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-                    <button class="layui-btn" th:name="${wellId}" onclick="workAddPage(this,'施工列表','/workAddPage/')"><i class="layui-icon"></i>添加</button>
-                    <button class="layui-btn" th:name="${wellId}" onclick="gunSortPage(this,'套管排序','/gunSortPage/')"><i class="layui-icon"></i>套管排序</button>
+                    <button class="layui-btn" onclick="xadmin.open('添加射孔枪','/gunAddPage',650,400)"><i class="layui-icon"></i>添加</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-table layui-form">
@@ -49,31 +47,34 @@
                             <th>
                                 <input type="checkbox"  lay-filter="selectAll"  id="selectAll"  lay-skin="primary">
                             </th>
-                            <th>层位</th>
-                            <th>层号</th>
-                            <th>射孔井段(m)</th>
+                            <th>ID</th>
+                            <th>枪名</th>
+                            <th>枪长(m)</th>
+                            <th>上空(m)</th>
+                            <th>下空(m)</th>
                             <th>操作</th>
                         </thead>
-                        <tbody th:each="work:${works}" >
+                        <tbody th:each="salvo:${salvoList}" >
                         <tr>
                             <td>
-                                <input type="checkbox" name="checkId" th:value="${work.id}"   lay-skin="primary">
+                                <input type="checkbox" name="checkId" th:value="${salvo.sid}"   lay-skin="primary">
                             </td>
-
-                            <td th:text="${work.layerPlace}" ></td>
-                            <td th:text="${work.layerId}" ></td>
-                            <td th:text="${work.perforationWellSection}"></td>
+                            <td th:text="${salvo.sid}" ></td>
+                            <td th:text="${salvo.gunType}" ></td>
+                            <td th:text="${salvo.gunLen}" ></td>
+                            <td th:text="${salvo.upNull}"></td>
+                            <td th:text="${salvo.downNull}"></td>
 
                             <td class="td-manage" >
                                 <div class="layui-btn-group">
 
-                                    <a  th:name="${work.id}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="workAddPage(this,'施工列表','/workAddPage/')" href="javascript:;" title="">
-                                        <i class="layui-icon">&#xe601;</i>录入
-                                    </a>
-                                    <a title="编辑"  th:name="${work.id}" class="layui-btn layui-btn-primary layui-btn-sm"  onclick="wellUpdate1(this,'编辑','/wellEditPage')" href="javascript:;">
+                                    <!--<a  th:name="${salvo.sid}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="workListPage(this,'施工列表','/workListPage/')" href="javascript:;" title="">
+                                        <i class="layui-icon">&#xe601;</i>施工详情
+                                    </a>-->
+                                    <a title="编辑"  th:name="${salvo.sid}" class="layui-btn layui-btn-primary layui-btn-sm"  onclick="salvoUpdate1(this,'编辑','/salvoEditPage')" href="javascript:;">
                                         <i class="layui-icon">&#xe642;</i>
                                     </a>
-                                    <a title="删除" th:name="${work.id}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="member_del(this)" href="javascript:;">
+                                    <a title="删除" th:name="${salvo.sid}" class="layui-btn layui-btn-primary layui-btn-sm" onclick="member_del(this)" href="javascript:;">
                                         <i class="layui-icon">&#xe640;</i>
                                     </a>
                                 </div>
@@ -83,7 +84,36 @@
                     </table>
                 </div>
                 <div class="layui-card-body ">
+                    <div class="page">
+                        <ul class="pagination pull-right no-margin">
 
+                            <!-- 首页 -->
+                            <li>
+                                <a th:href="'/salvoByPage?pageNum=0'">首页</a>
+                            </li>
+
+                            <!-- 上一页 -->
+                            <li th:if="${salvoList.hasPrevious()}">
+                                <a th:href="'/salvoByPage?pageNum=' + ${salvoList.getPageNo() - 1}" th:text="上一页"></a>
+                            </li>
+
+                            <!-- 中间页 -->
+                            <li th:if="${salvoList.getTotalPage() gt 0}" th:each="pageNum:${#numbers.sequence(0, salvoList.getTotalPage() - 1)}">
+                                <a th:href="'/salvoByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne salvoList.getTotalPage()}"></a>
+                                <a th:href="'/salvoByPage?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq salvoList.getTotalPage()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+                            </li>
+
+                            <!--下一页-->
+                            <li th:if="${salvoList.hasNext()}">
+                                <a th:href="'/salvoByPage?pageNum=' + ${salvoList.getPageNo() + 1}" th:text="下一页"></a>
+                            </li>
+
+                            <!-- 尾页 -->
+                            <li>
+                                <a th:if="${salvoList.getTotalPage() gt 0}" th:href="'/salvoByPage?pageNum=' + ${salvoList.getTotalPage() -1}">尾页</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -117,21 +147,9 @@
             elem: '#end' //指定元素
         });
     });
-    // 施工列表
-    function workAddPage(obj,title,url){
-        var url1 = url + obj.name;
-
-        xadmin.open(title,url1,650,400)
-    }
-    // 套管页
-    function gunSortPage(obj,title,url){
-        var url1 = url + obj.name;
-
-        xadmin.open(title,url1);
-    }
 
     // 用户修改
-    function wellUpdate1(obj,title,url){
+    function salvoUpdate1(obj,title,url){
         var url1 = url +"/"+ obj.name;
         // console.log(url1);
         xadmin.open(title,url1);
@@ -142,7 +160,7 @@
             console.log("id:"+obj.name);
             //发异步删除数据
             $.ajax({
-                url:'/wellDeleteOne/'+obj.name,
+                url:'/salvoDeleteOne/'+obj.name,
                 type:'get',
                 dataType:'json',
                 contentType: 'application/json',
@@ -205,7 +223,7 @@
         layer.confirm('确认要删除吗？'+ids,function(index){
             //捉到所有被选中的，发异步进行删除
             $.ajax({
-                url:'/adminDeleteSome?ids='+ids,
+                url:'/adminDeleteSome?ids='+sids,
                 type:'get',
                 dataType:'json',
                 contentType: 'application/json',

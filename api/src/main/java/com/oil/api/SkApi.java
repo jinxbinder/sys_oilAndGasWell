@@ -86,6 +86,11 @@ public interface SkApi {
     */
     @RequestMapping("/gunSortPage")
     Result gunSortPage(@RequestBody Gun gun);
-
-
+    /**
+    * Description: 功能描述（排炮信息分页查） <br/>
+    * date: 2020/5/22 21:58<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/salvoByPage")
+    Result salvoByPage(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize);
 }

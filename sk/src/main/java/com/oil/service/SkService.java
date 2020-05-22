@@ -6,6 +6,7 @@ import com.oil.dao.GunRepository;
 import com.oil.entity.*;
 import com.oil.manage.GunManage;
 import com.oil.manage.RoadWorkManage;
+import com.oil.manage.SalvoManage;
 import com.oil.manage.WellInfoManage;
 import com.oil.page.Pages;
 import com.oil.sort.DataFormatting;
@@ -46,6 +47,8 @@ public class SkService implements SkApi {
     private RoadWorkManage roadWorkManage;
     @Autowired
     private GunManage gunManage;
+    @Autowired
+    private SalvoManage salvoManage;
     @Override
     public Result wellInfoByPage(int pageNum, int pageSize) {
         try {
@@ -143,7 +146,18 @@ public class SkService implements SkApi {
         //接口长度
         double joint = gunt.getJoint();
         Oil.sort1(gun,joint,well);
-        return Result.success();
+        return Result.success(well);
+    }
+
+    @Override
+    public Result salvoByPage(int pageNum, int pageSize) {
+        Page<Salvo> salvos = salvoManage.salvoByPage(PageRequest.of(pageNum,pageSize));
+        Pages<Salvo> s = new Pages<>();
+        s.setContent(salvos.getContent());
+        s.setPageNo(salvos.getNumber());
+        s.setPageSize(salvos.getSize());
+        s.setTotal(salvos.getTotalElements());
+        return Result.success(s);
     }
 
 

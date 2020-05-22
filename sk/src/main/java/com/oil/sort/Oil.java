@@ -1,5 +1,7 @@
 package com.oil.sort;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ public class Oil {
 		
 	}*/
 	public static void sort1(Double gun[],double join,Double well[]){
+		JSONObject json = new JSONObject();
 		jk = join;
 		System.out.println("射孔枪串接排序开始");
 		System.out.println("射孔枪的规格为(m)：");

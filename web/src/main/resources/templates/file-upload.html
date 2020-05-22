@@ -2,9 +2,17 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="include :: header('文件上传')"/>
+    <style>
+        .wrap{
+            width: 500px;
+            height: 390px;
+            margin: 10px auto;
+        }
+    </style>
 </head>
+
 <body>
-<div class="layui-fluid">
+<div class="wrap">
     <div class="layui-row">
         <form class="layui-form">
             <div class="layui-form-item">
@@ -15,9 +23,7 @@
                     <input type="file" id="file" name="file" required="" lay-verify="file"
                            autocomplete="off" class="">
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>
-                </div>
+
             </div>
             <div class="layui-form-item">
                 <label for="author" class="layui-form-label">
@@ -27,9 +33,6 @@
                     <input type="text" id="author" name="author" required="" lay-verify="author"
                            autocomplete="off" class="layui-input">
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>
-                </div>
             </div>
 
             <div class="layui-form-item">
@@ -37,6 +40,12 @@
                 <button  class="layui-btn" lay-filter="add" lay-submit="">
                     上传
                 </button>
+                <button class="layui-btn" onclick="fileSelected()">文件信息</button>
+                <div id="info">
+                    <div id="fileName"></div>
+                    <div id="fileSize"></div>
+                    <div id="fileType"></div>
+                </div>
             </div>
         </form>
     </div>
@@ -51,7 +60,7 @@
         form.verify({
             author: function(value) {
                 if (value.length < 2) {
-                    return '角色名至少得2个字符啊';
+                    return '作者名至少得2个字符啊';
                 }
             }
 
@@ -84,7 +93,7 @@
                     success:function (rsp) {
                         var code = rsp.code;
                         if("200" == code){
-                            layer.alert("增加成功", {
+                            layer.alert("上传成功", {
                                     icon: 6
                                 },
                                 function() {
@@ -94,7 +103,7 @@
                                     xadmin.father_reload();
                                 });
                         }else {
-                            layer.alert("增加失败", {
+                            layer.alert("上传失败", {
                                     icon: 5
                                 },
                                 function() {
@@ -104,7 +113,7 @@
                         }
                     },
                     error:function (err) {
-                        layer.alert("增加失败", {
+                        layer.alert("上传失败", {
                                 icon: 5
                             },
                             function() {
@@ -118,6 +127,25 @@
                 return false;
             });
     });
+function fileSelected() {
+    var file = document.getElementById('file').files[0];
+    if (file) {
+        var fileSize = 0;
+        if (file.size > 1024 * 1024){
+            fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+            if(file.size>1024 * 1024 * 10){
+                fileSize = fileSize + ",文件大于10MB，无法上传";
+            }
+        }
+        else{
+            fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+        }
+
+        document.getElementById('fileName').innerHTML = 'Name: ' + file.name;
+        document.getElementById('fileSize').innerHTML = 'Size: ' + fileSize;
+        document.getElementById('fileType').innerHTML = 'Type: ' + file.type;
+    }
+}
 </script>
 </body>
 </html>

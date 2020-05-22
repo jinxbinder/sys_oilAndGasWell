@@ -5,6 +5,20 @@ server:
 spring:
   application:
     name: gateway
+  zipkin:
+    base-url: http://39.102.34.165:9411
+  sleuth:
+    sampler:
+      probability: 0.5
+  boot:
+      admin:
+        client:
+          url: "http://39.102.34.165:8369"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 eureka:
   client:
     serviceUrl:
@@ -32,6 +46,8 @@ zuul:
       strip-prefix: true
       sensitiveHeaders:   #cookie
       ignoredHeaders:    #头信息
+
+
 security:
   oauth2:
     client:
