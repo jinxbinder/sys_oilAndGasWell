@@ -2,7 +2,10 @@ package com.oil.dao;
 
 import com.oil.entity.RoadWork;
 import com.oil.entity.Salvo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -19,4 +22,6 @@ import javax.transaction.Transactional;
 @Transactional
 @Repository
 public interface SalvoRepository extends JpaRepository<Salvo,Long> {
+    @Query("select s from Salvo s where s.wid = ?1")
+    Page<Salvo> salvoByWidPage( Long wid,Pageable pageable);
 }

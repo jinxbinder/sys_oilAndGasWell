@@ -20,16 +20,12 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <form class="layui-form layui-col-space5" method="get" th:action="@{/findByNameLike}">
-                        <div class="layui-inline layui-show-xs-block">
-                            <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
-                        </div>
-                        <div class="layui-inline layui-show-xs-block">
-                            <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
-                        </div>
-                        <div class="layui-inline layui-show-xs-block">
-                            <input type="text" name="username"  placeholder="请输入井名称" autocomplete="off" class="layui-input">
-                        </div>
+                    <form class="layui-form layui-col-space5" method="get" th:action="@{/findByWell}">
+
+                        <select id="select" name="wid"  lay-verify="required" >
+                            <option value="请选择">-请选择油井-</option>
+                            <option th:each="well:${wellInfos}" th:value="${well.wid}" th:text="${well.wellId}"></option>
+                        </select>
                         <div class="layui-inline layui-show-xs-block">
                             <input type="submit" class="layui-btn"  >
                             <!--<i class="layui-icon">&#xe615;</i>-->
@@ -50,6 +46,7 @@
                             <th>ID</th>
                             <th>枪名</th>
                             <th>枪长(m)</th>
+                            <th>数量</th>
                             <th>上空(m)</th>
                             <th>下空(m)</th>
                             <th>操作</th>
@@ -62,6 +59,7 @@
                             <td th:text="${salvo.sid}" ></td>
                             <td th:text="${salvo.gunType}" ></td>
                             <td th:text="${salvo.gunLen}" ></td>
+                            <td th:text="${salvo.gunNum}" ></td>
                             <td th:text="${salvo.upNull}"></td>
                             <td th:text="${salvo.downNull}"></td>
 

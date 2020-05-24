@@ -27,7 +27,7 @@
             </select>
         </div>
     </div>
-    <div class="layui-form-item">
+    <!--<div class="layui-form-item">
         <label for="gunList" class="layui-form-label">
             <span class=""></span>枪长集合（m）：
         </label>
@@ -44,7 +44,7 @@
             <input type="text" id="join" name="joint"
                    autocomplete="off" class="layui-input" >
         </div>
-    </div>
+    </div>-->
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit lay-filter="sort">排序</button>
@@ -52,7 +52,7 @@
         </div>
     </div>
 </form>
-<div class="sort"></div>
+<!--<div class="sort"></div>-->
 <script type="text/javascript">
     $(function () {
         $("#select").change(function(obj){
@@ -99,28 +99,16 @@
                             var code = rsp.code;
                             console.log(code);
                             if("200" == code){
-                                var list = rsp.data;
-                                console.log(list.toString());
-                                /*for(var i=0;i<list.length;i++){
-                                    console.log("当前厚度："+list[i]);
-                                    var str = '<div class="c'+list[i]+'">'+list[i]+'</div>';
-                                    $('.sort').append(str);
-                                    var cla = ".c"+list[i];
-                                    var height = null;
-                                    if(list[i]<30){
-                                        height = "30px";
-                                    }else if(list[i]>50){
-                                        height = "50px";
-                                    }else {
-                                        height = list[i] + "px";
-                                    }
-                                    $(cla).css("height",height);
-                                    if(i%2==0){
-                                        $(cla).css("background-color","#009688");
-                                    }*/
+                                layer.alert("排序成功，请前往排炮列表查看", {
+                                        icon: 6
+                                    },
+                                    function() {
+                                        //关闭当前frame
+                                        xadmin.close();
 
+                                    });
                             }else {
-                                layer.alert("增加失败", {
+                                layer.alert("排序失败", {
                                         icon: 5
                                     },
                                     function() {
@@ -130,7 +118,7 @@
                             }
                         },
                         error:function (err) {
-                            layer.alert("增加失败", {
+                            layer.alert("排序失败", {
                                     icon: 5
                                 },
                                 function() {

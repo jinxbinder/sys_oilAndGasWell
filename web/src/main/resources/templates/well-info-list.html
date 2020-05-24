@@ -52,7 +52,7 @@
                             <th>井ID</th>
                             <th>完钻井深(m)</th>
                             <th>油层套管规格(mm)</th>
-                            <th>施工状态</th>
+                            <th>状态</th>
                             <th>操作</th>
                         </thead>
                         <tbody th:each="well:${wellList}" >
@@ -65,8 +65,8 @@
                             <td th:text="${well.wellDeepCmplt}" ></td>
                             <td th:text="${well.oilCasingType}"></td>
                             <td class="td-status" >
-                                <span th:if="${well.status} ne 1" class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
-                                <span th:if="${well.status} eq 1" class="layui-btn layui-btn-normal layui-btn-disabled layui-btn-mini">已停用</span>
+                                <span th:if="${well.status} eq 0" class="layui-btn layui-btn-normal layui-btn-mini">未施工</span>
+                                <span th:if="${well.status} eq 1" class="layui-btn layui-btn-normal layui-btn-disabled layui-btn-mini">已排炮</span>
                             </td>
                             <td class="td-manage" >
                                 <div class="layui-btn-group">

@@ -39,7 +39,7 @@
                 </div>
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-                    <button class="layui-btn" th:name="${wellId}" onclick="workAddPage(this,'施工列表','/workAddPage/')"><i class="layui-icon"></i>添加</button>
+                    <button class="layui-btn" th:name="${wellId}" onclick="workAddPage(this,'施工添加','/workAddPage/')"><i class="layui-icon"></i>添加</button>
                     <button class="layui-btn" th:name="${wellId}" onclick="gunSortPage(this,'套管排序','/gunSortPage/')"><i class="layui-icon"></i>套管排序</button>
                 </div>
                 <div class="layui-card-body ">
@@ -52,6 +52,7 @@
                             <th>层位</th>
                             <th>层号</th>
                             <th>射孔井段(m)</th>
+                            <th>厚度(m)</th>
                             <th>操作</th>
                         </thead>
                         <tbody th:each="work:${works}" >
@@ -63,6 +64,7 @@
                             <td th:text="${work.layerPlace}" ></td>
                             <td th:text="${work.layerId}" ></td>
                             <td th:text="${work.perforationWellSection}"></td>
+                            <td th:text="${work.perforationThick}"></td>
 
                             <td class="td-manage" >
                                 <div class="layui-btn-group">

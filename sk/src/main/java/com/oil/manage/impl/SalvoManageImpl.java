@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * ClassName: SalvoManageImpl <br/>
@@ -24,6 +25,19 @@ public class SalvoManageImpl implements SalvoManage {
     private SalvoRepository salvoRepository;
     @Override
     public Page<Salvo> salvoByPage(Pageable pageable) {
+
         return salvoRepository.findAll(pageable);
     }
+
+    @Override
+    public Page<Salvo> salvoByWidPage(Pageable pageable, Long wid) {
+        return salvoRepository.salvoByWidPage(wid,pageable);
+    }
+
+    @Override
+    public void saveAll(List<Salvo> salvoList) {
+        salvoRepository.saveAll(salvoList);
+    }
+
+
 }

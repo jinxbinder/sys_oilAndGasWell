@@ -52,13 +52,9 @@ public class WellInfo implements Serializable {
     /** 粘度(s) */
     private Double viscosity;
     /** 施工状态0未施工 1已施工 */
-    private String status;
+    private String status = "0";
     /** 删除标志 1为删除 0正常 */
     private String delFlag = "0";
-    /** 关联关系 一口井对应多个施工 */
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "wi_id ")
-    private List<RoadWork> roadWorks;
     /** 创建者 */
     private String createBy;
     /** 创建时间 */

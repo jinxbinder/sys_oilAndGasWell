@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * ClassName: WellInfoManageImpl <br/>
@@ -38,5 +39,15 @@ public class WellInfoManageImpl implements WellInfoManage {
     @Override
     public WellInfo findById(Long wid) {
         return wellInfoRepository.findWellInfoByWid(wid);
+    }
+
+    @Override
+    public List<WellInfo> wellInfoFindAll() {
+        return wellInfoRepository.findAll();
+    }
+
+    @Override
+    public void wellStatus(Long wid, String status) {
+        wellInfoRepository.wellInfoStatus(wid,status);
     }
 }

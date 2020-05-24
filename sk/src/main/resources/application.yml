@@ -46,18 +46,20 @@ spring:
       admin:
         client:
           url: "http://39.102.34.165:8369"
+  #redis配置
+  redis:
+    host: 39.102.34.165
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 100
+        min-idle: 1
+        max-active: 1000
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-#redis配置
-  redis:
-      host: 127.0.0.1
-      port: 6379
-      jedis:
-        pool:
-          max-idle: 100
-          min-idle: 1
-          max-active: 1000
-      password: 123456
+
+

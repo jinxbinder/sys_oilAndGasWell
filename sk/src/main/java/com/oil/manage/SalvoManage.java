@@ -4,6 +4,8 @@ import com.oil.entity.Salvo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * ClassName: SalvoManage <br/>
  * Description: <br/>
@@ -16,4 +18,8 @@ import org.springframework.data.domain.Pageable;
 public interface SalvoManage {
 
     Page<Salvo> salvoByPage(Pageable pageable);
+
+    Page<Salvo> salvoByWidPage(Pageable pageable,Long wid);
+
+    void saveAll(List<Salvo> salvoList);
 }

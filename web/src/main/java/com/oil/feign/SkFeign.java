@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @version 1.0
  * @since JDK 1.8
  */
-@FeignClient(value = "sk",contextId = "1")
+@FeignClient(value = "sk")
 public interface SkFeign extends SkApi{
 
 }

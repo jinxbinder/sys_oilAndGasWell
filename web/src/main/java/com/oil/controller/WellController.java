@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.oil.constants.Constant;
 import com.oil.entity.WellInfo;
 import com.oil.feign.SkFeign;
-import com.oil.feign.SktExportFeign;
+
 import com.oil.page.Pages;
 import com.oil.utils.DateUtil;
 import com.oil.utils.Result;
@@ -38,8 +38,8 @@ import java.security.Principal;
 public class WellController {
     @Resource
     private SkFeign skFeign;
-    @Resource
-    private SktExportFeign sktExportFeign;
+//    @Resource
+//    private SktExportFeign sktExportFeign;
     /**
      * 井列表
      * @param model
@@ -97,7 +97,7 @@ public class WellController {
     /**
      * 全部井信息数据导出
      */
-    @ResponseBody
+  /*  @ResponseBody
     @RequestMapping("/wellInfoExport")
     public void wellInfoExport() throws IOException {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -123,7 +123,7 @@ public class WellController {
             outStream.flush();
         } catch (Exception e) {
 
-        }
+        }*/
 //        HttpHeaders headers = new HttpHeaders();
 //        ResponseEntity<byte[]> entity = null;
 //        return response;
@@ -194,6 +194,6 @@ public class WellController {
                 e.printStackTrace();
             }
         }*/
-    }
+//    }
 
 }

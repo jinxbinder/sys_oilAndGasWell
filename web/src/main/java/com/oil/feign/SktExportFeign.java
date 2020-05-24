@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @version 1.0
  * @since JDK 1.8
  */
+/*
 @FeignClient(value = "sk",contextId = "2",configuration = MultipartSupportConfig.class)
 public interface SktExportFeign {
     @RequestMapping(value = "/skt/wellInfoExport",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Response wellInfoExport();
 }
+*/

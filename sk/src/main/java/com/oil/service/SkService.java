@@ -9,6 +9,7 @@ import com.oil.manage.RoadWorkManage;
 import com.oil.manage.SalvoManage;
 import com.oil.manage.WellInfoManage;
 import com.oil.page.Pages;
+import com.oil.sort.Arith;
 import com.oil.sort.DataFormatting;
 import com.oil.sort.Oil;
 import com.oil.utils.Result;
@@ -65,6 +66,18 @@ public class SkService implements SkApi {
 
         }
     }
+
+    @Override
+    public Result wellInfoFindAll() {
+        try {
+            List<WellInfo> wellInfos = wellInfoManage.wellInfoFindAll();
+            return Result.success(wellInfos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+    }
+
     @Override
     public Result wellAdd(@RequestBody WellInfo wellInfo) {
         try {
@@ -96,6 +109,9 @@ public class SkService implements SkApi {
     @Override
     public Result workAdd(@RequestBody RoadWork roadWork) {
         try {
+            String[] d = roadWork.getPerforationWellSection().split("-");
+            double deep = Arith.sub(Double.parseDouble(d[1]),Double.parseDouble(d[0]));
+            roadWork.setPerforationThick(deep);
             roadWorkManage.workAdd(roadWork);
             return Result.success();
         }catch (Exception e){
@@ -145,19 +161,48 @@ public class SkService implements SkApi {
         well = dataFormatting.layers(roadWorks);
         //接口长度
         double joint = gunt.getJoint();
-        Oil.sort1(gun,joint,well);
-        return Result.success(well);
+        String gunType = gunt.getGunName();
+        List<Salvo> salvos = Oil.sort1(gunType,id,gun,joint,well);
+        try {
+            salvoManage.saveAll(salvos);
+            wellInfoManage.wellStatus(id,"1");
+            return Result.success(well);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
     }
 
     @Override
-    public Result salvoByPage(int pageNum, int pageSize) {
-        Page<Salvo> salvos = salvoManage.salvoByPage(PageRequest.of(pageNum,pageSize));
-        Pages<Salvo> s = new Pages<>();
-        s.setContent(salvos.getContent());
-        s.setPageNo(salvos.getNumber());
-        s.setPageSize(salvos.getSize());
-        s.setTotal(salvos.getTotalElements());
-        return Result.success(s);
+    public Result salvoByPage(@RequestParam("pageNum") int pageNum,@RequestParam("pageSize") int pageSize) {
+        try {
+            Page<Salvo> salvos = salvoManage.salvoByPage(PageRequest.of(pageNum,pageSize));
+            Pages<Salvo> s = new Pages<>();
+            s.setContent(salvos.getContent());
+            s.setPageNo(salvos.getNumber());
+            s.setPageSize(salvos.getSize());
+            s.setTotal(salvos.getTotalElements());
+            return Result.success(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
+    }
+
+    @Override
+    public Result salvoByWidPage(int pageNum, int pageSize, Long wid) {
+        try {
+            Page<Salvo> salvos = salvoManage.salvoByWidPage(PageRequest.of(pageNum,pageSize),wid);
+            Pages<Salvo> s = new Pages<>();
+            s.setContent(salvos.getContent());
+            s.setPageNo(salvos.getNumber());
+            s.setPageSize(salvos.getSize());
+            s.setTotal(salvos.getTotalElements());
+            return Result.success(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error();
+        }
     }
 
 

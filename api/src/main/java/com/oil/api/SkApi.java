@@ -21,7 +21,7 @@ import javax.xml.ws.Response;
  * @version 1.0
  * @since JDK 1.8
  */
-@RequestMapping("sk")
+@RequestMapping("/sk")
 public interface SkApi {
     /**
      * Description: 功能描述（井信息列表分页查询） <br/>
@@ -30,6 +30,13 @@ public interface SkApi {
      */
     @RequestMapping("/wellInfoByPage")
     Result wellInfoByPage(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize);
+    /**
+    * Description: 功能描述（查询所有井） <br/>
+    * date: 2020/5/23 19:05<br/>
+    * @author libd <br/>  
+    */
+    @RequestMapping("/wellInfoFindAll")
+    Result wellInfoFindAll();
     /**
      * Description: 功能描述（井信息添加） <br/>
      * date: 2020/4/26 16:46<br/>
@@ -93,4 +100,7 @@ public interface SkApi {
     */
     @RequestMapping("/salvoByPage")
     Result salvoByPage(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize);
+
+    @RequestMapping("/salvoByWidPage")
+    Result salvoByWidPage(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize,@RequestParam("wid")Long wid);
 }

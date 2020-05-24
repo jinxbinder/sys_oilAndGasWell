@@ -5,6 +5,8 @@ import com.oil.entity.WellInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * ClassName: WellInfoManage <br/>
  * Description: <br/>
@@ -21,4 +23,8 @@ public interface WellInfoManage {
     void wellAdd(WellInfo wellInfo);
 
     WellInfo findById(Long wid);
+
+    List<WellInfo>  wellInfoFindAll();
+
+    void wellStatus(Long wid,String status);
 }

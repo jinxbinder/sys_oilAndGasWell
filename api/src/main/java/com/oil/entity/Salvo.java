@@ -25,11 +25,13 @@ public class Salvo implements Serializable {
     /** 枪型 */
     private String gunType;
     /** 枪长 */
-    private String gunLen;
+    private Double gunLen;
+    /** 数量 */
+    private Integer gunNum;
     /** 上空 */
-    private String upNull;
+    private Double upNull;
     /** 下空 */
-    private String downNull;
+    private Double downNull;
     /** 井id */
     private Long wid;
 }
