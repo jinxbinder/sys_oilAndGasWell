@@ -1,12 +1,18 @@
 server:
   port: 8080
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://39.102.34.165:8761/eureka/
 spring:
   application:
     name: auth
 #数据源
   datasource:
       name: test
-      url: jdbc:mysql://localhost:3306/auth?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3306/auth?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Hongkong
       username: root
       password: root
       type: com.alibaba.druid.pool.DruidDataSource
@@ -27,7 +33,7 @@ spring:
         maxOpenPreparedStatements: 20
 #redis配置
   redis:
-      host: 127.0.0.1
+      host: 39.102.34.165
       port: 6379
       jedis:
         pool:
