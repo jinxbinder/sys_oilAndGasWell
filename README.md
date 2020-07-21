@@ -164,3 +164,4 @@ eureka:
 ```text
 docker run --name user -v /root/docker/docker-user/test:/tmp -p 8762:8762 -d -e "EUREKA_INSTANCE_IP-ADDRESS=39.102.34.165" -e "SERVER_PORT=8762 镜像id"
 ```
+ 
