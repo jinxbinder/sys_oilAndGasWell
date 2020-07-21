@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * ClassName: MD5Util <br/>
  * Description: <br/>
- * date: 2019/11/29 22:56<br/>
+ * date: 2020/7/10 22:56<br/>
  *  MD5工具类
  * @author libd<br />
  * @version 1.0
